@@ -129,7 +129,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
 
   static class MyInputFilter implements FileBasedIndex.InputFilter {
     @Override
-    public boolean acceptInput(final VirtualFile file) {
+    public boolean acceptInput(final Project project, final VirtualFile file) {
       return JavaFxFileTypeFactory.isFxml(file);
     }
   }

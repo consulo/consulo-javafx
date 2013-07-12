@@ -198,7 +198,7 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
         throws IncorrectOperationException {
         String oldText = ((XmlTag)myPosition).getName();
         final TextRange range = getRangeInElement();
-        final String newText = (element instanceof PsiPackage ? ((PsiPackage)element).getQualifiedName() : ((PsiClass)element).getName()) +
+        final String newText = (element instanceof PsiJavaPackage ? ((PsiJavaPackage)element).getQualifiedName() : ((PsiClass)element).getName()) +
                                oldText.substring(range.getEndOffset() - 1);
         return ((XmlTag)myPosition).setName(newText);
       }
