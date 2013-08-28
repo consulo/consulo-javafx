@@ -7,9 +7,6 @@
           <element id="zip-archive" name="javafx.jar">
             <element id="module-output" name="consulo-javafx" />
           </element>
-          <element id="zip-archive" name="javafx-jps-plugin.jar">
-            <element id="module-output" name="javaFX-jps-plugin" />
-          </element>
         </element>
       </element>
     </root>
