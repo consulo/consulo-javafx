@@ -15,21 +15,26 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ui.configuration.ChooseModulesDialog;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.packaging.artifacts.ArtifactTemplate;
 import com.intellij.packaging.artifacts.ArtifactType;
-import com.intellij.packaging.elements.*;
+import com.intellij.packaging.elements.CompositePackagingElement;
+import com.intellij.packaging.elements.PackagingElement;
+import com.intellij.packaging.elements.PackagingElementFactory;
+import com.intellij.packaging.elements.PackagingElementOutputKind;
+import com.intellij.packaging.elements.PackagingElementResolvingContext;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * User: anna
@@ -66,9 +71,7 @@ public class JavaFxApplicationArtifactType extends ArtifactType {
 	@Override
 	public List<? extends ArtifactTemplate> getNewArtifactTemplates(@NotNull PackagingElementResolvingContext context) {
 		final List<Module> modules = new ArrayList<Module>();
-		for (Module module : context.getModulesProvider().getModules()) {
-			modules.add(module);
-		}
+		Collections.addAll(modules, context.getModulesProvider().getModules());
 		if (modules.isEmpty()) {
 			return Collections.emptyList();
 		}

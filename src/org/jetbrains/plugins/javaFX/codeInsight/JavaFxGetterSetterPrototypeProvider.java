@@ -15,16 +15,24 @@
  */
 package org.jetbrains.plugins.javaFX.codeInsight;
 
+import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import com.intellij.codeInsight.generation.GetterSetterPrototypeProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiCodeBlock;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiTypeElement;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
 import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.util.PropertyUtil;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
 /**
  * User: anna
@@ -79,6 +87,28 @@ public class JavaFxGetterSetterPrototypeProvider extends GetterSetterPrototypePr
     body.getStatements()[0].replace(elementFactory.createStatementFromText("this." + field.getName() + ".set(" + parameter.getName() + ");", field));
 
     return new PsiMethod[] {setter};
+  }
+
+  @Override
+  public PsiMethod[] findGetters(PsiClass psiClass, String propertyName) {
+    final String getterName = suggestGetterName(propertyName);
+    final PsiMethod specificGetter = psiClass
+      .findMethodBySignature(JavaPsiFacade.getElementFactory(psiClass.getProject()).createMethod(getterName, PsiType.VOID), false);
+    if (specificGetter != null) {
+      final PsiMethod getter = PropertyUtil.findPropertyGetter(psiClass, propertyName, false, false);
+      return getter == null ? new PsiMethod[] {specificGetter} : new PsiMethod[] {getter, specificGetter};
+    }
+    return super.findGetters(psiClass, propertyName);
+  }
+
+  @Override
+  public String suggestGetterName(String propertyName) {
+    return propertyName + "Property";
+  }
+
+  @Override
+  public boolean isSimpleGetter(PsiMethod method, String oldPropertyName) {
+    return method.getName().equals(suggestGetterName(oldPropertyName));
   }
 
   @Override

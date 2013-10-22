@@ -15,15 +15,16 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.javaFX.packaging.JavaFxApplicationClassBrowser;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.packaging.artifacts.Artifact;
 import com.intellij.packaging.ui.ArtifactPropertiesEditor;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.javaFX.packaging.JavaFxApplicationClassBrowser;
-
-import javax.swing.*;
 
 /**
  * User: anna
@@ -65,6 +66,12 @@ public class JavaFxPreloaderArtifactPropertiesEditor extends ArtifactPropertiesE
   public void apply() {
     myProperties.setPreloaderClass(myPreloaderTf.getText());
   }
+
+  /*@Nullable
+  @Override
+  public String getHelpId() {
+    return "Project_Structure_Artifacts_Java_FX_tab";
+  }       */
 
   @Override
   public void reset() {

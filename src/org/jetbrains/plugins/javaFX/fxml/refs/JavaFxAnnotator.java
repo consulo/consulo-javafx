@@ -15,25 +15,11 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.codeInsight.intention.AddAnnotationFix;
-import com.intellij.codeInsight.intentions.XmlChooseColorIntentionAction;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.annotation.Annotation;
-import com.intellij.lang.annotation.AnnotationHolder;
-import com.intellij.lang.annotation.Annotator;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.presentation.java.SymbolPresentationUtil;
-import com.intellij.psi.xml.*;
-import com.intellij.ui.ColorUtil;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ColorSampleLookupValue;
-import com.intellij.util.ui.ColorIcon;
+import java.awt.Color;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
@@ -42,10 +28,34 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions.JavaFxInjectPageLanguageIntention;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions.JavaFxWrapWithDefineIntention;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultPropertyElementDescriptor;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
+import com.intellij.codeInsight.intention.AddAnnotationFix;
+import com.intellij.codeInsight.intentions.XmlChooseColorIntentionAction;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.annotation.Annotation;
+import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.lang.annotation.Annotator;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMember;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.presentation.java.SymbolPresentationUtil;
+import com.intellij.psi.xml.XmlAttribute;
+import com.intellij.psi.xml.XmlAttributeValue;
+import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
+import com.intellij.psi.xml.XmlTagValue;
+import com.intellij.psi.xml.XmlTokenType;
+import com.intellij.ui.ColorUtil;
+import com.intellij.util.ArrayUtil;
+import com.intellij.util.ColorSampleLookupValue;
+import com.intellij.util.ui.ColorIcon;
 
 /**
  * User: anna
@@ -63,7 +73,7 @@ public class JavaFxAnnotator implements Annotator {
           if (resolve instanceof PsiMember) {
             if (!JavaFxPsiUtil.isVisibleInFxml((PsiMember)resolve)) {
               final String symbolPresentation = "'" + SymbolPresentationUtil.getSymbolPresentableText(resolve) + "'";
-              final Annotation annotation = holder.createErrorAnnotation(element, 
+              final Annotation annotation = holder.createErrorAnnotation(element,
                                                                          symbolPresentation + (resolve instanceof PsiClass ? " should be public" : " should be public or annotated with @FXML"));
               if (!(resolve instanceof PsiClass)) {
                 annotation.registerUniversalFix(new AddAnnotationFix(JavaFxCommonClassNames.JAVAFX_FXML_ANNOTATION, (PsiMember)resolve, ArrayUtil.EMPTY_STRING_ARRAY), null, null);
@@ -175,7 +185,7 @@ public class JavaFxAnnotator implements Annotator {
       return new AnAction() {
         @Override
         public void actionPerformed(AnActionEvent e) {
-          final Editor editor = PlatformDataKeys.EDITOR.getData(e.getDataContext());
+          final Editor editor = CommonDataKeys.EDITOR.getData(e.getDataContext());
           if (editor != null) {
             XmlChooseColorIntentionAction.chooseColor(editor.getComponent(), myElement, "Color Chooser", true);
           }

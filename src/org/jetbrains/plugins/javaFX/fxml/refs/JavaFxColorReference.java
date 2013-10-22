@@ -15,6 +15,9 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -24,9 +27,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.ColorSampleLookupValue;
 import com.intellij.xml.util.UserColorLookup;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 
 /**
  * User: anna

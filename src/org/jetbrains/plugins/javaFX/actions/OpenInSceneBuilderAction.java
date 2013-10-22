@@ -15,6 +15,14 @@
  */
 package org.jetbrains.plugins.javaFX.actions;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.javaFX.JavaFxSettings;
+import org.jetbrains.plugins.javaFX.JavaFxSettingsConfigurable;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import com.intellij.CommonBundle;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.JavaParameters;
@@ -22,7 +30,7 @@ import com.intellij.execution.configurations.PathEnvironmentVariableUtil;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
@@ -37,14 +45,6 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ArrayUtil;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.javaFX.JavaFxSettings;
-import org.jetbrains.plugins.javaFX.JavaFxSettingsConfigurable;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: anna
@@ -56,7 +56,7 @@ public class OpenInSceneBuilderAction extends AnAction {
 
   @Override
   public void actionPerformed(AnActionEvent e) {
-    final VirtualFile virtualFile = e.getData(PlatformDataKeys.VIRTUAL_FILE);
+    final VirtualFile virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE);
     LOG.assertTrue(virtualFile != null);
     final String path = virtualFile.getPath();
 
@@ -150,7 +150,7 @@ public class OpenInSceneBuilderAction extends AnAction {
     final Presentation presentation = e.getPresentation();
     presentation.setEnabled(false);
     presentation.setVisible(false);
-    final VirtualFile virtualFile = e.getData(PlatformDataKeys.VIRTUAL_FILE);
+    final VirtualFile virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE);
     if (virtualFile != null && 
         JavaFxFileTypeFactory.isFxml(virtualFile) &&
         e.getProject() != null) {

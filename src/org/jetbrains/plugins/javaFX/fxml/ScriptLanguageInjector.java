@@ -1,5 +1,8 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.Language;
 import com.intellij.lang.injection.MultiHostInjector;
 import com.intellij.lang.injection.MultiHostRegistrar;
@@ -10,9 +13,6 @@ import com.intellij.patterns.XmlPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.xml.XmlFile;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class ScriptLanguageInjector implements MultiHostInjector {
 

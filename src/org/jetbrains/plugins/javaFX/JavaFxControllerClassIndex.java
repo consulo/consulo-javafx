@@ -15,7 +15,21 @@
  */
 package org.jetbrains.plugins.javaFX;
 
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.IndexNotReadyException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
@@ -25,19 +39,15 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.ProjectScope;
 import com.intellij.util.Function;
-import com.intellij.util.indexing.*;
+import com.intellij.util.indexing.DataIndexer;
+import com.intellij.util.indexing.DefaultFileTypeSpecificInputFilter;
+import com.intellij.util.indexing.FileBasedIndex;
+import com.intellij.util.indexing.FileContent;
+import com.intellij.util.indexing.ID;
+import com.intellij.util.indexing.ScalarIndexExtension;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import com.intellij.util.xml.NanoXmlUtil;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-
-import java.io.StringReader;
-import java.util.*;
 
 public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
   @NonNls public static final ID<String, Void> NAME = ID.create("JavaFxControllerClassIndex");
@@ -127,7 +137,10 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
     }
   }
 
-  static class MyInputFilter implements FileBasedIndex.InputFilter {
+  public static class MyInputFilter extends DefaultFileTypeSpecificInputFilter {
+    public MyInputFilter() {
+      super(StdFileTypes.XML);
+    }
     @Override
     public boolean acceptInput(final Project project, final VirtualFile file) {
       return JavaFxFileTypeFactory.isFxml(file);

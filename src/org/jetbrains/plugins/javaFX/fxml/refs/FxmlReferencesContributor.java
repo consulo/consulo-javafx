@@ -15,23 +15,30 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import static com.intellij.patterns.PlatformPatterns.virtualFile;
+import static com.intellij.patterns.StandardPatterns.string;
+
+import org.consulo.psi.PsiPackage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.patterns.XmlAttributeValuePattern;
 import com.intellij.patterns.XmlPatterns;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifier;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiReferenceContributor;
+import com.intellij.psi.PsiReferenceRegistrar;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider;
 import com.intellij.psi.xml.XmlProcessingInstruction;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.xml.XmlElementDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-
-import static com.intellij.patterns.PlatformPatterns.virtualFile;
-import static com.intellij.patterns.StandardPatterns.string;
 
 /**
  * User: anna
@@ -100,9 +107,6 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
 
     registrar.registerReferenceProvider(PlatformPatterns.psiElement(XmlProcessingInstruction.class).inVirtualFile(virtualFile().withExtension(JavaFxFileTypeFactory.FXML_EXTENSION)),
                                         new ImportReferenceProvider());
-
-    registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue().and(attributeValueInFxml),
-                                        new EnumeratedAttributeReferenceProvider()); 
 
     registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue().and(attributeValueInFxml),
                                         new JavaFxColorReferenceProvider()); 
@@ -198,7 +202,7 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
         throws IncorrectOperationException {
         String oldText = ((XmlTag)myPosition).getName();
         final TextRange range = getRangeInElement();
-        final String newText = (element instanceof PsiJavaPackage ? ((PsiJavaPackage)element).getQualifiedName() : ((PsiClass)element).getName()) +
+        final String newText = (element instanceof PsiPackage ? ((PsiPackage)element).getQualifiedName() : ((PsiClass)element).getName()) +
                                oldText.substring(range.getEndOffset() - 1);
         return ((XmlTag)myPosition).setName(newText);
       }
