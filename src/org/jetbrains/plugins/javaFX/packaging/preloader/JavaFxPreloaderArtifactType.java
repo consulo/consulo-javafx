@@ -17,9 +17,12 @@ package org.jetbrains.plugins.javaFX.packaging.preloader;
 
 import javax.swing.Icon;
 
+import org.consulo.java.module.extension.JavaModuleExtension;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.packaging.artifacts.ArtifactType;
 import com.intellij.packaging.elements.CompositePackagingElement;
 import com.intellij.packaging.elements.PackagingElementOutputKind;
@@ -29,30 +32,42 @@ import com.intellij.packaging.impl.artifacts.JarArtifactType;
  * User: anna
  * Date: 3/12/13
  */
-public class JavaFxPreloaderArtifactType extends ArtifactType {
-  public static JavaFxPreloaderArtifactType getInstance() {
-    return EP_NAME.findExtension(JavaFxPreloaderArtifactType.class);
-  }
-  
-  protected JavaFxPreloaderArtifactType() {
-    super("javafx-preloader", "JavaFx Preloader");
-  }
+public class JavaFxPreloaderArtifactType extends ArtifactType
+{
+	public static JavaFxPreloaderArtifactType getInstance()
+	{
+		return EP_NAME.findExtension(JavaFxPreloaderArtifactType.class);
+	}
 
-  @NotNull
-  @Override
-  public Icon getIcon() {
-    return AllIcons.Nodes.Artifact;
-  }
+	@Override
+	public boolean isAvailableForAdd(@NotNull ModulesProvider modulesProvider)
+	{
+		return ModuleUtil.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
+	}
 
-  @Nullable
-  @Override
-  public String getDefaultPathFor(@NotNull PackagingElementOutputKind kind) {
-    return "/";
-  }
+	protected JavaFxPreloaderArtifactType()
+	{
+		super("javafx-preloader", "JavaFx Preloader");
+	}
 
-  @NotNull
-  @Override
-  public CompositePackagingElement<?> createRootElement(@NotNull String artifactName) {
-    return JarArtifactType.getInstance().createRootElement(artifactName);
-  }
+	@NotNull
+	@Override
+	public Icon getIcon()
+	{
+		return AllIcons.Nodes.Artifact;
+	}
+
+	@Nullable
+	@Override
+	public String getDefaultPathFor(@NotNull PackagingElementOutputKind kind)
+	{
+		return "/";
+	}
+
+	@NotNull
+	@Override
+	public CompositePackagingElement<?> createRootElement(@NotNull String artifactName)
+	{
+		return JarArtifactType.getInstance().createRootElement(artifactName);
+	}
 }

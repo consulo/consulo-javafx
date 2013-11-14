@@ -40,7 +40,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.registry.Registry;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -71,7 +70,7 @@ public class OpenInSceneBuilderAction extends AnAction {
     }
 
     final Project project = getEventProject(e);
-    if (project != null && !Registry.is("scene.builder.start.executable", true)) {
+    if (project != null) {
       final Module module = ModuleUtilCore.findModuleForFile(virtualFile, project);
       if (module != null) {
         try {
