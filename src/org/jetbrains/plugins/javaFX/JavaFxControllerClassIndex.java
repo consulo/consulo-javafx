@@ -28,8 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
+import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.IndexNotReadyException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
@@ -139,7 +139,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
 
   public static class MyInputFilter extends DefaultFileTypeSpecificInputFilter {
     public MyInputFilter() {
-      super(StdFileTypes.XML);
+      super(XmlFileType.INSTANCE);
     }
     @Override
     public boolean acceptInput(final Project project, final VirtualFile file) {

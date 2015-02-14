@@ -31,9 +31,9 @@ import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import org.jetbrains.annotations.Nullable;
+import com.intellij.lang.properties.PropertiesFileType;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
@@ -70,7 +70,7 @@ public class JavaFxArtifactPropertiesEditor extends ArtifactPropertiesEditor {
     super();
     myProperties = properties;
     new JavaFxApplicationClassBrowser(project, artifact).setField(myAppClass);
-    final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(StdFileTypes.PROPERTIES);
+    final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(PropertiesFileType.INSTANCE);
     myHtmlParams.addBrowseFolderListener("Choose Properties File", "Parameters for the resulting application to run standalone.", project, descriptor);
     myParams.addBrowseFolderListener("Choose Properties File", "Parameters for the resulting application to run in the browser.", project, descriptor);
     myEditSignCertificateButton.addActionListener(new ActionListener() {

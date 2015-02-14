@@ -15,12 +15,26 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
+import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.OrderEnumerator;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -36,15 +50,6 @@ import com.intellij.psi.xml.XmlProlog;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.lang.UrlClassLoader;
-import org.jetbrains.annotations.NotNull;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineFactory;
-import javax.script.ScriptEngineManager;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
 
 /**
 * User: anna
@@ -108,7 +113,7 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
       @Override
       protected void run() {
         final PsiFileFactory factory = PsiFileFactory.getInstance(project);
-        final XmlFile dummyFile = (XmlFile)factory.createFileFromText("_Dummy_.fxml", StdFileTypes.XML,
+        final XmlFile dummyFile = (XmlFile)factory.createFileFromText("_Dummy_.fxml", XmlFileType.INSTANCE,
                                                                       "<?language " + languageName + "?>");
         final XmlDocument document = dummyFile.getDocument();
         if (document != null) {
