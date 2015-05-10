@@ -15,11 +15,6 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
-import javax.swing.Icon;
-
-import org.consulo.java.module.extension.JavaModuleExtension;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
@@ -27,6 +22,11 @@ import com.intellij.packaging.artifacts.ArtifactType;
 import com.intellij.packaging.elements.CompositePackagingElement;
 import com.intellij.packaging.elements.PackagingElementOutputKind;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.mustbe.consulo.java.module.extension.JavaModuleExtension;
+
+import javax.swing.*;
 
 /**
  * User: anna

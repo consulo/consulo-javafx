@@ -15,15 +15,6 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.swing.Icon;
-
-import org.consulo.java.module.extension.JavaModuleExtension;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
@@ -32,12 +23,16 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.packaging.artifacts.ArtifactTemplate;
 import com.intellij.packaging.artifacts.ArtifactType;
-import com.intellij.packaging.elements.CompositePackagingElement;
-import com.intellij.packaging.elements.PackagingElement;
-import com.intellij.packaging.elements.PackagingElementFactory;
-import com.intellij.packaging.elements.PackagingElementOutputKind;
-import com.intellij.packaging.elements.PackagingElementResolvingContext;
+import com.intellij.packaging.elements.*;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.mustbe.consulo.java.module.extension.JavaModuleExtension;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * User: anna
