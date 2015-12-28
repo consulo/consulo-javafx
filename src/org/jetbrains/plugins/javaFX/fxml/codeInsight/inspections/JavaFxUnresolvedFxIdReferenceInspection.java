@@ -15,14 +15,24 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
+import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
+import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxFieldIdReferenceProvider;
+import org.mustbe.consulo.java.JavaQuickFixBundle;
 import com.intellij.codeInsight.ExpectedTypeInfo;
 import com.intellij.codeInsight.ExpectedTypeInfoImpl;
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.TailType;
-import com.intellij.codeInsight.daemon.QuickFixBundle;
 import com.intellij.codeInsight.daemon.impl.quickfix.CreateFieldFromUsageFix;
 import com.intellij.codeInsight.daemon.impl.quickfix.CreateFieldFromUsageHelper;
-import com.intellij.codeInspection.*;
+import com.intellij.codeInspection.LocalInspectionToolSession;
+import com.intellij.codeInspection.LocalQuickFix;
+import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.codeInspection.XmlSuppressableInspectionTool;
 import com.intellij.lang.LanguageNamesValidation;
 import com.intellij.lang.refactoring.NamesValidator;
 import com.intellij.openapi.project.Project;
@@ -34,116 +44,134 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.VisibilityUtil;
 import com.intellij.xml.XmlElementDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
-import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
-import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxFieldIdReferenceProvider;
 
 /**
  * User: anna
  */
-public class JavaFxUnresolvedFxIdReferenceInspection extends XmlSuppressableInspectionTool {
-  @NotNull
-  @Override
-  public PsiElementVisitor buildVisitor(final @NotNull ProblemsHolder holder,
-                                        final boolean isOnTheFly,
-                                        @NotNull LocalInspectionToolSession session) {
-    return new XmlElementVisitor() {
-      @Override
-      public void visitXmlFile(XmlFile file) {
-        if (!JavaFxFileTypeFactory.isFxml(file)) return;
-        super.visitXmlFile(file);
-      }
+public class JavaFxUnresolvedFxIdReferenceInspection extends XmlSuppressableInspectionTool
+{
+	@NotNull
+	@Override
+	public PsiElementVisitor buildVisitor(final @NotNull ProblemsHolder holder, final boolean isOnTheFly, @NotNull LocalInspectionToolSession session)
+	{
+		return new XmlElementVisitor()
+		{
+			@Override
+			public void visitXmlFile(XmlFile file)
+			{
+				if(!JavaFxFileTypeFactory.isFxml(file))
+				{
+					return;
+				}
+				super.visitXmlFile(file);
+			}
 
-      @Override
-      public void visitXmlAttribute(XmlAttribute attribute) {
-        if (FxmlConstants.FX_ID.equals(attribute.getName())) {
-          final XmlAttributeValue valueElement = attribute.getValueElement();
-          if (valueElement != null && valueElement.getTextLength() > 0) {
-            final PsiClass controllerClass = JavaFxPsiUtil.getControllerClass(attribute.getContainingFile());
-            if (controllerClass != null) {
-              final PsiReference reference = valueElement.getReference();
-              if (reference instanceof JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef && ((JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef)reference).isUnresolved()) {
-                final PsiClass fieldClass =
-                  checkContext(((JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef)reference).getXmlAttributeValue());
-                if (fieldClass != null) {
-                  final String text = reference.getCanonicalText();
-                  final NamesValidator namesValidator = LanguageNamesValidation.INSTANCE.forLanguage(fieldClass.getLanguage());
-                  boolean validName = namesValidator != null && namesValidator.isIdentifier(text, fieldClass.getProject());
-                  holder.registerProblem(reference.getElement(), reference.getRangeInElement(), "Unresolved fx:id reference",
-                                         isOnTheFly && validName ? new LocalQuickFix[]{new CreateFieldFromUsageQuickFix(text)} : LocalQuickFix.EMPTY_ARRAY);
-                }
-              }
-            }
-          }
-        }
-      }
-    };
-  }
+			@Override
+			public void visitXmlAttribute(XmlAttribute attribute)
+			{
+				if(FxmlConstants.FX_ID.equals(attribute.getName()))
+				{
+					final XmlAttributeValue valueElement = attribute.getValueElement();
+					if(valueElement != null && valueElement.getTextLength() > 0)
+					{
+						final PsiClass controllerClass = JavaFxPsiUtil.getControllerClass(attribute.getContainingFile());
+						if(controllerClass != null)
+						{
+							final PsiReference reference = valueElement.getReference();
+							if(reference instanceof JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef && ((JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef) reference).isUnresolved())
+							{
+								final PsiClass fieldClass = checkContext(((JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef) reference).getXmlAttributeValue());
+								if(fieldClass != null)
+								{
+									final String text = reference.getCanonicalText();
+									final NamesValidator namesValidator = LanguageNamesValidation.INSTANCE.forLanguage(fieldClass.getLanguage());
+									boolean validName = namesValidator != null && namesValidator.isIdentifier(text, fieldClass.getProject());
+									holder.registerProblem(reference.getElement(), reference.getRangeInElement(), "Unresolved fx:id reference", isOnTheFly && validName ? new LocalQuickFix[]{new
+											CreateFieldFromUsageQuickFix(text)} : LocalQuickFix.EMPTY_ARRAY);
+								}
+							}
+						}
+					}
+				}
+			}
+		};
+	}
 
-  protected static PsiClass checkContext(final XmlAttributeValue attributeValue) {
-    if (attributeValue == null) return null;
-    final PsiElement parent = attributeValue.getParent();
-    if (parent instanceof XmlAttribute) {
-      final XmlTag tag = ((XmlAttribute)parent).getParent();
-      if (tag != null) {
-        final XmlElementDescriptor descriptor = tag.getDescriptor();
-        if (descriptor instanceof JavaFxClassBackedElementDescriptor) {
-          final PsiElement declaration = descriptor.getDeclaration();
-          if (declaration instanceof PsiClass) {
-            return (PsiClass)declaration;
-          }
-        }
-      }
-    }
-    return null;
-  }
+	protected static PsiClass checkContext(final XmlAttributeValue attributeValue)
+	{
+		if(attributeValue == null)
+		{
+			return null;
+		}
+		final PsiElement parent = attributeValue.getParent();
+		if(parent instanceof XmlAttribute)
+		{
+			final XmlTag tag = ((XmlAttribute) parent).getParent();
+			if(tag != null)
+			{
+				final XmlElementDescriptor descriptor = tag.getDescriptor();
+				if(descriptor instanceof JavaFxClassBackedElementDescriptor)
+				{
+					final PsiElement declaration = descriptor.getDeclaration();
+					if(declaration instanceof PsiClass)
+					{
+						return (PsiClass) declaration;
+					}
+				}
+			}
+		}
+		return null;
+	}
 
-  private static class CreateFieldFromUsageQuickFix implements LocalQuickFix {
-    private final String myCanonicalName;
+	private static class CreateFieldFromUsageQuickFix implements LocalQuickFix
+	{
+		private final String myCanonicalName;
 
-    private CreateFieldFromUsageQuickFix(String canonicalName) {
-      myCanonicalName = canonicalName;
-    }
+		private CreateFieldFromUsageQuickFix(String canonicalName)
+		{
+			myCanonicalName = canonicalName;
+		}
 
-    @NotNull
-    @Override
-    public String getName() {
-      return QuickFixBundle.message("create.field.from.usage.text", myCanonicalName);
-    }
+		@NotNull
+		@Override
+		public String getName()
+		{
+			return JavaQuickFixBundle.message("create.field.from.usage.text", myCanonicalName);
+		}
 
-    @NotNull
-    @Override
-    public String getFamilyName() {
-      return QuickFixBundle.message("create.field.from.usage.family");
-    }
+		@NotNull
+		@Override
+		public String getFamilyName()
+		{
+			return JavaQuickFixBundle.message("create.field.from.usage.family");
+		}
 
-    @Override
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      final PsiElement psiElement = descriptor.getPsiElement();
-      final XmlAttributeValue attrValue = PsiTreeUtil.getParentOfType(psiElement, XmlAttributeValue.class, false);
-      assert attrValue != null;
+		@Override
+		public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor)
+		{
+			final PsiElement psiElement = descriptor.getPsiElement();
+			final XmlAttributeValue attrValue = PsiTreeUtil.getParentOfType(psiElement, XmlAttributeValue.class, false);
+			assert attrValue != null;
 
-      final JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef reference =
-        (JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef)attrValue.getReference();
-      assert reference != null;
+			final JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef reference = (JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef) attrValue.getReference();
+			assert reference != null;
 
-      final PsiClass targetClass = reference.getAClass();
-      if (!FileModificationService.getInstance().prepareFileForWrite(targetClass.getContainingFile())) {
-        return;
-      }
-      final PsiElementFactory factory = JavaPsiFacade.getElementFactory(project);
-      PsiField field = factory.createField(reference.getCanonicalText(), PsiType.INT);
-      VisibilityUtil.setVisibility(field.getModifierList(), PsiModifier.PUBLIC);
+			final PsiClass targetClass = reference.getAClass();
+			if(!FileModificationService.getInstance().prepareFileForWrite(targetClass.getContainingFile()))
+			{
+				return;
+			}
+			final PsiElementFactory factory = JavaPsiFacade.getElementFactory(project);
+			PsiField field = factory.createField(reference.getCanonicalText(), PsiType.INT);
+			VisibilityUtil.setVisibility(field.getModifierList(), PsiModifier.PUBLIC);
 
-      field = CreateFieldFromUsageHelper.insertField(targetClass, field, psiElement);
+			field = CreateFieldFromUsageHelper.insertField(targetClass, field, psiElement);
 
-      final PsiClassType fieldType = factory.createType(checkContext(reference.getXmlAttributeValue()));
-      final ExpectedTypeInfo[] types = {new ExpectedTypeInfoImpl(fieldType, ExpectedTypeInfo.TYPE_OR_SUBTYPE, fieldType, TailType.NONE,
-                                                                 null, ExpectedTypeInfoImpl.NULL)};
-      CreateFieldFromUsageFix.createFieldFromUsageTemplate(targetClass, project, types, field, false, psiElement);
-    }
-  }
+			final PsiClassType fieldType = factory.createType(checkContext(reference.getXmlAttributeValue()));
+			final ExpectedTypeInfo[] types = {
+					new ExpectedTypeInfoImpl(fieldType, ExpectedTypeInfo.TYPE_OR_SUBTYPE, fieldType, TailType.NONE, null, ExpectedTypeInfoImpl.NULL)
+			};
+			CreateFieldFromUsageFix.createFieldFromUsageTemplate(targetClass, project, types, field, false, psiElement);
+		}
+	}
 }
