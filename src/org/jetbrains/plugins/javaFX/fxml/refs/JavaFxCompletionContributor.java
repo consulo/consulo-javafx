@@ -11,7 +11,6 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.completion.InsertionContext;
@@ -24,6 +23,7 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.ProcessingContext;
 import com.intellij.xml.XmlElementDescriptor;
+import consulo.codeInsight.completion.CompletionProvider;
 
 /**
  * @author yole
@@ -33,9 +33,10 @@ public class JavaFxCompletionContributor extends CompletionContributor {
     extend(CompletionType.BASIC, psiElement().inside(xmlTag()), new JavaFxTagCompletionContributor());
   }
 
-  private static class JavaFxTagCompletionContributor extends CompletionProvider<CompletionParameters> {
+  private static class JavaFxTagCompletionContributor implements CompletionProvider
+  {
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
+    public void addCompletions(@NotNull CompletionParameters parameters,
                                   ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
       PsiReference reference = parameters.getPosition().getContainingFile().findReferenceAt(parameters.getOffset());

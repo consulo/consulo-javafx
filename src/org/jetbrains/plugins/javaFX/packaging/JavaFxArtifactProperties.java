@@ -15,6 +15,15 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactProperties;
+import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider;
+import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompilerMessageCategory;
@@ -35,16 +44,7 @@ import com.intellij.packaging.impl.elements.ArtifactPackagingElement;
 import com.intellij.packaging.ui.ArtifactEditorContext;
 import com.intellij.packaging.ui.ArtifactPropertiesEditor;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactProperties;
-import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider;
-import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType;
-import org.mustbe.consulo.java.module.extension.JavaModuleExtension;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
+import consulo.java.module.extension.JavaModuleExtension;
 
 /**
  * User: anna

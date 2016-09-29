@@ -1,16 +1,14 @@
 <idea-plugin>
 	<name>JavaFX</name>
 	<id>org.jetbrains.plugins.javaFX</id>
-	<version>1.0</version>
+	<version>SNAPSHOT</version>
 	<vendor>JetBrains</vendor>
-	<description>
-		This plugin provides JavaFX2 support.
-	</description>
-	<depends>org.consulo.java</depends>
+	<description>his plugin provides JavaFX2 support.</description>
+	<depends>consulo.java</depends>
+	<depends>com.intellij.properties</depends>
 	<depends>com.intellij.xml</depends>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>
 		<fileTypeFactory implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory"/>
 		<xml.xmlExtension implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxXmlExtension"/>
 		<xml.fileNSInfoProvider implementation="org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider"/>
@@ -58,7 +56,7 @@
 		<completion.contributor implementationClass="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxCompletionContributor" language="XML" order="before xmlNonFirst"/>
 	</extensions>
 
-	<extensions defaultExtensionNs="org.consulo.java">
+	<extensions defaultExtensionNs="consulo.java">
 		<getterSetterProvider implementation="org.jetbrains.plugins.javaFX.codeInsight.JavaFxGetterSetterPrototypeProvider"/>
 
 		<manifest.headerParser key="JavaFX-Application-Class" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
