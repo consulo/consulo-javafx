@@ -37,6 +37,7 @@ import com.intellij.packaging.elements.PackagingElementFactory;
 import com.intellij.packaging.elements.PackagingElementOutputKind;
 import com.intellij.packaging.elements.PackagingElementResolvingContext;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
+import com.intellij.packaging.impl.elements.moduleContent.ProductionModuleOutputElementType;
 import consulo.java.module.extension.JavaModuleExtension;
 
 /**
@@ -86,7 +87,7 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 	@Override
 	public List<? extends ArtifactTemplate> getNewArtifactTemplates(@NotNull PackagingElementResolvingContext context)
 	{
-		final List<Module> modules = new ArrayList<Module>();
+		final List<Module> modules = new ArrayList<>();
 		Collections.addAll(modules, context.getModulesProvider().getModules());
 		if(modules.isEmpty())
 		{
@@ -143,7 +144,7 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 			}
 			final CompositePackagingElement<?> rootElement = JavaFxApplicationArtifactType.this.createRootElement(module.getName());
 			final CompositePackagingElement<?> subElement = JarArtifactType.getInstance().createRootElement(FileUtil.sanitizeFileName(module.getName()));
-			final PackagingElement<?> moduleOutputElement = PackagingElementFactory.getInstance().createModuleOutput(module);
+			final PackagingElement<?> moduleOutputElement = ProductionModuleOutputElementType.getInstance().createElement(module.getProject(), ModuleUtil.createPointer(module));
 			subElement.addFirstChild(moduleOutputElement);
 			rootElement.addFirstChild(subElement);
 			return new NewArtifactConfiguration(rootElement, module.getName(), JavaFxApplicationArtifactType.this);
