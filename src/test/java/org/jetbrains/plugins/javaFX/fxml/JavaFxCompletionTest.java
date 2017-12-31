@@ -15,13 +15,12 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.completion.LightFixtureCompletionTestCase;
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.openapi.application.PluginPathManager;
-import com.intellij.testFramework.LightProjectDescriptor;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
+import com.intellij.testFramework.TestModuleDescriptor;
 
 /**
  * User: anna
@@ -31,7 +30,7 @@ public class JavaFxCompletionTest extends LightFixtureCompletionTestCase {
 
   @NotNull
   @Override
-  protected LightProjectDescriptor getProjectDescriptor() {
+  protected TestModuleDescriptor getProjectDescriptor() {
     return AbstractJavaFXTestCase.JAVA_FX_DESCRIPTOR;
   }
 
@@ -283,6 +282,6 @@ public class JavaFxCompletionTest extends LightFixtureCompletionTestCase {
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/completion/";
+    return "/testData/completion/";
   }
 }

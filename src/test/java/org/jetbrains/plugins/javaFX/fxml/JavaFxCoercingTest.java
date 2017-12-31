@@ -15,12 +15,11 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.daemon.impl.analysis.XmlPathReferenceInspection;
 import com.intellij.codeInspection.deadCode.UnusedDeclarationInspection;
 import com.intellij.codeInspection.htmlInspections.RequiredAttributesInspection;
 import com.intellij.codeInspection.unusedSymbol.UnusedSymbolLocalInspection;
-import com.intellij.openapi.application.PluginPathManager;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author anna
@@ -59,6 +58,6 @@ public class JavaFxCoercingTest extends AbstractJavaFXTestCase {
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/coercing/";
+    return "testData/coercing/";
   }
 }

@@ -15,12 +15,11 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.application.PluginPathManager;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection;
-
-import java.util.List;
+import com.intellij.codeInsight.intention.IntentionAction;
 
 /**
  * User: anna
@@ -59,6 +58,6 @@ public class JavaFXUnresolvedFxIdReferenceInspectionTest extends AbstractJavaFXQ
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/inspections/unresolvedFxId/";
+    return "inspections/unresolvedFxId/";
   }
 }

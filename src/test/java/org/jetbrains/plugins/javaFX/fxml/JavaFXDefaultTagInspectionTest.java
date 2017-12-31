@@ -15,7 +15,6 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.openapi.application.PluginPathManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxDefaultTagInspection;
 
@@ -51,6 +50,6 @@ public class JavaFXDefaultTagInspectionTest extends AbstractJavaFXQuickFixTest {
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/inspections/defaultTag/";
+    return "testData/inspections/defaultTag/";
   }
 }

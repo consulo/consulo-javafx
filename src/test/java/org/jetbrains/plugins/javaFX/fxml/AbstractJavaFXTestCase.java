@@ -15,15 +15,14 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.openapi.application.PluginPathManager;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.testFramework.LightProjectDescriptor;
 import com.intellij.testFramework.PsiTestUtil;
+import com.intellij.testFramework.TestModuleDescriptor;
 import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * User: anna
@@ -33,14 +32,14 @@ public abstract class AbstractJavaFXTestCase extends LightCodeInsightFixtureTest
   public static final DefaultLightProjectDescriptor JAVA_FX_DESCRIPTOR = new DefaultLightProjectDescriptor() {
     @Override
        public void configureModule(Module module, ModifiableRootModel model, ContentEntry contentEntry) {
-       PsiTestUtil.addLibrary(module, model, "javafx", PluginPathManager.getPluginHomePath("javaFX") + "/testData", "jfxrt.jar");
+       PsiTestUtil.addLibrary(module, model, "javafx", "testData", "jfxrt.jar");
        super.configureModule(module, model, contentEntry);
      }
    };
 
   @NotNull
   @Override
-  protected LightProjectDescriptor getProjectDescriptor() {
+  protected TestModuleDescriptor getProjectDescriptor() {
     return JAVA_FX_DESCRIPTOR;
   }
 

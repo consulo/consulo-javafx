@@ -15,15 +15,18 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.daemon.impl.analysis.XmlPathReferenceInspection;
 import com.intellij.codeInspection.deadCode.UnusedDeclarationInspection;
 import com.intellij.codeInspection.htmlInspections.RequiredAttributesInspection;
 import com.intellij.codeInspection.unusedSymbol.UnusedSymbolLocalInspection;
-import com.intellij.openapi.application.PluginPathManager;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ArrayUtil;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author anna
@@ -348,6 +351,6 @@ public class JavaFXHighlightingTest extends AbstractJavaFXTestCase {
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/highlighting/";
+    return "testData/highlighting/";
   }
 }

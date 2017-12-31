@@ -15,9 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.codeInsight.actions.OptimizeImportsProcessor;
-import com.intellij.openapi.application.PluginPathManager;
 import org.jetbrains.annotations.NotNull;
+import com.intellij.codeInsight.actions.OptimizeImportsProcessor;
 
 public class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {
   public void testCollapseOnDemand() throws Exception {
@@ -53,6 +52,6 @@ public class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/optimizeImports/";
+    return "testData/optimizeImports/";
   }
 }

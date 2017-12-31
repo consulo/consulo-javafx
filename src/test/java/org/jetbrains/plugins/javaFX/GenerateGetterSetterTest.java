@@ -15,15 +15,14 @@
  */
 package org.jetbrains.plugins.javaFX;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.codeInsight.generation.ClassMember;
 import com.intellij.codeInsight.generation.GenerateGetterAndSetterHandler;
-import com.intellij.openapi.application.PluginPathManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.testFramework.PsiTestUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
   public void testDouble() throws Exception {
@@ -33,7 +32,7 @@ public class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
   @Override
   protected void setUpModule() {
     super.setUpModule();
-    PsiTestUtil.addLibrary(getModule(), "javafx", PluginPathManager.getPluginHomePath("javaFX") + "/testData", "jfxrt.jar");
+    PsiTestUtil.addLibrary(getModule(), "javafx", "testData", "jfxrt.jar");
   }
 
   protected void doTest() throws Exception {
@@ -55,6 +54,6 @@ public class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
   @NotNull
     @Override
     protected String getTestDataPath() {
-      return PluginPathManager.getPluginHomePath("javaFX") + "/testData";
+      return "testData";
     }
 }

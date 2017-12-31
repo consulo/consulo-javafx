@@ -15,33 +15,30 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.application.PluginPathManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.projectRoots.impl.JavaAwareProjectJdkTableImpl;
-import com.intellij.openapi.roots.ContentEntry;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.testFramework.LightProjectDescriptor;
-import com.intellij.testFramework.PsiTestUtil;
-import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor;
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection;
+import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.testFramework.PsiTestUtil;
+import com.intellij.testFramework.TestModuleDescriptor;
+import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor;
+import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 
 public class JavaFXQuickfixTest extends LightCodeInsightFixtureTestCase {
   public static final DefaultLightProjectDescriptor JAVA_FX_WITH_GROOVY_DESCRIPTOR = new DefaultLightProjectDescriptor() {
     @Override
        public void configureModule(Module module, ModifiableRootModel model, ContentEntry contentEntry) {
-       PsiTestUtil.addLibrary(module, model, "javafx", PluginPathManager.getPluginHomePath("javaFX") + "/testData", "jfxrt.jar");
-       PsiTestUtil.addLibrary(module, model, "groovy", PluginPathManager.getPluginHomePath("groovy") + "/testdata/mockGroovyLib1.8", "groovy-1.8.0-beta-2.jar");
+       PsiTestUtil.addLibrary(module, model, "javafx", "/testData", "jfxrt.jar");
+       PsiTestUtil.addLibrary(module, model, "groovy", "/testdata/mockGroovyLib1.8", "groovy-1.8.0-beta-2.jar");
        super.configureModule(module, model, contentEntry);
      }
    };
 
   @NotNull
   @Override
-  protected LightProjectDescriptor getProjectDescriptor() {
+  protected TestModuleDescriptor getProjectDescriptor() {
     return JAVA_FX_WITH_GROOVY_DESCRIPTOR;
   }
 
@@ -98,6 +95,6 @@ public class JavaFXQuickfixTest extends LightCodeInsightFixtureTestCase {
   @NotNull
   @Override
   protected String getTestDataPath() {
-    return PluginPathManager.getPluginHomePath("javaFX") + "/testData/quickfix/";
+    return "/testData/quickfix/";
   }
 }
