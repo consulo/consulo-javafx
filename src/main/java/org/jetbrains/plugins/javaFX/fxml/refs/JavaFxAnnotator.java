@@ -187,7 +187,7 @@ public class JavaFxAnnotator implements Annotator {
         public void actionPerformed(AnActionEvent e) {
           final Editor editor = e.getData(CommonDataKeys.EDITOR);
           if (editor != null) {
-            XmlChooseColorIntentionAction.chooseColor(editor.getComponent(), myElement, "Color Chooser", true);
+            XmlChooseColorIntentionAction.chooseColor(editor.getComponent(), myElement, "Color Chooser");
           }
         }
       };
