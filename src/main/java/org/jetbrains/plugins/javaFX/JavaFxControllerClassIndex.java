@@ -23,8 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
@@ -56,13 +57,13 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
   private final MyDataIndexer myDataIndexer = new MyDataIndexer();
 
   @Override
-  @NotNull
+  @Nonnull
   public ID<String, Void> getName() {
     return NAME;
   }
 
   @Override
-  @NotNull
+  @Nonnull
   public DataIndexer<String, Void, FileContent> getIndexer() {
     return myDataIndexer;
   }
@@ -89,7 +90,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
 
   private static class MyDataIndexer implements DataIndexer<String, Void, FileContent> {
     @Override
-    @NotNull
+    @Nonnull
     public Map<String, Void> map(final FileContent inputData) {
       final String className = getControllerClassName(inputData.getContentAsText().toString());
       if (className != null) {
@@ -147,7 +148,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
     }
   }
 
-  public static List<PsiFile> findFxmlWithController(final Project project, @NotNull String className) {
+  public static List<PsiFile> findFxmlWithController(final Project project, @Nonnull String className) {
     return findFxmlWithController(project, className, new Function<VirtualFile, PsiFile>() {
       @Override
       public PsiFile fun(VirtualFile file) {
@@ -156,12 +157,12 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
     }, ProjectScope.getAllScope(project));
   }
 
-  public static List<VirtualFile> findFxmlsWithController(final Project project, @NotNull String className) {
+  public static List<VirtualFile> findFxmlsWithController(final Project project, @Nonnull String className) {
     return findFxmlWithController(project, className, Function.ID, ProjectScope.getAllScope(project));
   }
 
   public static <T> List<T> findFxmlWithController(final Project project,
-                                                     @NotNull final String className,
+                                                     @Nonnull final String className,
                                                      final Function<VirtualFile, T> f,
                                                      final GlobalSearchScope scope) {
     return ApplicationManager.getApplication().runReadAction(new Computable<List<T>>() {

@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.codeInsight.actions.OptimizeImportsProcessor;
 
 public class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {
@@ -49,7 +49,7 @@ public class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {
     myFixture.checkResultByFile(getTestName(true) + "_after.fxml");
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "testData/optimizeImports/";

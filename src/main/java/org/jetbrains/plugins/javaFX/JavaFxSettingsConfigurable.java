@@ -24,8 +24,8 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.io.FileUtil;
 import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 
@@ -82,7 +82,7 @@ public class JavaFxSettingsConfigurable implements SearchableConfigurable, Confi
     myPanel = null;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getId() {
     return getHelpTopic();

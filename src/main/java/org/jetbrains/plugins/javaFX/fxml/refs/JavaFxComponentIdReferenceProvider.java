@@ -26,8 +26,9 @@ import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.ProcessingContext;
 import com.intellij.xml.XmlAttributeDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
@@ -37,10 +38,10 @@ import java.util.*;
 * User: anna
 */
 class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
-  @NotNull
+  @Nonnull
   @Override
-  public PsiReference[] getReferencesByElement(@NotNull PsiElement element,
-                                               @NotNull ProcessingContext context) {
+  public PsiReference[] getReferencesByElement(@Nonnull PsiElement element,
+                                               @Nonnull ProcessingContext context) {
     final XmlAttributeValue xmlAttributeValue = (XmlAttributeValue)element;
     final XmlTag currentTag = PsiTreeUtil.getParentOfType(xmlAttributeValue, XmlTag.class);
     final String value = xmlAttributeValue.getValue();
@@ -142,7 +143,7 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
       return myFileIds.get(myReferencesId);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Object[] getVariants() {
       return ArrayUtil.toStringArray(myAcceptableIds);
@@ -165,7 +166,7 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
       return myTagClass.findFieldByName(myFieldName, true);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Object[] getVariants() {
       final PsiElement parent = getElement().getParent();
@@ -181,7 +182,7 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
       return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
-    private Object[] collectProperties(@NotNull PsiField psiField) {
+    private Object[] collectProperties(@Nonnull PsiField psiField) {
       final PsiType type = psiField.getType();
       final PsiType propertyType = JavaFxPsiUtil.getPropertyType(type, psiField.getProject());
       final List<PsiField> objs = new ArrayList<PsiField>();

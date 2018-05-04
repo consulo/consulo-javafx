@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultPropertyElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
@@ -322,7 +322,7 @@ public class JavaFxPsiUtil {
            AnnotationUtil.isAnnotated(psiMember, JavaFxCommonClassNames.JAVAFX_FXML_ANNOTATION, false);
   }
 
-  public static PsiMethod findValueOfMethod(@NotNull final PsiClass tagClass) {
+  public static PsiMethod findValueOfMethod(@Nonnull final PsiClass tagClass) {
     final PsiMethod[] methods = tagClass.findMethodsByName(JavaFxCommonClassNames.VALUE_OF, false);
     for (PsiMethod method : methods) {
       if (method.hasModifierProperty(PsiModifier.STATIC)) {
@@ -438,7 +438,7 @@ public class JavaFxPsiUtil {
     return null;
   }
 
-  public static boolean hasBuilder(@NotNull final PsiClass psiClass) {
+  public static boolean hasBuilder(@Nonnull final PsiClass psiClass) {
     final Project project = psiClass.getProject();
     return CachedValuesManager.getManager(project).getCachedValue(psiClass, new CachedValueProvider<Boolean>() {
       @Nullable

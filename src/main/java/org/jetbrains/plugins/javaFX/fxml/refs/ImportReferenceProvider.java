@@ -15,6 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -23,7 +25,6 @@ import com.intellij.psi.xml.XmlProcessingInstruction;
 import com.intellij.psi.xml.XmlTokenType;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.ProcessingContext;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
 /**
@@ -31,9 +32,9 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 */
 class ImportReferenceProvider extends PsiReferenceProvider {
 
-  @NotNull
+  @Nonnull
   @Override
-  public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+  public PsiReference[] getReferencesByElement(@Nonnull PsiElement element, @Nonnull ProcessingContext context) {
     if (element instanceof XmlProcessingInstruction) {
       final ASTNode importNode = element.getNode().findChildByType(XmlTokenType.XML_TAG_CHARACTERS);
       if (importNode != null) {

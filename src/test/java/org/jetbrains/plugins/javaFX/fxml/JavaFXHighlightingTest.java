@@ -15,7 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.daemon.impl.analysis.XmlPathReferenceInspection;
 import com.intellij.codeInspection.deadCode.UnusedDeclarationInspection;
 import com.intellij.codeInspection.htmlInspections.RequiredAttributesInspection;
@@ -348,7 +349,7 @@ public class JavaFXHighlightingTest extends AbstractJavaFXTestCase {
                                 new UnusedDeclarationInspection());
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "testData/highlighting/";

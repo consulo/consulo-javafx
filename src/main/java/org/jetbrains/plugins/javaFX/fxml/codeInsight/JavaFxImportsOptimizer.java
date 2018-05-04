@@ -22,7 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
@@ -68,7 +69,7 @@ public class JavaFxImportsOptimizer implements ImportOptimizer {
     return JavaFxFileTypeFactory.isFxml(file);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Runnable processFile(final PsiFile file) {
     VirtualFile vFile = file.getVirtualFile();
@@ -133,7 +134,7 @@ public class JavaFxImportsOptimizer implements ImportOptimizer {
     };
   }
   
-  private static void collectNamesToImport(@NotNull final Collection<Pair<String, Boolean>> names, XmlFile file) {
+  private static void collectNamesToImport(@Nonnull final Collection<Pair<String, Boolean>> names, XmlFile file) {
     file.accept(new JavaFxUsedClassesVisitor() {
       @Override
       protected void appendClassName(String fqn) {

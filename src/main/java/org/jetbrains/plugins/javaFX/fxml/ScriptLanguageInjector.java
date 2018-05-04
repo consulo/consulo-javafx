@@ -2,7 +2,8 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.Language;
 import com.intellij.lang.injection.MultiHostInjector;
 import com.intellij.lang.injection.MultiHostRegistrar;
@@ -20,7 +21,7 @@ public class ScriptLanguageInjector implements MultiHostInjector {
 			XmlPatterns.xmlTag().withName(FxmlConstants.FX_SCRIPT));
 
 	@Override
-	public void injectLanguages(@NotNull MultiHostRegistrar multiHostRegistrar, @NotNull PsiElement element) {
+	public void injectLanguages(@Nonnull MultiHostRegistrar multiHostRegistrar, @Nonnull PsiElement element) {
 		if (SCRIPT_PATTERN.accepts(element)) {
 			final List<String> registeredLanguages = JavaFxPsiUtil.parseInjectedLanguages((XmlFile) element.getContainingFile());
 			for (Language language : Language.getRegisteredLanguages()) {

@@ -15,13 +15,15 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.daemon.impl.quickfix.ImportClassFixBase;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
 /**
@@ -29,7 +31,7 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 */
 abstract class JavaFxImportClassFix extends ImportClassFixBase<XmlTag, JavaFxTagNameReference> {
 
-  public JavaFxImportClassFix(@NotNull JavaFxTagNameReference ref, @NotNull XmlTag element) {
+  public JavaFxImportClassFix(@Nonnull JavaFxTagNameReference ref, @Nonnull XmlTag element) {
     super(element, ref);
   }
 
@@ -37,13 +39,13 @@ abstract class JavaFxImportClassFix extends ImportClassFixBase<XmlTag, JavaFxTag
 
   @Nullable
   @Override
-  protected String getReferenceName(@NotNull JavaFxTagNameReference reference) {
+  protected String getReferenceName(@Nonnull JavaFxTagNameReference reference) {
     final XmlTag tagElement = getTagElement(reference);
     return tagElement != null ? tagElement.getName() : null;
   }
 
   @Override
-  protected PsiElement getReferenceNameElement(@NotNull JavaFxTagNameReference reference) {
+  protected PsiElement getReferenceNameElement(@Nonnull JavaFxTagNameReference reference) {
     final XmlTag tagElement = getTagElement(reference);
     return tagElement != null ? tagElement.getNavigationElement() : null;
   }
@@ -60,7 +62,7 @@ abstract class JavaFxImportClassFix extends ImportClassFixBase<XmlTag, JavaFxTag
   }
 
   @Override
-  protected boolean hasTypeParameters(@NotNull JavaFxTagNameReference reference) {
+  protected boolean hasTypeParameters(@Nonnull JavaFxTagNameReference reference) {
     return false;
   }
 

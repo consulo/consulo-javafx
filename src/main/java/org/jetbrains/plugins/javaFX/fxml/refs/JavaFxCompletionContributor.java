@@ -6,7 +6,8 @@ import static com.intellij.patterns.XmlPatterns.xmlTag;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import com.intellij.codeInsight.completion.CompletionContributor;
@@ -36,9 +37,9 @@ public class JavaFxCompletionContributor extends CompletionContributor {
   private static class JavaFxTagCompletionContributor implements CompletionProvider
   {
     @Override
-    public void addCompletions(@NotNull CompletionParameters parameters,
+    public void addCompletions(@Nonnull CompletionParameters parameters,
                                   ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+                                  @Nonnull CompletionResultSet result) {
       PsiReference reference = parameters.getPosition().getContainingFile().findReferenceAt(parameters.getOffset());
       if (reference instanceof JavaFxTagNameReference) {
         addJavaFxTagVariants((JavaFxTagNameReference)reference, result);

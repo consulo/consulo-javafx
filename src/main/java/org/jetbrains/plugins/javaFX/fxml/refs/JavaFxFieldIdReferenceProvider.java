@@ -20,8 +20,9 @@ import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.ProcessingContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 public class JavaFxFieldIdReferenceProvider extends JavaFxControllerBasedReferenceProvider {
   @Override
-  protected PsiReference[] getReferencesByElement(@NotNull final PsiClass aClass,
+  protected PsiReference[] getReferencesByElement(@Nonnull final PsiClass aClass,
                                                   final XmlAttributeValue xmlAttributeValue,
                                                   ProcessingContext context) {
     final PsiField field = aClass.findFieldByName(xmlAttributeValue.getValue(), true);
@@ -76,7 +77,7 @@ public class JavaFxFieldIdReferenceProvider extends JavaFxControllerBasedReferen
       return false;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Object[] getVariants() {
       final List<Object> fieldsToSuggest = new ArrayList<Object>();

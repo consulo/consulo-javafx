@@ -18,9 +18,9 @@ package org.jetbrains.plugins.javaFX.fxml.refs;
 import java.awt.Color;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
@@ -62,7 +62,7 @@ import com.intellij.util.ui.ColorIcon;
  */
 public class JavaFxAnnotator implements Annotator {
   @Override
-  public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
+  public void annotate(@Nonnull final PsiElement element, @Nonnull AnnotationHolder holder) {
     final PsiFile containingFile = element.getContainingFile();
     if (!JavaFxFileTypeFactory.isFxml(containingFile)) return;
     if (element instanceof XmlAttributeValue) {
@@ -157,7 +157,7 @@ public class JavaFxAnnotator implements Annotator {
       myElement = element;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Icon getIcon() {
       return myIcon;

@@ -15,13 +15,14 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.psi.*;
 import com.intellij.psi.util.InheritanceUtil;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.ProcessingContext;
 import com.intellij.xml.XmlAttributeDescriptor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyAttributeDescriptor;
@@ -31,10 +32,10 @@ import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyAttributeDesc
 * Date: 3/7/13
 */
 class JavaFxColorReferenceProvider extends PsiReferenceProvider {
-  @NotNull
+  @Nonnull
   @Override
-  public PsiReference[] getReferencesByElement(@NotNull PsiElement element,
-                                               @NotNull ProcessingContext context) {
+  public PsiReference[] getReferencesByElement(@Nonnull PsiElement element,
+                                               @Nonnull ProcessingContext context) {
     final XmlAttributeValue attributeValue = (XmlAttributeValue)element;
     final PsiElement parent = attributeValue.getParent();
     if (parent instanceof XmlAttribute) {

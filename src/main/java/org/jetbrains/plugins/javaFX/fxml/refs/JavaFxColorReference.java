@@ -15,8 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
@@ -49,7 +49,7 @@ public class JavaFxColorReference extends PsiReferenceBase<XmlAttributeValue> {
     return null;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Object[] getVariants() {
     final ColorSampleLookupValue[] lookupValues = ColorSampleLookupValue.getColors();

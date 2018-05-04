@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -92,7 +92,7 @@ public class JavaFXRenameTest extends DaemonAnalyzerTestCase {
     checkResultByFile(getTestName(true) + "_after.fxml");
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "/testData/rename/";

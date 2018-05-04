@@ -18,8 +18,8 @@ package org.jetbrains.plugins.javaFX.fxml.refs;
 import static com.intellij.patterns.PlatformPatterns.virtualFile;
 import static com.intellij.patterns.StandardPatterns.string;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import com.intellij.openapi.util.TextRange;
@@ -119,16 +119,16 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
   }
 
   private static class MyJavaClassReferenceProvider extends JavaClassReferenceProvider {
-    @NotNull
+    @Nonnull
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement element) {
+    public PsiReference[] getReferencesByElement(@Nonnull PsiElement element) {
       return getReferencesByString(((XmlTag)element).getName(), element, 1);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public PsiReference[] getReferencesByString(String str,
-                                                @NotNull final PsiElement position,
+                                                @Nonnull final PsiElement position,
                                                 int offsetInPosition) {
       final PsiReference[] references = super.getReferencesByString(str, position, offsetInPosition);
       if (references.length <= 1) return PsiReference.EMPTY_ARRAY;
@@ -185,7 +185,7 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
         return null;
       }
 
-      @NotNull
+      @Nonnull
       public String getCanonicalText() {
         return myReference.getCanonicalText();
       }
@@ -198,7 +198,7 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
         return ((XmlTag)myPosition).setName(newText);
       }
 
-      public PsiElement bindToElement(@NotNull PsiElement element)
+      public PsiElement bindToElement(@Nonnull PsiElement element)
         throws IncorrectOperationException {
         String oldText = ((XmlTag)myPosition).getName();
         final TextRange range = getRangeInElement();
@@ -211,7 +211,7 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
         return myReference.isReferenceTo(element) || getReferencedClass() == element;
       }
 
-      @NotNull
+      @Nonnull
       public Object[] getVariants() {
         return myReference.getVariants();
       }

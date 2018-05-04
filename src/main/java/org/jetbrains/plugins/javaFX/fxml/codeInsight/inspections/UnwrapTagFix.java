@@ -15,6 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
@@ -26,7 +28,6 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlTagChild;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
 /**
@@ -40,20 +41,20 @@ public class UnwrapTagFix implements LocalQuickFix {
     myTagName = tagName;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getName() {
     return "Unwrap '" + myTagName + "'";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getFamilyName() {
     return getName();
   }
 
   @Override
-  public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+  public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
     final PsiElement element = descriptor.getPsiElement();
     if (element != null) {
       final PsiFile containingFile = element.getContainingFile();

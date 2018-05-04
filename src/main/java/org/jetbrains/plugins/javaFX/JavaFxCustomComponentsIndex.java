@@ -29,7 +29,7 @@ import com.intellij.util.io.KeyDescriptor;
 import com.intellij.util.xml.NanoXmlUtil;
 import net.n3.nanoxml.IXMLBuilder;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 
 import java.util.*;
@@ -75,7 +75,7 @@ public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String,
   };
   private final FxmlDataExternalizer myDataExternalizer = new FxmlDataExternalizer();
 
-  @NotNull
+  @Nonnull
   @Override
   public DataIndexer<String, Set<String>, FileContent> getIndexer() {
     return myDataIndexer;
@@ -91,7 +91,7 @@ public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String,
     return myInputFilter;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public ID<String, Set<String>> getName() {
     return KEY;
@@ -113,7 +113,7 @@ public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String,
   }
 
   public static <T> List<T> findCustomFxml(final Project project,
-                                           @NotNull final String className,
+                                           @Nonnull final String className,
                                            final Function<VirtualFile, T> f,
                                            final GlobalSearchScope scope) {
     return ApplicationManager.getApplication().runReadAction(new Computable<List<T>>() {

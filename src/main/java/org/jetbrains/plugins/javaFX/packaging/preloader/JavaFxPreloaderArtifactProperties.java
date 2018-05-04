@@ -21,8 +21,8 @@ import com.intellij.packaging.artifacts.ArtifactProperties;
 import com.intellij.packaging.ui.ArtifactEditorContext;
 import com.intellij.packaging.ui.ArtifactPropertiesEditor;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * User: anna
@@ -33,11 +33,11 @@ public class JavaFxPreloaderArtifactProperties extends ArtifactProperties<JavaFx
   private String myPreloaderClass;
   
   @Override
-  public void onBuildFinished(@NotNull final Artifact artifact, @NotNull final CompileContext compileContext) {
+  public void onBuildFinished(@Nonnull final Artifact artifact, @Nonnull final CompileContext compileContext) {
   }
 
   @Override
-  public ArtifactPropertiesEditor createEditor(@NotNull ArtifactEditorContext context) {
+  public ArtifactPropertiesEditor createEditor(@Nonnull ArtifactEditorContext context) {
     return new JavaFxPreloaderArtifactPropertiesEditor(this, context.getProject(), context.getArtifact());
   }
 

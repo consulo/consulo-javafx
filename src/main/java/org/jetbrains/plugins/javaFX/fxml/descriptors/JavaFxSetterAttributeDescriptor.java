@@ -15,6 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
+import javax.annotation.Nullable;
+
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -22,7 +24,6 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.xml.XmlElement;
 import com.intellij.util.ArrayUtil;
 import com.intellij.xml.XmlAttributeDescriptor;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * User: anna

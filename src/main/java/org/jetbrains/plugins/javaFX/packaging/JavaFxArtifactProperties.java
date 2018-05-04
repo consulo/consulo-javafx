@@ -19,8 +19,8 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactProperties;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType;
@@ -72,7 +72,7 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
   private String myNativeBundle = JavaFxPackagerConstants.NativeBundles.none.name();
 
   @Override
-  public void onBuildFinished(@NotNull final Artifact artifact, @NotNull final CompileContext compileContext) {
+  public void onBuildFinished(@Nonnull final Artifact artifact, @Nonnull final CompileContext compileContext) {
     if (!(artifact.getArtifactType() instanceof JavaFxApplicationArtifactType)) {
       return;
     }
@@ -116,7 +116,7 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
   }
 
   @Override
-  public ArtifactPropertiesEditor createEditor(@NotNull ArtifactEditorContext context) {
+  public ArtifactPropertiesEditor createEditor(@Nonnull ArtifactEditorContext context) {
     return new JavaFxArtifactPropertiesEditor(this, context.getProject(), context.getArtifact());
   }
 

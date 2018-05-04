@@ -23,8 +23,9 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.UseScopeEnlarger;
 import com.intellij.psi.util.PropertyUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
@@ -34,7 +35,7 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 public class JavaFxScopeEnlarger extends UseScopeEnlarger {
   @Nullable
   @Override
-  public SearchScope getAdditionalUseScope(@NotNull PsiElement element) {
+  public SearchScope getAdditionalUseScope(@Nonnull PsiElement element) {
     PsiClass containingClass = null;
     if (element instanceof PsiField) {
       containingClass = ((PsiField)element).getContainingClass();

@@ -15,6 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Editor;
@@ -23,7 +25,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.XmlElementFactory;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 
 /**
@@ -34,25 +35,25 @@ public class JavaFxWrapWithDefineIntention extends PsiElementBaseIntentionAction
   private final XmlTag myTag;
   private final String myId;
 
-  public JavaFxWrapWithDefineIntention(@NotNull XmlTag tag, @NotNull String id) {
+  public JavaFxWrapWithDefineIntention(@Nonnull XmlTag tag, @Nonnull String id) {
     myTag = tag;
     myId = id;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getFamilyName() {
     return "Wrap with fx:define";
   }
 
   @Override
-  public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
+  public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
     setText("Wrap \"" + myId + "\" with fx:define");
     return myTag.isValid();
   }
 
   @Override
-  public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
+  public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
     if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
     final XmlTag tagFromText = XmlElementFactory.getInstance(project).createTagFromText("<" + FxmlConstants.FX_DEFINE + "/>");
     tagFromText.addSubTag(myTag, true);

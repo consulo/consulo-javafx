@@ -15,6 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Editor;
@@ -28,7 +30,6 @@ import com.intellij.psi.xml.XmlToken;
 import com.intellij.psi.xml.XmlTokenType;
 import com.intellij.util.Function;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
@@ -39,7 +40,7 @@ import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescri
  */
 public class JavaFxCollapseSubTagToAttributeIntention extends PsiElementBaseIntentionAction{
   @Override
-  public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
+  public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
     if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
     final XmlTag tag = (XmlTag)element.getParent();
     final String value;
@@ -65,7 +66,7 @@ public class JavaFxCollapseSubTagToAttributeIntention extends PsiElementBaseInte
   }
 
   @Override
-  public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
+  public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
     if (element instanceof XmlToken && ((XmlToken)element).getTokenType() == XmlTokenType.XML_NAME && element.getParent() instanceof XmlTag) {
       final XmlTag tag = (XmlTag)element.getParent();
       for (XmlTag xmlTag : tag.getSubTags()) {
@@ -83,7 +84,7 @@ public class JavaFxCollapseSubTagToAttributeIntention extends PsiElementBaseInte
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getFamilyName() {
     return "Collapse tag to attribute";

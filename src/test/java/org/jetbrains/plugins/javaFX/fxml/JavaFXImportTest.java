@@ -17,7 +17,8 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.testFramework.PsiTestUtil;
@@ -54,7 +55,7 @@ public class JavaFXImportTest extends DaemonAnalyzerTestCase {
     checkResultByFile(getTestName(true) + "_after.fxml");
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "testData/importing/";

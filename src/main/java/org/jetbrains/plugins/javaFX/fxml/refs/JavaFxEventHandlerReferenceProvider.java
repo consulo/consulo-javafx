@@ -26,7 +26,7 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.ProcessingContext;
 import com.intellij.xml.XmlElementDescriptor;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
@@ -38,7 +38,7 @@ class JavaFxEventHandlerReferenceProvider extends JavaFxControllerBasedReference
   private static final Logger LOG = Logger.getInstance("#" + JavaFxEventHandlerReferenceProvider.class.getName());
 
   @Override
-  protected PsiReference[] getReferencesByElement(@NotNull PsiClass controllerClass,
+  protected PsiReference[] getReferencesByElement(@Nonnull PsiClass controllerClass,
                                                   XmlAttributeValue xmlAttributeValue,
                                                   ProcessingContext context) {
     final String attValueString = xmlAttributeValue.getValue();

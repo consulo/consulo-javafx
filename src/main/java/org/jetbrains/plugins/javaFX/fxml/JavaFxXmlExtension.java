@@ -1,6 +1,7 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxTagNameReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiFile;

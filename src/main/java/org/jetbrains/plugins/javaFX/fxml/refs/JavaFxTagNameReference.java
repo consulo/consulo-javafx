@@ -1,6 +1,7 @@
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.daemon.QuickFixActionRegistrar;
 import com.intellij.codeInsight.quickfix.UnresolvedReferenceQuickFixProvider;
 import com.intellij.lang.ASTNode;
@@ -40,7 +41,7 @@ public class JavaFxTagNameReference extends TagNameReference{
   }
 
   @Override
-  public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+  public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
     if (element instanceof PsiClass) {
       final String qualifiedName = ((PsiClass)element).getQualifiedName();
       if (qualifiedName != null) {
@@ -61,7 +62,7 @@ public class JavaFxTagNameReference extends TagNameReference{
 
   public static class JavaFxUnresolvedTagRefsProvider extends UnresolvedReferenceQuickFixProvider<JavaFxTagNameReference> {
     @Override
-    public void registerFixes(@NotNull JavaFxTagNameReference ref, @NotNull QuickFixActionRegistrar registrar) {
+    public void registerFixes(@Nonnull JavaFxTagNameReference ref, @Nonnull QuickFixActionRegistrar registrar) {
       XmlTag element = ref.getTagElement();
       if (element != null) {
         registrar.register(new JavaFxImportClassFix(ref, element) {
@@ -73,7 +74,7 @@ public class JavaFxTagNameReference extends TagNameReference{
       }
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Class<JavaFxTagNameReference> getReferenceClass() {
       return JavaFxTagNameReference.class;

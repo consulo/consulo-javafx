@@ -17,7 +17,7 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection;
 import com.intellij.codeInsight.intention.IntentionAction;
 
@@ -55,7 +55,7 @@ public class JavaFXUnresolvedFxIdReferenceInspectionTest extends AbstractJavaFXQ
     return "Create Field '" + tagName + "'";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "inspections/unresolvedFxId/";

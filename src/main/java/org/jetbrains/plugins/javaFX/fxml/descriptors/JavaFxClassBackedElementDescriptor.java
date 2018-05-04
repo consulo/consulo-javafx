@@ -20,8 +20,9 @@ import com.intellij.xml.XmlElementDescriptor;
 import com.intellij.xml.XmlElementsGroup;
 import com.intellij.xml.XmlNSDescriptor;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
@@ -363,7 +364,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
   }
 
   @Override
-  public void validate(@NotNull XmlTag context, @NotNull ValidationHost host) {
+  public void validate(@Nonnull XmlTag context, @Nonnull ValidationHost host) {
     final XmlTag parentTag = context.getParentTag();
     if (parentTag != null) {
       final XmlAttribute attribute = context.getAttribute(FxmlConstants.FX_CONTROLLER);

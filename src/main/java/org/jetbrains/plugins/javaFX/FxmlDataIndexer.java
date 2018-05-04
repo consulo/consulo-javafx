@@ -22,8 +22,9 @@ import com.intellij.util.indexing.DataIndexer;
 import com.intellij.util.indexing.FileContent;
 import com.intellij.util.xml.NanoXmlUtil;
 import net.n3.nanoxml.IXMLBuilder;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
 
@@ -36,7 +37,7 @@ import java.util.*;
 */
 public class FxmlDataIndexer implements DataIndexer<String, Set<String>, FileContent> {
   @Override
-  @NotNull
+  @Nonnull
   public Map<String, Set<String>> map(final FileContent inputData) {
     final Map<String, Set<String>> map = getIds(inputData.getContentAsText().toString(), inputData.getFile(), inputData.getProject());
     if (map != null) {

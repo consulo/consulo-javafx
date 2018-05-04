@@ -17,7 +17,7 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -72,7 +72,7 @@ public class JavaFXExpandAttributeTest extends DaemonAnalyzerTestCase {
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "testData/intentions/expandAttr/";

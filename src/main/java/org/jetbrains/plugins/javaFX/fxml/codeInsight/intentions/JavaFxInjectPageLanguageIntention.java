@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Nonnull;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 
-import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.ide.highlighter.XmlFileType;
@@ -89,7 +89,7 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
   }
 
   @Override
-  public void invoke(@NotNull final Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
+  public void invoke(@Nonnull final Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
     if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
     final XmlFile containingFile = (XmlFile)element.getContainingFile();
 
@@ -134,12 +134,12 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
   }
 
   @Override
-  public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
+  public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
     setText(getFamilyName());
     return element.isValid();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getFamilyName() {
     return "Specify page language";

@@ -27,8 +27,8 @@ import com.intellij.psi.util.TypeConversionUtil;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.ArrayUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
@@ -57,7 +57,7 @@ public class JavaFxEventHandlerReference extends PsiReferenceBase<XmlAttributeVa
     return myEventHandler;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public Object[] getVariants() {
     if (myController == null) return EMPTY_ARRAY;
@@ -93,7 +93,7 @@ public class JavaFxEventHandlerReference extends PsiReferenceBase<XmlAttributeVa
   public static class JavaFxUnresolvedReferenceHandlerQuickfixProvider extends UnresolvedReferenceQuickFixProvider<JavaFxEventHandlerReference> {
 
     @Override
-    public void registerFixes(@NotNull final JavaFxEventHandlerReference ref, @NotNull final QuickFixActionRegistrar registrar) {
+    public void registerFixes(@Nonnull final JavaFxEventHandlerReference ref, @Nonnull final QuickFixActionRegistrar registrar) {
       if (ref.myController != null && ref.myEventHandler == null) {
         final CreateMethodQuickFix quickFix = CreateMethodQuickFix.createFix(ref.myController, getHandlerSignature(ref), "");
         if (quickFix != null) {
@@ -129,7 +129,7 @@ public class JavaFxEventHandlerReference extends PsiReferenceBase<XmlAttributeVa
       return "public void " + element.getValue().substring(1) + "(" + canonicalText + " e)";
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public Class<JavaFxEventHandlerReference> getReferenceClass() {
       return JavaFxEventHandlerReference.class;

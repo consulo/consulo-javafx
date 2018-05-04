@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
@@ -58,7 +59,7 @@ public class JavaFxRelatedItemLineMarkerProvider extends RelatedItemLineMarkerPr
   private static final Logger LOG = Logger.getInstance("#" + JavaFxRelatedItemLineMarkerProvider.class.getName());
 
   @Override
-  protected void collectNavigationMarkers(@NotNull PsiElement element, final Collection<? super RelatedItemLineMarkerInfo> result) {
+  protected void collectNavigationMarkers(@Nonnull PsiElement element, final Collection<? super RelatedItemLineMarkerInfo> result) {
     if (element instanceof PsiField) {
       final PsiField field = (PsiField)element;
       if (JavaFxPsiUtil.isVisibleInFxml(field) && !field.hasModifierProperty(PsiModifier.STATIC) && !field.hasModifierProperty(PsiModifier.FINAL)) {

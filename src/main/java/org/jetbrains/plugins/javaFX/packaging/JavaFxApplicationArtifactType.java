@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
@@ -57,12 +57,12 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 	}
 
 	@Override
-	public boolean isAvailableForAdd(@NotNull ModulesProvider modulesProvider)
+	public boolean isAvailableForAdd(@Nonnull ModulesProvider modulesProvider)
 	{
 		return ModuleUtil.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Icon getIcon()
 	{
@@ -71,21 +71,21 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 
 	@Nullable
 	@Override
-	public String getDefaultPathFor(@NotNull PackagingElementOutputKind kind)
+	public String getDefaultPathFor(@Nonnull PackagingElementOutputKind kind)
 	{
 		return "/";
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public CompositePackagingElement<?> createRootElement(@NotNull String artifactName)
+	public CompositePackagingElement<?> createRootElement(@Nonnull String artifactName)
 	{
 		return PackagingElementFactory.getInstance().createArtifactRootElement();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public List<? extends ArtifactTemplate> getNewArtifactTemplates(@NotNull PackagingElementResolvingContext context)
+	public List<? extends ArtifactTemplate> getNewArtifactTemplates(@Nonnull PackagingElementResolvingContext context)
 	{
 		final List<Module> modules = new ArrayList<>();
 		Collections.addAll(modules, context.getModulesProvider().getModules());

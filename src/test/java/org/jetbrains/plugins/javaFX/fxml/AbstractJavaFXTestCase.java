@@ -15,7 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -37,7 +38,7 @@ public abstract class AbstractJavaFXTestCase extends LightCodeInsightFixtureTest
      }
    };
 
-  @NotNull
+  @Nonnull
   @Override
   protected TestModuleDescriptor getProjectDescriptor() {
     return JAVA_FX_DESCRIPTOR;

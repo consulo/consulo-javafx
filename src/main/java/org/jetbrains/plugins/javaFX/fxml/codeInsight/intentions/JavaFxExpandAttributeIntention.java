@@ -15,6 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.FileModificationService;
 import com.intellij.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -28,7 +30,6 @@ import com.intellij.psi.xml.*;
 import com.intellij.util.Function;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.xml.XmlAttributeDescriptor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultAttributeDescriptor;
@@ -43,7 +44,7 @@ public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionActio
   private static final Logger LOG = Logger.getInstance("#" + JavaFxExpandAttributeIntention.class.getName());
 
   @Override
-  public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
+  public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
     if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
     final XmlAttribute attr = (XmlAttribute)element.getParent();
     final String name = attr.getName();
@@ -72,7 +73,7 @@ public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionActio
   }
 
   @Override
-  public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
+  public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
     if (element instanceof XmlToken && ((XmlToken)element).getTokenType() == XmlTokenType.XML_NAME) {
       final PsiElement parent = element.getParent();
       if (parent instanceof XmlAttribute) {
@@ -100,7 +101,7 @@ public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionActio
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getFamilyName() {
     return "Expand attribute to tag";

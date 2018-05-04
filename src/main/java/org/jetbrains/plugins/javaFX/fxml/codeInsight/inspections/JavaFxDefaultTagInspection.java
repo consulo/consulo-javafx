@@ -15,12 +15,13 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInspection.*;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.xml.XmlElementDescriptor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
 
@@ -28,11 +29,11 @@ import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescri
  * User: anna
  */
 public class JavaFxDefaultTagInspection extends XmlSuppressableInspectionTool{
-  @NotNull
+  @Nonnull
   @Override
-  public PsiElementVisitor buildVisitor(final @NotNull ProblemsHolder holder,
+  public PsiElementVisitor buildVisitor(final @Nonnull ProblemsHolder holder,
                                         boolean isOnTheFly,
-                                        @NotNull LocalInspectionToolSession session) {
+                                        @Nonnull LocalInspectionToolSession session) {
     return new XmlElementVisitor() {
       @Override
       public void visitXmlTag(XmlTag tag) {

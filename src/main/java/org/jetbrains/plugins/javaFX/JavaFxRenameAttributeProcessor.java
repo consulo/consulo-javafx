@@ -15,6 +15,12 @@
  */
 package org.jetbrains.plugins.javaFX;
 
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiReference;
@@ -22,11 +28,6 @@ import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.refactoring.rename.RenameXmlAttributeProcessor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-
-import java.util.Map;
 
 /**
  * User: anna
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class JavaFxRenameAttributeProcessor extends RenameXmlAttributeProcessor {
   @Override
-  public boolean canProcessElement(@NotNull PsiElement element) {
+  public boolean canProcessElement(@Nonnull PsiElement element) {
     if (element instanceof XmlAttributeValue && JavaFxFileTypeFactory.isFxml(element.getContainingFile())) {
       final PsiElement parent = element.getParent();
       return parent instanceof XmlAttribute && FxmlConstants.FX_ID.equals(((XmlAttribute)parent).getName());

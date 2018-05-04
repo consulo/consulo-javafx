@@ -15,10 +15,11 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.ProcessingContext;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
@@ -27,9 +28,9 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
  * Date: 1/17/13
  */
 public abstract class JavaFxControllerBasedReferenceProvider extends PsiReferenceProvider {
-  @NotNull
+  @Nonnull
   @Override
-  public final PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+  public final PsiReference[] getReferencesByElement(@Nonnull PsiElement element, @Nonnull ProcessingContext context) {
     final XmlAttributeValue xmlAttrVal = (XmlAttributeValue)element;
     final PsiFile containingFile = xmlAttrVal.getContainingFile();
     if (!JavaFxFileTypeFactory.isFxml(containingFile)) return PsiReference.EMPTY_ARRAY;
@@ -39,5 +40,5 @@ public abstract class JavaFxControllerBasedReferenceProvider extends PsiReferenc
                                    : new PsiReference[] {new PsiReferenceBase.Immediate<XmlAttributeValue>(xmlAttrVal, xmlAttrVal)};
   }
 
-  protected abstract PsiReference[] getReferencesByElement(@NotNull PsiClass controllerClass, XmlAttributeValue element, ProcessingContext context);
+  protected abstract PsiReference[] getReferencesByElement(@Nonnull PsiClass controllerClass, XmlAttributeValue element, ProcessingContext context);
 }

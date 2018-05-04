@@ -15,7 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxDefaultTagInspection;
 
 /**
@@ -47,7 +48,7 @@ public class JavaFXDefaultTagInspectionTest extends AbstractJavaFXQuickFixTest {
     return "Unwrap '" + tagName + "'";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "testData/inspections/defaultTag/";

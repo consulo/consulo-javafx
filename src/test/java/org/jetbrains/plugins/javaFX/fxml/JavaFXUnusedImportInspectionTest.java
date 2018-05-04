@@ -15,7 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnusedImportsInspection;
 
 /**
@@ -35,7 +36,7 @@ public class JavaFXUnusedImportInspectionTest extends AbstractJavaFXTestCase {
     myFixture.checkHighlighting();
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "inspections/unusedImport/";

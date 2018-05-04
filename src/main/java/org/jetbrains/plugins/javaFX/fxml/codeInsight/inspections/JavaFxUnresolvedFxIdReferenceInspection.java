@@ -15,7 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
@@ -50,9 +51,9 @@ import consulo.java.JavaQuickFixBundle;
  */
 public class JavaFxUnresolvedFxIdReferenceInspection extends XmlSuppressableInspectionTool
 {
-	@NotNull
+	@Nonnull
 	@Override
-	public PsiElementVisitor buildVisitor(final @NotNull ProblemsHolder holder, final boolean isOnTheFly, @NotNull LocalInspectionToolSession session)
+	public PsiElementVisitor buildVisitor(final @Nonnull ProblemsHolder holder, final boolean isOnTheFly, @Nonnull LocalInspectionToolSession session)
 	{
 		return new XmlElementVisitor()
 		{
@@ -132,14 +133,14 @@ public class JavaFxUnresolvedFxIdReferenceInspection extends XmlSuppressableInsp
 			myCanonicalName = canonicalName;
 		}
 
-		@NotNull
+		@Nonnull
 		@Override
 		public String getName()
 		{
 			return JavaQuickFixBundle.message("create.field.from.usage.text", myCanonicalName);
 		}
 
-		@NotNull
+		@Nonnull
 		@Override
 		public String getFamilyName()
 		{
@@ -147,7 +148,7 @@ public class JavaFxUnresolvedFxIdReferenceInspection extends XmlSuppressableInsp
 		}
 
 		@Override
-		public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor)
+		public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor)
 		{
 			final PsiElement psiElement = descriptor.getPsiElement();
 			final XmlAttributeValue attrValue = PsiTreeUtil.getParentOfType(psiElement, XmlAttributeValue.class, false);

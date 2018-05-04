@@ -23,8 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.JavaFxImportsOptimizer;
@@ -54,7 +55,7 @@ public class JavaFxUnusedImportsInspection extends XmlSuppressableInspectionTool
 {
 	@Nullable
 	@Override
-	public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, final boolean isOnTheFly)
+	public ProblemDescriptor[] checkFile(@Nonnull PsiFile file, @Nonnull InspectionManager manager, final boolean isOnTheFly)
 	{
 		if(!JavaFxFileTypeFactory.isFxml(file))
 		{
@@ -113,7 +114,7 @@ public class JavaFxUnusedImportsInspection extends XmlSuppressableInspectionTool
 
 	private static class JavaFxOptimizeImportsFix implements LocalQuickFix
 	{
-		@NotNull
+		@Nonnull
 		@Override
 		public String getName()
 		{
@@ -121,14 +122,14 @@ public class JavaFxUnusedImportsInspection extends XmlSuppressableInspectionTool
 		}
 
 		@Override
-		@NotNull
+		@Nonnull
 		public String getFamilyName()
 		{
 			return JavaQuickFixBundle.message("optimize.imports.fix");
 		}
 
 		@Override
-		public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor)
+		public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor)
 		{
 			final PsiElement psiElement = descriptor.getPsiElement();
 			if(psiElement == null)

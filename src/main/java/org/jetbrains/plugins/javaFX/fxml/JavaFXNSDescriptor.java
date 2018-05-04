@@ -14,8 +14,9 @@ import com.intellij.util.ArrayUtil;
 import com.intellij.util.Processor;
 import com.intellij.xml.XmlElementDescriptor;
 import com.intellij.xml.XmlNSDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultPropertyElementDescriptor;
 
@@ -30,7 +31,7 @@ public class JavaFXNSDescriptor implements XmlNSDescriptor, Validator<XmlDocumen
 
   @Nullable
   @Override
-  public XmlElementDescriptor getElementDescriptor(@NotNull XmlTag tag) {
+  public XmlElementDescriptor getElementDescriptor(@Nonnull XmlTag tag) {
     final String name = tag.getName();
 
     if (tag.getName().equals(FxmlConstants.FX_ROOT)) {
@@ -46,7 +47,7 @@ public class JavaFXNSDescriptor implements XmlNSDescriptor, Validator<XmlDocumen
     return new JavaFxClassBackedElementDescriptor(name, tag);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public XmlElementDescriptor[] getRootElementsDescriptors(@Nullable XmlDocument document) {
     if (document != null) {
@@ -102,5 +103,5 @@ public class JavaFXNSDescriptor implements XmlNSDescriptor, Validator<XmlDocumen
   }
 
   @Override
-  public void validate(@NotNull XmlDocument context, @NotNull ValidationHost host) {}
+  public void validate(@Nonnull XmlDocument context, @Nonnull ValidationHost host) {}
 }

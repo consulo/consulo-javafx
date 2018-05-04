@@ -3,7 +3,8 @@ package org.jetbrains.plugins.javaFX;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
@@ -29,9 +30,9 @@ public class JavaFxFileReferenceProvider extends PsiReferenceProvider {
     myAcceptedExtension = acceptedExtension;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public PsiReference[] getReferencesByElement(@NotNull final PsiElement element, @NotNull ProcessingContext context) {
+  public PsiReference[] getReferencesByElement(@Nonnull final PsiElement element, @Nonnull ProcessingContext context) {
     final Object value = ((PsiLiteralExpression)element).getValue();
     if (!(value instanceof String)) return PsiReference.EMPTY_ARRAY;
     return getReferences(element, preprocessValue((String)value), myAcceptedExtension);
@@ -47,7 +48,7 @@ public class JavaFxFileReferenceProvider extends PsiReferenceProvider {
     final boolean startsWithSlash = value.startsWith("/");
     final VirtualFileSystem fs = directory.getVirtualFile().getFileSystem();
     final FileReferenceSet fileReferenceSet = new FileReferenceSet(value, element, 1, null, fs.isCaseSensitive()) {
-      @NotNull
+      @Nonnull
       @Override
       public Collection<PsiFileSystemItem> getDefaultContexts() {
         if (startsWithSlash || !directory.isValid()) {

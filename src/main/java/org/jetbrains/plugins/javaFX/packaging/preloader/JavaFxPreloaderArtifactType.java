@@ -15,10 +15,10 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
@@ -40,7 +40,7 @@ public class JavaFxPreloaderArtifactType extends ArtifactType
 	}
 
 	@Override
-	public boolean isAvailableForAdd(@NotNull ModulesProvider modulesProvider)
+	public boolean isAvailableForAdd(@Nonnull ModulesProvider modulesProvider)
 	{
 		return ModuleUtil.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
 	}
@@ -50,7 +50,7 @@ public class JavaFxPreloaderArtifactType extends ArtifactType
 		super("javafx-preloader", "JavaFx Preloader");
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Icon getIcon()
 	{
@@ -59,14 +59,14 @@ public class JavaFxPreloaderArtifactType extends ArtifactType
 
 	@Nullable
 	@Override
-	public String getDefaultPathFor(@NotNull PackagingElementOutputKind kind)
+	public String getDefaultPathFor(@Nonnull PackagingElementOutputKind kind)
 	{
 		return "/";
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public CompositePackagingElement<?> createRootElement(@NotNull String artifactName)
+	public CompositePackagingElement<?> createRootElement(@Nonnull String artifactName)
 	{
 		return JarArtifactType.getInstance().createRootElement(artifactName);
 	}

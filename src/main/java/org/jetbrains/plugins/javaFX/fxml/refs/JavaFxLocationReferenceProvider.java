@@ -24,7 +24,7 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.ArrayUtilRt;
 import com.intellij.util.ProcessingContext;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,10 +50,10 @@ class JavaFxLocationReferenceProvider extends PsiReferenceProvider {
     }
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public PsiReference[] getReferencesByElement(@NotNull final PsiElement element,
-                                               @NotNull ProcessingContext context) {
+  public PsiReference[] getReferencesByElement(@Nonnull final PsiElement element,
+                                               @Nonnull ProcessingContext context) {
     final String value = ((XmlAttributeValue)element).getValue();
     if (value.startsWith("@")) {
       return new FileReferenceSet(value.substring(1), element, 2, null, true).getAllReferences();

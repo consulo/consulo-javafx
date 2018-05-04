@@ -15,7 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.module.Module;
@@ -36,7 +37,7 @@ public class JavaFXQuickfixTest extends LightCodeInsightFixtureTestCase {
      }
    };
 
-  @NotNull
+  @Nonnull
   @Override
   protected TestModuleDescriptor getProjectDescriptor() {
     return JAVA_FX_WITH_GROOVY_DESCRIPTOR;
@@ -92,7 +93,7 @@ public class JavaFXQuickfixTest extends LightCodeInsightFixtureTestCase {
     myFixture.enableInspections(new JavaFxUnresolvedFxIdReferenceInspection());
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "/testData/quickfix/";

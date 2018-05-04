@@ -15,10 +15,11 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.packaging.artifacts.ArtifactProperties;
 import com.intellij.packaging.artifacts.ArtifactPropertiesProvider;
 import com.intellij.packaging.artifacts.ArtifactType;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * User: anna
@@ -30,13 +31,13 @@ public class JavaFxPreloaderArtifactPropertiesProvider extends ArtifactPropertie
   }
 
   @Override
-  public boolean isAvailableFor(@NotNull ArtifactType type) {
+  public boolean isAvailableFor(@Nonnull ArtifactType type) {
     return type instanceof JavaFxPreloaderArtifactType;
   }
 
-  @NotNull
+  @Nonnull
   @Override
-  public ArtifactProperties<?> createProperties(@NotNull ArtifactType artifactType) {
+  public ArtifactProperties<?> createProperties(@Nonnull ArtifactType artifactType) {
     return new JavaFxPreloaderArtifactProperties();
   }
   

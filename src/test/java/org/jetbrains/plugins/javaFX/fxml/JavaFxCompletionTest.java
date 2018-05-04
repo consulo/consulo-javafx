@@ -17,7 +17,8 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.completion.LightFixtureCompletionTestCase;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.testFramework.TestModuleDescriptor;
@@ -28,7 +29,7 @@ import com.intellij.testFramework.TestModuleDescriptor;
  */
 public class JavaFxCompletionTest extends LightFixtureCompletionTestCase {
 
-  @NotNull
+  @Nonnull
   @Override
   protected TestModuleDescriptor getProjectDescriptor() {
     return AbstractJavaFXTestCase.JAVA_FX_DESCRIPTOR;
@@ -279,7 +280,7 @@ public class JavaFxCompletionTest extends LightFixtureCompletionTestCase {
     checkResultByFile(getTestName(true) + "_after.fxml");
   }
 
-  @NotNull
+  @Nonnull
   @Override
   protected String getTestDataPath() {
     return "/testData/completion/";
