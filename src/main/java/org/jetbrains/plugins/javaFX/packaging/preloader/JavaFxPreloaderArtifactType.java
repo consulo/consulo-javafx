@@ -17,7 +17,6 @@ package org.jetbrains.plugins.javaFX.packaging.preloader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.Icon;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.ModuleUtil;
@@ -27,6 +26,7 @@ import com.intellij.packaging.elements.CompositePackagingElement;
 import com.intellij.packaging.elements.PackagingElementOutputKind;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
 import consulo.java.module.extension.JavaModuleExtension;
+import consulo.ui.image.Image;
 
 /**
  * User: anna
@@ -52,7 +52,7 @@ public class JavaFxPreloaderArtifactType extends ArtifactType
 
 	@Nonnull
 	@Override
-	public Icon getIcon()
+	public Image getIcon()
 	{
 		return AllIcons.Nodes.Artifact;
 	}

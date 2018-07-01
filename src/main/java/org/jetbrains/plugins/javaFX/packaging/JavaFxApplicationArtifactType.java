@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.Icon;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.module.Module;
@@ -39,6 +38,7 @@ import com.intellij.packaging.elements.PackagingElementResolvingContext;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
 import com.intellij.packaging.impl.elements.moduleContent.ProductionModuleOutputElementType;
 import consulo.java.module.extension.JavaModuleExtension;
+import consulo.ui.image.Image;
 
 /**
  * User: anna
@@ -64,7 +64,7 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 
 	@Nonnull
 	@Override
-	public Icon getIcon()
+	public Image getIcon()
 	{
 		return AllIcons.Nodes.Artifact;
 	}
