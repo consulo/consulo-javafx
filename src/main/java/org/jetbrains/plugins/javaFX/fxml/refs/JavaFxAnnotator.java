@@ -15,11 +15,9 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import java.awt.Color;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.swing.Icon;
 
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
@@ -30,6 +28,7 @@ import org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions.JavaFxWrapWithDe
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultPropertyElementDescriptor;
 import com.intellij.codeInsight.intention.AddAnnotationFix;
 import com.intellij.codeInsight.intentions.XmlChooseColorIntentionAction;
+import com.intellij.icons.AllIcons;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -52,10 +51,12 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlTagValue;
 import com.intellij.psi.xml.XmlTokenType;
-import com.intellij.ui.ColorUtil;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.ColorSampleLookupValue;
-import com.intellij.util.ui.ColorIcon;
+import consulo.ui.image.Image;
+import consulo.ui.image.ImageEffects;
+import consulo.ui.shared.ColorValue;
+import consulo.ui.util.ColorValueUtil;
 
 /**
  * User: anna
@@ -129,17 +130,17 @@ public class JavaFxAnnotator implements Annotator {
 
   private static void attachColorIcon(final PsiElement element, AnnotationHolder holder, String attributeValueText) {
     try {
-      Color color = null;
+      ColorValue color = null;
       if (attributeValueText.startsWith("#")) {
-        color = ColorUtil.fromHex(attributeValueText.substring(1));
+        color = ColorValueUtil.fromHex(attributeValueText.substring(1));
       } else {
         final String hexCode = ColorSampleLookupValue.getHexCodeForColorName(StringUtil.toLowerCase(attributeValueText));
         if (hexCode != null) {
-          color = ColorUtil.fromHex(hexCode);
+          color = ColorValueUtil.fromHex(hexCode);
         }
       }
       if (color != null) {
-        final ColorIcon icon = new ColorIcon(8, color);
+        final Image icon = ImageEffects.colorFilled(AllIcons.Gutter.Colors.getWidth(), AllIcons.Gutter.Colors.getHeight(), color);
         final Annotation annotation = holder.createInfoAnnotation(element, null);
         annotation.setGutterIconRenderer(new ColorIconRenderer(icon, element));
       }
@@ -149,17 +150,17 @@ public class JavaFxAnnotator implements Annotator {
   }
 
   private static class ColorIconRenderer extends GutterIconRenderer {
-    private final ColorIcon myIcon;
+    private final Image myIcon;
     private final PsiElement myElement;
 
-    public ColorIconRenderer(ColorIcon icon, PsiElement element) {
+    public ColorIconRenderer(Image icon, PsiElement element) {
       myIcon = icon;
       myElement = element;
     }
 
     @Nonnull
     @Override
-    public Icon getIcon() {
+    public Image getIcon() {
       return myIcon;
     }
 
