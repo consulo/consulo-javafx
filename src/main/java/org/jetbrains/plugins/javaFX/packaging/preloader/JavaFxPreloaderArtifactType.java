@@ -23,6 +23,7 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.packaging.artifacts.ArtifactType;
 import com.intellij.packaging.elements.CompositePackagingElement;
+import com.intellij.packaging.elements.PackagingElementFactory;
 import com.intellij.packaging.elements.PackagingElementOutputKind;
 import com.intellij.packaging.impl.artifacts.JarArtifactType;
 import consulo.java.module.extension.JavaModuleExtension;
@@ -66,8 +67,8 @@ public class JavaFxPreloaderArtifactType extends ArtifactType
 
 	@Nonnull
 	@Override
-	public CompositePackagingElement<?> createRootElement(@Nonnull String artifactName)
+	public CompositePackagingElement<?> createRootElement(@Nonnull PackagingElementFactory factory, @Nonnull String artifactName)
 	{
-		return JarArtifactType.getInstance().createRootElement(artifactName);
+		return JarArtifactType.getInstance().createRootElement(factory, artifactName);
 	}
 }

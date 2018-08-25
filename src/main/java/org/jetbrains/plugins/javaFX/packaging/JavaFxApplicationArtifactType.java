@@ -78,9 +78,9 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 
 	@Nonnull
 	@Override
-	public CompositePackagingElement<?> createRootElement(@Nonnull String artifactName)
+	public CompositePackagingElement<?> createRootElement(@Nonnull PackagingElementFactory factory, @Nonnull String artifactName)
 	{
-		return PackagingElementFactory.getInstance().createArtifactRootElement();
+		return factory.createArtifactRootElement();
 	}
 
 	@Nonnull
@@ -142,8 +142,9 @@ public class JavaFxApplicationArtifactType extends ArtifactType
 			{
 				return null;
 			}
-			final CompositePackagingElement<?> rootElement = JavaFxApplicationArtifactType.this.createRootElement(module.getName());
-			final CompositePackagingElement<?> subElement = JarArtifactType.getInstance().createRootElement(FileUtil.sanitizeFileName(module.getName()));
+			PackagingElementFactory factory = PackagingElementFactory.getInstance(module.getProject());
+			final CompositePackagingElement<?> rootElement = JavaFxApplicationArtifactType.this.createRootElement(factory, module.getName());
+			final CompositePackagingElement<?> subElement = JarArtifactType.getInstance().createRootElement(factory, FileUtil.sanitizeFileName(module.getName()));
 			final PackagingElement<?> moduleOutputElement = ProductionModuleOutputElementType.getInstance().createElement(module.getProject(), ModuleUtil.createPointer(module));
 			subElement.addFirstChild(moduleOutputElement);
 			rootElement.addFirstChild(subElement);
