@@ -1,11 +1,11 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
-
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlFileNSInfoProvider;
 
-public class JavaFXNamespaceProvider implements XmlFileNSInfoProvider {
+import javax.annotation.Nonnull;
+
+public class JavaFxNamespaceDataProvider implements XmlFileNSInfoProvider {
   public static final String JAVAFX_NAMESPACE = "http://javafx.com/fxml";
 
   private static final String[][] NAMESPACES = {{"", JAVAFX_NAMESPACE}};

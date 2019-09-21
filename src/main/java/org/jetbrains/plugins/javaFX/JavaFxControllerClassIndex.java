@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.application.ApplicationManager;
@@ -101,7 +101,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
 
     @Nullable
     private static String getControllerClassName(String content) {
-      if (!content.contains(JavaFXNamespaceProvider.JAVAFX_NAMESPACE)) {
+      if (!content.contains(JavaFxNamespaceDataProvider.JAVAFX_NAMESPACE)) {
         return null;
       }
 

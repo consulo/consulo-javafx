@@ -12,6 +12,6 @@ import com.intellij.psi.meta.MetaDataRegistrar;
 public class JavaFXMetaDataContributor implements MetaDataContributor {
   @Override
   public void contributeMetaData(MetaDataRegistrar registrar) {
-    MetaDataRegistrar.getInstance().registerMetaData(new RootTagFilter(new NamespaceFilter(JavaFXNamespaceProvider.JAVAFX_NAMESPACE)), JavaFXNSDescriptor.class);
+    MetaDataRegistrar.getInstance().registerMetaData(new RootTagFilter(new NamespaceFilter(JavaFxNamespaceDataProvider.JAVAFX_NAMESPACE)), JavaFXNSDescriptor.class);
   }
 }

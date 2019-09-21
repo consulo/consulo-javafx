@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider;
 
 import java.io.StringReader;
 import java.util.*;
@@ -48,7 +48,7 @@ public class FxmlDataIndexer implements DataIndexer<String, Set<String>, FileCon
 
   @Nullable
   protected Map<String, Set<String>> getIds(String content, final VirtualFile file, Project project) {
-    if (!content.contains(JavaFXNamespaceProvider.JAVAFX_NAMESPACE)) {
+    if (!content.contains(JavaFxNamespaceDataProvider.JAVAFX_NAMESPACE)) {
       return null;
     }
 

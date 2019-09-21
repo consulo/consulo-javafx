@@ -1,4 +1,4 @@
-<idea-plugin>
+<consulo-plugin>
 	<name>JavaFX</name>
 	<id>org.jetbrains.plugins.javaFX</id>
 	<version>SNAPSHOT</version>
@@ -11,7 +11,7 @@
 	<extensions defaultExtensionNs="com.intellij">
 		<fileTypeFactory implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory"/>
 		<xml.xmlExtension implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxXmlExtension"/>
-		<xml.fileNSInfoProvider implementation="org.jetbrains.plugins.javaFX.fxml.JavaFXNamespaceProvider"/>
+		<xml.fileNSInfoProvider implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider"/>
 		<metaDataContributor implementation="org.jetbrains.plugins.javaFX.fxml.JavaFXMetaDataContributor"/>
 		<xml.schemaProvider implementation="org.jetbrains.plugins.javaFX.fxml.JavaFXSchemaHandler"/>
 		<psi.referenceContributor implementation="org.jetbrains.plugins.javaFX.fxml.refs.FxmlReferencesContributor"/>
@@ -76,4 +76,4 @@
 			<add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
 		</action>
 	</actions>
-</idea-plugin>
+</consulo-plugin>
