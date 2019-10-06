@@ -1,13 +1,14 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
-
+import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
+
+import javax.annotation.Nonnull;
 
 /**
  * User: anna
@@ -31,8 +32,6 @@ public class JavaFxFileTypeFactory extends FileTypeFactory {
 
   @Override
   public void createFileTypes(@Nonnull FileTypeConsumer consumer) {
-    final FileType fileType = consumer.getStandardFileTypeByName("XML");
-    assert fileType != null;
-    consumer.consume(fileType, FXML_EXTENSION);
+    consumer.consume(XmlFileType.INSTANCE, FXML_EXTENSION);
   }
 }
