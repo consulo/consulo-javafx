@@ -23,10 +23,9 @@ import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.io.FileUtil;
-import org.jetbrains.annotations.Nls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import javax.swing.*;
 
 /**
@@ -41,12 +40,6 @@ public class JavaFxSettingsConfigurable implements SearchableConfigurable, Confi
 
   public JavaFxSettingsConfigurable(JavaFxSettings settings) {
     mySettings = settings;
-  }
-
-  @Nls
-  @Override
-  public String getDisplayName() {
-    return "JavaFX";
   }
 
   @Nullable
@@ -86,12 +79,6 @@ public class JavaFxSettingsConfigurable implements SearchableConfigurable, Confi
   @Override
   public String getId() {
     return getHelpTopic();
-  }
-
-  @Nullable
-  @Override
-  public Runnable enableSearch(String option) {
-    return null;
   }
 
   public static FileChooserDescriptor createSceneBuilderDescriptor() {
