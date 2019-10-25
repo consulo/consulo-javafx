@@ -22,7 +22,7 @@ import java.util.List;
 public class JavaFxControllerFieldSearcher implements QueryExecutor<PsiReference, ReferencesSearch.SearchParameters>
 {
 	@Override
-	public boolean execute(@Nonnull final ReferencesSearch.SearchParameters queryParameters, @Nonnull final Processor<PsiReference> consumer)
+	public boolean execute(@Nonnull final ReferencesSearch.SearchParameters queryParameters, @Nonnull final Processor<? super PsiReference> consumer)
 	{
 		final PsiElement elementToSearch = queryParameters.getElementToSearch();
 		if(elementToSearch instanceof PsiField)
