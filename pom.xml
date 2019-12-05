@@ -75,7 +75,6 @@
 		<dependency>
 			<groupId>be.cyberelf.nanoxml</groupId>
 			<artifactId>nanoxml</artifactId>
-			<version>2.2.3</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -112,6 +111,13 @@
 			<artifactId>consulo-lang-impl-testing</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>consulo-util-rt</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
