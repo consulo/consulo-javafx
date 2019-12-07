@@ -16,7 +16,6 @@
 package org.jetbrains.plugins.javaFX.packaging;
 
 import com.intellij.execution.CommandLineUtil;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
@@ -24,6 +23,7 @@ import com.intellij.util.ArrayUtilRt;
 import com.intellij.util.Base64Converter;
 import com.intellij.util.PathUtilRt;
 import com.intellij.util.io.ZipUtil;
+import consulo.container.boot.ContainerPathManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -305,7 +305,7 @@ public abstract class AbstractJavaFxPackager {
   }
 
   private static String getAntHome() {
-    final String appHome = PathManager.getHomePath();
+    final String appHome = ContainerPathManager.get().getHomePath();
     if (appHome == null) {
       return null;
     }
