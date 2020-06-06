@@ -26,7 +26,7 @@ import com.intellij.codeInspection.unusedSymbol.UnusedSymbolLocalInspection;
  * @author anna
  * @since 10.01.2013
  */
-public class JavaFxCoercingTest extends AbstractJavaFXTestCase {
+public abstract class JavaFxCoercingTest extends AbstractJavaFXTestCase {
 
   public void testReferencedTag() throws Exception {
     doTest();

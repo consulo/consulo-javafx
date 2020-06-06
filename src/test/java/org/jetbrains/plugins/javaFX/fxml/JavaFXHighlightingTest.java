@@ -33,7 +33,7 @@ import com.intellij.util.ArrayUtil;
  * @author anna
  * @since 10.01.2013
  */
-public class JavaFXHighlightingTest extends AbstractJavaFXTestCase {
+public abstract class JavaFXHighlightingTest extends AbstractJavaFXTestCase {
 
   public void testLoginForm() throws Exception {
     doTest();

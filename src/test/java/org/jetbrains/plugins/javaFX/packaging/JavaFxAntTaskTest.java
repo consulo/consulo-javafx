@@ -15,19 +15,19 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import com.intellij.testFramework.UsefulTestCase;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.intellij.testFramework.UsefulTestCase;
+
 /**
  * User: anna
  * Date: 3/28/13
  */
-public class JavaFxAntTaskTest extends UsefulTestCase{
+public abstract class JavaFxAntTaskTest extends UsefulTestCase{
 
   private static final String PRELOADER_CLASS = "preloaderClass";
   private static final String TITLE = "title";

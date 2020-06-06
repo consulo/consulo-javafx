@@ -18,7 +18,7 @@ package org.jetbrains.plugins.javaFX.fxml;
 import javax.annotation.Nonnull;
 import com.intellij.codeInsight.actions.OptimizeImportsProcessor;
 
-public class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {
+public abstract class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {
   public void testCollapseOnDemand() throws Exception {
     doTest();
   }

@@ -27,7 +27,7 @@ import com.intellij.testFramework.TestModuleDescriptor;
 import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 
-public class JavaFXQuickfixTest extends LightCodeInsightFixtureTestCase {
+public abstract class JavaFXQuickfixTest extends LightCodeInsightFixtureTestCase {
   public static final DefaultLightProjectDescriptor JAVA_FX_WITH_GROOVY_DESCRIPTOR = new DefaultLightProjectDescriptor() {
     @Override
        public void configureModule(Module module, ModifiableRootModel model, ContentEntry contentEntry) {

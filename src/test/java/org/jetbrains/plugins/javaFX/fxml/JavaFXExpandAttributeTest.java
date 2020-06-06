@@ -26,7 +26,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.PsiTestUtil;
 
-public class JavaFXExpandAttributeTest extends DaemonAnalyzerTestCase {
+public abstract class JavaFXExpandAttributeTest extends DaemonAnalyzerTestCase {
   @Override
   protected void setUpModule() {
     super.setUpModule();

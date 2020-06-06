@@ -27,7 +27,7 @@ import com.intellij.testFramework.TestModuleDescriptor;
  * User: anna
  * Date: 1/17/13
  */
-public class JavaFxCompletionTest extends LightFixtureCompletionTestCase {
+public abstract class JavaFxCompletionTest extends LightFixtureCompletionTestCase {
 
   @Nonnull
   @Override

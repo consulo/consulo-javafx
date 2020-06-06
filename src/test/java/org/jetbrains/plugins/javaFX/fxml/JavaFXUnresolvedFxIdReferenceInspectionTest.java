@@ -25,7 +25,7 @@ import com.intellij.codeInsight.intention.IntentionAction;
  * User: anna
  * Date: 1/10/13
  */
-public class JavaFXUnresolvedFxIdReferenceInspectionTest extends AbstractJavaFXQuickFixTest {
+public abstract class JavaFXUnresolvedFxIdReferenceInspectionTest extends AbstractJavaFXQuickFixTest {
 
   @Override
   protected void enableInspections() {

@@ -23,7 +23,7 @@ import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnusedImp
  * User: anna
  * Date: 1/10/13
  */
-public class JavaFXUnusedImportInspectionTest extends AbstractJavaFXTestCase {
+public abstract class JavaFXUnusedImportInspectionTest extends AbstractJavaFXTestCase {
 
   @Override
   protected void enableInspections() {

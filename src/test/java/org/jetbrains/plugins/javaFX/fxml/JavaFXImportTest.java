@@ -23,7 +23,7 @@ import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.testFramework.PsiTestUtil;
 
-public class JavaFXImportTest extends DaemonAnalyzerTestCase {
+public abstract class JavaFXImportTest extends DaemonAnalyzerTestCase {
   @Override
   protected void setUpModule() {
     super.setUpModule();

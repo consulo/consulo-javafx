@@ -27,7 +27,7 @@ import com.intellij.util.containers.ContainerUtil;
 import consulo.codeInsight.TargetElementUtil;
 import consulo.codeInsight.TargetElementUtilEx;
 
-public class JavaFXRenameTest extends DaemonAnalyzerTestCase {
+public abstract class JavaFXRenameTest extends DaemonAnalyzerTestCase {
   @Override
   protected void setUpModule() {
     super.setUpModule();

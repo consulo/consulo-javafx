@@ -25,7 +25,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.testFramework.PsiTestUtil;
 
-public class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
+public abstract class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
   public void testDouble() throws Exception {
     doTest();
   }
