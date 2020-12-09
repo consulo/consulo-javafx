@@ -107,6 +107,14 @@
 		</dependency>
 
 		<dependency>
+			<groupId>consulo</groupId>
+			<artifactId>consulo-compiler-impl</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>consulo-lang-impl-testing</artifactId>
 			<version>${project.parent.version}</version>
