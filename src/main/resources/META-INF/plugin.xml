@@ -3,10 +3,13 @@
 	<id>org.jetbrains.plugins.javaFX</id>
 	<version>SNAPSHOT</version>
 	<vendor>JetBrains</vendor>
-	<description>his plugin provides JavaFX2 support.</description>
+	<description>This plugin provides JavaFX2 support.</description>
 	<depends>consulo.java</depends>
 	<depends>com.intellij.properties</depends>
 	<depends>com.intellij.xml</depends>
+	<tags>
+		<tag>ui.framework</tag>
+	</tags>
 
 	<extensions defaultExtensionNs="com.intellij">
 		<fileTypeFactory implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory"/>
