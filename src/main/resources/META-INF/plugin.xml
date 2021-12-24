@@ -1,4 +1,4 @@
-<consulo-plugin>
+<consulo-plugin url="https://github.com/consulo/consulo-javafx">
 	<name>JavaFX</name>
 	<id>org.jetbrains.plugins.javaFX</id>
 	<version>SNAPSHOT</version>
