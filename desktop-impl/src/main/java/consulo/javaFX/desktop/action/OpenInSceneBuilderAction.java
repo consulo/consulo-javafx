@@ -182,13 +182,13 @@ public class OpenInSceneBuilderAction extends AnAction {
       final String programFiles = "C:\\Program Files";
       fillPaths(programFiles, sb11, sb10, suspiciousPaths);
       fillPaths(programFiles + " (x86)", sb11, sb10, suspiciousPaths);
-      final File sb = findFirstThatExist(ArrayUtil.toStringArray(suspiciousPaths));
+      final File sb = FileUtil.findFirstThatExist(ArrayUtil.toStringArray(suspiciousPaths));
       if (sb != null) {
         path = sb.getPath();
       }
     }
     else if (SystemInfo.isMac) {
-      final File sb = findFirstThatExist("/Applications/JavaFX Scene Builder 1.1.app", "/Applications/JavaFX Scene Builder 1.0.app");
+      final File sb = FileUtil.findFirstThatExist("/Applications/JavaFX Scene Builder 1.1.app", "/Applications/JavaFX Scene Builder 1.0.app");
       if (sb != null) {
         path = sb.getPath();
       }
@@ -198,20 +198,6 @@ public class OpenInSceneBuilderAction extends AnAction {
     }
 
     return path != null ? LocalFileSystem.getInstance().findFileByPath(FileUtil.toSystemIndependentName(path)) : null;
-  }
-
-
-  // TODO REMOVE - replace by FileUtil
-  @Nullable
-  public static File findFirstThatExist(@Nonnull String... paths) {
-    for (String path : paths) {
-      if (!StringUtil.isEmptyOrSpaces(path)) {
-        File file = new File(FileUtil.toSystemDependentName(path));
-        if (file.exists()) return file;
-      }
-    }
-
-    return null;
   }
 
   private static void fillPaths(String programFilesPath, String sb11, String sb10, List<String> suspiciousPaths) {
