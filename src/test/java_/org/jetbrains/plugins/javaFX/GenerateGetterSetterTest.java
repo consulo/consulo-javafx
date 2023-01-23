@@ -19,10 +19,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
-import com.intellij.codeInsight.generation.ClassMember;
+import consulo.ide.impl.idea.codeInsight.generation.ClassMember;
 import com.intellij.codeInsight.generation.GenerateGetterAndSetterHandler;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
 import com.intellij.testFramework.PsiTestUtil;
 
 public abstract class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
@@ -41,11 +41,11 @@ public abstract class GenerateGetterSetterTest extends DaemonAnalyzerTestCase {
     new GenerateGetterAndSetterHandler() {
       @Nullable
       @Override
-      protected ClassMember[] chooseMembers(ClassMember[] members,
-                                            boolean allowEmptySelection,
-                                            boolean copyJavadocCheckbox,
-                                            Project project,
-                                            @Nullable Editor editor) {
+      protected consulo.ide.impl.idea.codeInsight.generation.ClassMember[] chooseMembers(ClassMember[] members,
+																						 boolean allowEmptySelection,
+																						 boolean copyJavadocCheckbox,
+																						 Project project,
+																						 @Nullable Editor editor) {
         return members;
       }
     }.invoke(getProject(), getEditor(), getFile());

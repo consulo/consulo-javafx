@@ -15,19 +15,21 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.psi.*;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.util.ProcessingContext;
+import com.intellij.java.language.psi.PsiClass;
+import consulo.language.psi.*;
+import consulo.language.util.ProcessingContext;
+import consulo.xml.psi.xml.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
+
+import javax.annotation.Nonnull;
 
 /**
  * User: anna
  * Date: 1/17/13
  */
-public abstract class JavaFxControllerBasedReferenceProvider extends PsiReferenceProvider {
+public abstract class JavaFxControllerBasedReferenceProvider extends PsiReferenceProvider
+{
   @Nonnull
   @Override
   public final PsiReference[] getReferencesByElement(@Nonnull PsiElement element, @Nonnull ProcessingContext context) {

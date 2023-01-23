@@ -1,28 +1,30 @@
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import javax.annotation.Nonnull;
+import com.intellij.java.language.psi.PsiClass;
+import consulo.document.util.TextRange;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiElement;
+import consulo.language.util.IncorrectOperationException;
+import consulo.util.lang.StringUtil;
+import consulo.xml.psi.impl.source.xml.TagNameReference;
+import consulo.xml.psi.xml.XmlTag;
 
-import com.intellij.codeInsight.daemon.QuickFixActionRegistrar;
-import com.intellij.codeInsight.quickfix.UnresolvedReferenceQuickFixProvider;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.xml.TagNameReference;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * User: anna
  * Date: 1/8/13
  */
-public class JavaFxTagNameReference extends TagNameReference{
-  private static final Logger LOGGER = Logger.getInstance("#" + JavaFxTagNameReference.class.getName());
-
+public class JavaFxTagNameReference extends TagNameReference {
   public JavaFxTagNameReference(ASTNode element, boolean startTagFlag) {
     super(element, startTagFlag);
+  }
+
+  @Nullable
+  @Override
+  public XmlTag getTagElement() {
+    return super.getTagElement();
   }
 
   @Override
@@ -58,26 +60,5 @@ public class JavaFxTagNameReference extends TagNameReference{
       }
     }
     return super.bindToElement(element);
-  }
-
-  public static class JavaFxUnresolvedTagRefsProvider extends UnresolvedReferenceQuickFixProvider<JavaFxTagNameReference> {
-    @Override
-    public void registerFixes(@Nonnull JavaFxTagNameReference ref, @Nonnull QuickFixActionRegistrar registrar) {
-      XmlTag element = ref.getTagElement();
-      if (element != null) {
-        registrar.register(new JavaFxImportClassFix(ref, element) {
-          @Override
-          protected XmlTag getTagElement(JavaFxTagNameReference ref) {
-            return ref.getTagElement();
-          }
-        });
-      }
-    }
-
-    @Nonnull
-    @Override
-    public Class<JavaFxTagNameReference> getReferenceClass() {
-      return JavaFxTagNameReference.class;
-    }
   }
 }

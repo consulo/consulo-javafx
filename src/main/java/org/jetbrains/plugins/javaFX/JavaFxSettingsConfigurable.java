@@ -15,14 +15,14 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.io.FileUtil;
+import consulo.configurable.Configurable;
+import consulo.configurable.ConfigurationException;
+import consulo.configurable.SearchableConfigurable;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Comparing;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -15,26 +15,26 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.psi.xml.XmlTagChild;
+import consulo.language.codeStyle.CodeStyleManager;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.inspection.LocalQuickFix;
+import consulo.language.editor.inspection.ProblemDescriptor;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.xml.psi.xml.XmlTag;
+import consulo.xml.psi.xml.XmlTagChild;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
+
+import javax.annotation.Nonnull;
 
 /**
 * User: anna
 */
 public class UnwrapTagFix implements LocalQuickFix {
-  private static final Logger LOG = Logger.getInstance("#" + UnwrapTagFix.class.getName());
+  private static final Logger LOG = Logger.getInstance(UnwrapTagFix.class);
   private final String myTagName;
 
   public UnwrapTagFix(String tagName) {

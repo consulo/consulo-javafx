@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import com.intellij.util.io.DataExternalizer;
+import consulo.index.io.data.DataExternalizer;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -27,7 +27,8 @@ import java.util.Set;
 * User: anna
 * Date: 3/14/13
 */
-public class FxmlDataExternalizer implements DataExternalizer<Set<String>> {
+public class FxmlDataExternalizer implements DataExternalizer<Set<String>>
+{
   @Override
   public void save(DataOutput out, Set<String> value) throws IOException {
     out.writeInt(value.size());

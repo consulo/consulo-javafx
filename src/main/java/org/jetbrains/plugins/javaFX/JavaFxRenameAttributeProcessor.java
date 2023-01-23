@@ -15,24 +15,25 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
+import com.intellij.java.language.psi.PsiField;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.content.scope.SearchScope;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.refactoring.rename.RenameXmlAttributeProcessor;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.SearchScope;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.refactoring.rename.RenameXmlAttributeProcessor;
+
+import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * User: anna
  * Date: 4/2/13
  */
+@ExtensionImpl(order = "before xmlAttribute")
 public class JavaFxRenameAttributeProcessor extends RenameXmlAttributeProcessor {
   @Override
   public boolean canProcessElement(@Nonnull PsiElement element) {

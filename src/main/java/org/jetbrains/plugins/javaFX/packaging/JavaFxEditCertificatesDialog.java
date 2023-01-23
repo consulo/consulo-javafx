@@ -15,20 +15,21 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import com.intellij.ide.util.BrowseFilesListener;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Base64Converter;
-import com.intellij.util.ui.UIUtil;
+import consulo.ui.ex.awt.Messages;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.ui.ex.awt.util.BrowseFilesListener;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.lang.StringUtil;
+
 import javax.annotation.Nullable;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Base64;
 
 /**
  * User: anna
@@ -58,9 +59,9 @@ public class JavaFxEditCertificatesDialog extends DialogWrapper {
     myPanel.myAliasTF.setText(properties.getAlias());
     myPanel.myKeystore.setText(properties.getKeystore());
     final String keypass = properties.getKeypass();
-    myPanel.myKeypassTF.setText(keypass != null ? Base64Converter.decode(keypass) : "");
+    myPanel.myKeypassTF.setText(keypass != null ? new String(Base64.getDecoder().decode(keypass)) : "");
     final String storepass = properties.getStorepass();
-    myPanel.myStorePassTF.setText(storepass != null ? Base64Converter.decode(storepass) : "");
+    myPanel.myStorePassTF.setText(storepass != null ? new String(Base64.getDecoder().decode(storepass)) : "");
     myPanel.myKeystore.addBrowseFolderListener("Choose Keystore File", "Select file containing generated keys", project, BrowseFilesListener.SINGLE_FILE_DESCRIPTOR);
   }
 
@@ -80,7 +81,7 @@ public class JavaFxEditCertificatesDialog extends DialogWrapper {
         Messages.showErrorDialog(myPanel.myWholePanel, "Keystore file should exist");
         return;
       }
-      if (StringUtil.isEmptyOrSpaces(String.valueOf(myPanel.myKeypassTF.getPassword())) || 
+      if (StringUtil.isEmptyOrSpaces(String.valueOf(myPanel.myKeypassTF.getPassword())) ||
           StringUtil.isEmptyOrSpaces(String.valueOf(myPanel.myStorePassTF.getPassword()))) {
         Messages.showErrorDialog(myPanel.myWholePanel, "Passwords should be set");
         return;

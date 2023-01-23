@@ -15,20 +15,23 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInsight.daemon.impl.quickfix.ImportClassFixBase;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.xml.XmlFile;
-import com.intellij.psi.xml.XmlTag;
-
-import javax.annotation.Nullable;
+import com.intellij.java.impl.codeInsight.daemon.impl.quickfix.ImportClassFixBase;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMember;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiReference;
+import consulo.util.lang.StringUtil;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
-* User: anna
-*/
+ * User: anna
+ */
 abstract class JavaFxImportClassFix extends ImportClassFixBase<XmlTag, JavaFxTagNameReference> {
 
   public JavaFxImportClassFix(@Nonnull JavaFxTagNameReference ref, @Nonnull XmlTag element) {

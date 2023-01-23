@@ -15,21 +15,21 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiReferenceProvider;
-import com.intellij.psi.xml.XmlProcessingInstruction;
-import com.intellij.psi.xml.XmlTokenType;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ProcessingContext;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiReferenceProvider;
+import consulo.language.util.ProcessingContext;
+import consulo.util.collection.ArrayUtil;
+import consulo.xml.psi.xml.XmlProcessingInstruction;
+import consulo.xml.psi.xml.XmlTokenType;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
+import javax.annotation.Nonnull;
+
 /**
-* User: anna
-*/
+ * User: anna
+ */
 class ImportReferenceProvider extends PsiReferenceProvider {
 
   @Nonnull
@@ -42,7 +42,9 @@ class ImportReferenceProvider extends PsiReferenceProvider {
         final String instructionTarget = JavaFxPsiUtil.getInstructionTarget("import", (XmlProcessingInstruction)element);
         if (instructionTarget != null && instructionTarget.equals(importInstr.getText())) {
           final PsiReference[] references =
-            FxmlReferencesContributor.CLASS_REFERENCE_PROVIDER.getReferencesByString(instructionTarget, element, importInstr.getStartOffsetInParent());
+            FxmlReferencesContributor.CLASS_REFERENCE_PROVIDER.getReferencesByString(instructionTarget,
+                                                                                     element,
+                                                                                     importInstr.getStartOffsetInParent());
           if (instructionTarget.endsWith(".*")) {
             return ArrayUtil.remove(references, references.length - 1);
           }

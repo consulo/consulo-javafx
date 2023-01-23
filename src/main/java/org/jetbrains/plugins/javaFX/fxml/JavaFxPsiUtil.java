@@ -15,29 +15,34 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.codeInsight.AnnotationUtil;
-import com.intellij.codeInsight.daemon.impl.analysis.HighlightUtil;
-import com.intellij.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
-import com.intellij.ide.highlighter.XmlFileType;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.xml.XMLLanguage;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.RecursionManager;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PostprocessReformattingAspect;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.psi.util.*;
-import com.intellij.psi.xml.*;
-import com.intellij.util.Processor;
+import com.intellij.java.analysis.impl.codeInsight.daemon.impl.analysis.HighlightUtil;
+import com.intellij.java.indexing.search.searches.ClassInheritorsSearch;
+import com.intellij.java.language.codeInsight.AnnotationUtil;
+import com.intellij.java.language.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
+import com.intellij.java.language.psi.*;
+import com.intellij.java.language.psi.util.*;
 import com.intellij.xml.XmlElementDescriptor;
+import consulo.application.util.CachedValue;
+import consulo.application.util.CachedValueProvider;
+import consulo.application.util.CachedValuesManager;
+import consulo.application.util.RecursionManager;
+import consulo.application.util.function.Computable;
+import consulo.application.util.function.Processor;
+import consulo.language.ast.ASTNode;
+import consulo.language.codeStyle.PostprocessReformattingAspect;
+import consulo.language.psi.*;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.search.ReferencesSearch;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.logging.Logger;
+import consulo.project.Project;
 import consulo.util.dataholder.Key;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.StringUtil;
+import consulo.util.lang.ref.Ref;
+import consulo.xml.ide.highlighter.XmlFileType;
+import consulo.xml.lang.xml.XMLLanguage;
+import consulo.xml.psi.xml.*;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultPropertyElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
@@ -51,7 +56,7 @@ import java.util.*;
  */
 public class JavaFxPsiUtil {
 
-  private static final Logger LOG = Logger.getInstance("#" + JavaFxPsiUtil.class.getName());
+  private static final Logger LOG = Logger.getInstance(JavaFxPsiUtil.class);
 
   public static XmlProcessingInstruction createSingleImportInstruction(String qualifiedName, Project project) {
     final String importText = "<?import " + qualifiedName + "?>";
@@ -554,7 +559,8 @@ public class JavaFxPsiUtil {
     });
   }
 
-  private static class JavaFxControllerCachedValueProvider implements CachedValueProvider<PsiClass> {
+  private static class JavaFxControllerCachedValueProvider implements CachedValueProvider<PsiClass>
+  {
     private final Project myProject;
     private final PsiFile myContainingFile;
 
@@ -567,7 +573,7 @@ public class JavaFxPsiUtil {
     @Override
     public Result<PsiClass> compute() {
       final Ref<PsiClass> injectedController = new Ref<PsiClass>();
-      final Ref<PsiFile> dep = new Ref<PsiFile>();
+      final consulo.util.lang.ref.Ref<PsiFile> dep = new Ref<PsiFile>();
       final PsiClass fxmlLoader =
         JavaPsiFacade.getInstance(myProject).findClass(JavaFxCommonClassNames.JAVAFX_FXML_FXMLLOADER, GlobalSearchScope.allScope(myProject));
       if (fxmlLoader != null) {
@@ -612,7 +618,7 @@ public class JavaFxPsiUtil {
     }
 
     private static abstract class JavaFxRetrieveControllerProcessor implements Processor<PsiReference> {
-      private final Ref<PsiClass> myInjectedController = new Ref<PsiClass>();
+      private final Ref<PsiClass> myInjectedController = new consulo.util.lang.ref.Ref<PsiClass>();
       private final Ref<PsiFile> myContainingFile = new Ref<PsiFile>();
 
       protected abstract boolean isResolveToSetter(PsiMethodCallExpression methodCallExpression);

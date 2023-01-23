@@ -15,33 +15,26 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
+import com.intellij.lang.properties.PropertiesFileType;
+import consulo.compiler.artifact.Artifact;
+import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.project.Project;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.StringUtil;
 
 import javax.annotation.Nullable;
-import com.intellij.lang.properties.PropertiesFileType;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.packaging.artifacts.Artifact;
-import com.intellij.packaging.ui.ArtifactPropertiesEditor;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.Base64Converter;
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 /**
  * User: anna
@@ -71,8 +64,14 @@ public class JavaFxArtifactPropertiesEditor extends ArtifactPropertiesEditor {
     myProperties = properties;
     new JavaFxApplicationClassBrowser(project, artifact).setField(myAppClass);
     final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(PropertiesFileType.INSTANCE);
-    myHtmlParams.addBrowseFolderListener("Choose Properties File", "Parameters for the resulting application to run standalone.", project, descriptor);
-    myParams.addBrowseFolderListener("Choose Properties File", "Parameters for the resulting application to run in the browser.", project, descriptor);
+    myHtmlParams.addBrowseFolderListener("Choose Properties File",
+                                         "Parameters for the resulting application to run standalone.",
+                                         project,
+                                         descriptor);
+    myParams.addBrowseFolderListener("Choose Properties File",
+                                     "Parameters for the resulting application to run in the browser.",
+                                     project,
+                                     descriptor);
     myEditSignCertificateButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -124,9 +123,10 @@ public class JavaFxArtifactPropertiesEditor extends ArtifactPropertiesEditor {
       if (isModified(myProperties.getAlias(), myDialog.myPanel.myAliasTF)) return true;
       if (isModified(myProperties.getKeystore(), myDialog.myPanel.myKeystore)) return true;
       final String keypass = myProperties.getKeypass();
-      if (isModified(keypass != null ? Base64Converter.decode(keypass) : "", myDialog.myPanel.myKeypassTF)) return true;
+      if (isModified(keypass != null ? new String(Base64.getDecoder().decode(keypass)) : "", myDialog.myPanel.myKeypassTF)) return true;
       final String storepass = myProperties.getStorepass();
-      if (isModified(storepass != null ? Base64Converter.decode(storepass) : "", myDialog.myPanel.myStorePassTF)) return true;
+      if (isModified(storepass != null ? new String(Base64.getDecoder().decode(storepass)) : "", myDialog.myPanel.myStorePassTF))
+        return true;
       if (myProperties.isSelfSigning() != myDialog.myPanel.mySelfSignedRadioButton.isSelected()) return true;
     }
     return false;
@@ -135,7 +135,7 @@ public class JavaFxArtifactPropertiesEditor extends ArtifactPropertiesEditor {
   private static boolean isModified(final String title, JTextComponent tf) {
     return !Comparing.strEqual(title, tf.getText().trim());
   }
-  
+
   private static boolean isModified(final String title, TextFieldWithBrowseButton tf) {
     return !Comparing.strEqual(title, tf.getText().trim());
   }
@@ -150,8 +150,8 @@ public class JavaFxArtifactPropertiesEditor extends ArtifactPropertiesEditor {
     myProperties.setHeight(myHeightTF.getText());
     myProperties.setHtmlParamFile(myHtmlParams.getText());
     myProperties.setParamFile(myParams.getText());
-    myProperties.setUpdateMode(myUpdateInBackgroundCB.isSelected() ? JavaFxPackagerConstants.UPDATE_MODE_BACKGROUND 
-                                                                   : JavaFxPackagerConstants.UPDATE_MODE_ALWAYS);
+    myProperties.setUpdateMode(myUpdateInBackgroundCB.isSelected() ? JavaFxPackagerConstants.UPDATE_MODE_BACKGROUND
+                                 : JavaFxPackagerConstants.UPDATE_MODE_ALWAYS);
     myProperties.setEnabledSigning(myEnableSigningCB.isSelected());
     myProperties.setConvertCss2Bin(myConvertCssToBinCheckBox.isSelected());
     myProperties.setNativeBundle((String)myNativeBundleCB.getSelectedItem());
@@ -160,9 +160,12 @@ public class JavaFxArtifactPropertiesEditor extends ArtifactPropertiesEditor {
       myProperties.setAlias(myDialog.myPanel.myAliasTF.getText());
       myProperties.setKeystore(myDialog.myPanel.myKeystore.getText());
       final String keyPass = String.valueOf((myDialog.myPanel.myKeypassTF.getPassword()));
-      myProperties.setKeypass(!StringUtil.isEmptyOrSpaces(keyPass) ? Base64Converter.encode(keyPass) : null);
+      myProperties.setKeypass(!StringUtil.isEmptyOrSpaces(keyPass) ? Base64.getEncoder()
+                                                                           .encodeToString(keyPass.getBytes(StandardCharsets.UTF_8)) : null);
       final String storePass = String.valueOf(myDialog.myPanel.myStorePassTF.getPassword());
-      myProperties.setStorepass(!StringUtil.isEmptyOrSpaces(storePass) ? Base64Converter.encode(storePass) : null);
+      myProperties.setStorepass(!StringUtil.isEmptyOrSpaces(storePass) ? Base64.getEncoder()
+                                                                               .encodeToString(storePass.getBytes(StandardCharsets.UTF_8)) :
+                                  null);
     }
   }
 

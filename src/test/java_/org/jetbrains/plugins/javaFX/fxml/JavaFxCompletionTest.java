@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.intellij.codeInsight.completion.LightFixtureCompletionTestCase;
-import com.intellij.codeInsight.lookup.LookupElement;
+import consulo.language.editor.completion.lookup.LookupElement;
 import com.intellij.testFramework.TestModuleDescriptor;
 
 /**

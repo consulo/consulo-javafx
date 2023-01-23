@@ -15,18 +15,20 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
-import javax.annotation.Nonnull;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.compiler.artifact.ArtifactProperties;
+import consulo.compiler.artifact.ArtifactPropertiesProvider;
+import consulo.compiler.artifact.ArtifactType;
 
-import com.intellij.packaging.artifacts.ArtifactProperties;
-import com.intellij.packaging.artifacts.ArtifactPropertiesProvider;
-import com.intellij.packaging.artifacts.ArtifactType;
+import javax.annotation.Nonnull;
 
 /**
  * User: anna
  * Date: 3/12/13
  */
+@ExtensionImpl
 public class JavaFxPreloaderArtifactPropertiesProvider extends ArtifactPropertiesProvider {
-  protected JavaFxPreloaderArtifactPropertiesProvider() {
+  public JavaFxPreloaderArtifactPropertiesProvider() {
     super("javafx-preloader-properties");
   }
 

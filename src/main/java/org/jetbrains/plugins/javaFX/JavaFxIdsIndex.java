@@ -15,31 +15,28 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.util.function.CommonProcessors;
+import consulo.index.io.DataIndexer;
+import consulo.index.io.EnumeratorStringDescriptor;
+import consulo.index.io.ID;
+import consulo.index.io.KeyDescriptor;
+import consulo.index.io.data.DataExternalizer;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.stub.FileBasedIndex;
+import consulo.language.psi.stub.FileBasedIndexExtension;
+import consulo.language.psi.stub.FileContent;
+import consulo.project.Project;
+import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
+import java.util.*;
 
-import org.jetbrains.annotations.NonNls;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.CommonProcessors;
-import com.intellij.util.indexing.DataIndexer;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.intellij.util.indexing.FileBasedIndexExtension;
-import com.intellij.util.indexing.FileContent;
-import com.intellij.util.indexing.ID;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.EnumeratorStringDescriptor;
-import com.intellij.util.io.KeyDescriptor;
-
+@ExtensionImpl
 public class JavaFxIdsIndex extends FileBasedIndexExtension<String, Set<String>> {
 
-  @NonNls public static final ID<String, Set<String>> KEY = ID.create("javafx.id.name");
+  @NonNls
+  public static final ID<String, Set<String>> KEY = ID.create("javafx.id.name");
 
   private final KeyDescriptor<String> myKeyDescriptor = new EnumeratorStringDescriptor();
   private final FileBasedIndex.InputFilter myInputFilter = new JavaFxControllerClassIndex.MyInputFilter();

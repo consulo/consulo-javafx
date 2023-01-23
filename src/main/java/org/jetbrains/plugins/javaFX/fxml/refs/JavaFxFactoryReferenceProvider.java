@@ -15,27 +15,33 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.psi.*;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ProcessingContext;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMethod;
+import com.intellij.java.language.psi.PsiModifier;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiReferenceBase;
+import consulo.language.psi.PsiReferenceProvider;
+import consulo.language.util.ProcessingContext;
+import consulo.util.collection.ArrayUtil;
+import consulo.xml.psi.xml.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-* User: anna
-*/
+ * User: anna
+ */
 class JavaFxFactoryReferenceProvider extends PsiReferenceProvider {
   @Nonnull
   @Override
   public PsiReference[] getReferencesByElement(@Nonnull PsiElement element,
                                                @Nonnull ProcessingContext context) {
     final XmlAttributeValue attributeValue = (XmlAttributeValue)element;
-    return new PsiReference[] {new JavaFXFactoryReference(attributeValue)};
+    return new PsiReference[]{new JavaFXFactoryReference(attributeValue)};
   }
 
   private static class JavaFXFactoryReference extends PsiReferenceBase<XmlAttributeValue> {

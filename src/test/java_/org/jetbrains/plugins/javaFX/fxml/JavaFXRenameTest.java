@@ -18,14 +18,14 @@ package org.jetbrains.plugins.javaFX.fxml;
 import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.refactoring.rename.RenameProcessor;
-import com.intellij.refactoring.rename.inplace.MemberInplaceRenameHandler;
+import consulo.language.editor.refactoring.rename.inplace.MemberInplaceRenameHandler;
+import consulo.language.psi.PsiElement;
+import consulo.language.editor.refactoring.rename.RenameProcessor;
 import com.intellij.testFramework.PsiTestUtil;
 import com.intellij.testFramework.fixtures.CodeInsightTestUtil;
-import com.intellij.util.containers.ContainerUtil;
-import consulo.codeInsight.TargetElementUtil;
+import consulo.language.editor.TargetElementUtil;
 import consulo.codeInsight.TargetElementUtilEx;
+import consulo.util.collection.ContainerUtil;
 
 public abstract class JavaFXRenameTest extends DaemonAnalyzerTestCase {
   @Override

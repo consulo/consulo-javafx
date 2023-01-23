@@ -19,12 +19,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
-import com.intellij.codeInsight.daemon.impl.HighlightInfo;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.codeInsight.intention.impl.ShowIntentionActionsHandler;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.psi.PsiFile;
+import consulo.ide.impl.idea.codeInsight.intention.impl.ShowIntentionActionsHandler;
+import consulo.codeEditor.Editor;
 import com.intellij.testFramework.PsiTestUtil;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.language.editor.rawHighlight.HighlightInfo;
+import consulo.language.psi.PsiFile;
 
 public abstract class JavaFXCollapseSubtagToAttributeTest extends DaemonAnalyzerTestCase {
   @Override

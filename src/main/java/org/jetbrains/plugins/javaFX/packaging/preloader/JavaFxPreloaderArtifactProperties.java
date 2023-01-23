@@ -15,12 +15,13 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
-import com.intellij.openapi.compiler.CompileContext;
-import com.intellij.packaging.artifacts.Artifact;
-import com.intellij.packaging.artifacts.ArtifactProperties;
-import com.intellij.packaging.ui.ArtifactEditorContext;
-import com.intellij.packaging.ui.ArtifactPropertiesEditor;
-import com.intellij.util.xmlb.XmlSerializerUtil;
+import consulo.compiler.CompileContext;
+import consulo.compiler.artifact.Artifact;
+import consulo.compiler.artifact.ArtifactProperties;
+import consulo.compiler.artifact.ui.ArtifactEditorContext;
+import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
+import consulo.util.xml.serializer.XmlSerializerUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -31,7 +32,7 @@ import javax.annotation.Nullable;
 public class JavaFxPreloaderArtifactProperties extends ArtifactProperties<JavaFxPreloaderArtifactProperties> {
 
   private String myPreloaderClass;
-  
+
   @Override
   public void onBuildFinished(@Nonnull final Artifact artifact, @Nonnull final CompileContext compileContext) {
   }

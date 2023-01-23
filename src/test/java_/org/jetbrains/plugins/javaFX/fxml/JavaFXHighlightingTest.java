@@ -22,12 +22,12 @@ import com.intellij.codeInspection.deadCode.UnusedDeclarationInspection;
 import com.intellij.codeInspection.htmlInspections.RequiredAttributesInspection;
 import com.intellij.codeInspection.unusedSymbol.UnusedSymbolLocalInspection;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.ArrayUtil;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.util.collection.ArrayUtil;
 
 /**
  * @author anna

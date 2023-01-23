@@ -15,27 +15,28 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.psi.xml.XmlFile;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.ProcessingContext;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMethod;
 import com.intellij.xml.XmlElementDescriptor;
-import javax.annotation.Nonnull;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.util.ProcessingContext;
+import consulo.logging.Logger;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
+
+import javax.annotation.Nonnull;
 
 /**
  * User: anna
  * Date: 1/16/13
  */
 class JavaFxEventHandlerReferenceProvider extends JavaFxControllerBasedReferenceProvider {
-  private static final Logger LOG = Logger.getInstance("#" + JavaFxEventHandlerReferenceProvider.class.getName());
+  private static final Logger LOG = Logger.getInstance(JavaFxEventHandlerReferenceProvider.class);
 
   @Override
   protected PsiReference[] getReferencesByElement(@Nonnull PsiClass controllerClass,
@@ -66,6 +67,9 @@ class JavaFxEventHandlerReferenceProvider extends JavaFxControllerBasedReference
         return PsiReference.EMPTY_ARRAY;
       }
     }
-    return new PsiReference[]{new JavaFxEventHandlerReference(xmlAttributeValue, (PsiClass)currentTagClass, handlerMethod, controllerClass)};
+    return new PsiReference[]{new JavaFxEventHandlerReference(xmlAttributeValue,
+                                                              (PsiClass)currentTagClass,
+                                                              handlerMethod,
+                                                              controllerClass)};
   }
 }

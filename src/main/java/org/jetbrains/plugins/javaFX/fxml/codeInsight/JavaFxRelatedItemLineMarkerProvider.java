@@ -15,147 +15,139 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight;
 
-import com.intellij.codeHighlighting.Pass;
-import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
-import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
-import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
-import com.intellij.codeInsight.navigation.NavigationUtil;
-import com.intellij.icons.AllIcons;
-import com.intellij.navigation.GotoRelatedItem;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.ui.awt.RelativePoint;
-import com.intellij.util.Function;
-import com.intellij.util.Functions;
-import javax.annotation.Nonnull;
+import com.intellij.java.language.JavaLanguage;
+import com.intellij.java.language.psi.*;
+import consulo.application.AllIcons;
+import consulo.codeEditor.markup.GutterIconRenderer;
+import consulo.language.Language;
+import consulo.language.editor.Pass;
+import consulo.language.editor.gutter.GutterIconNavigationHandler;
+import consulo.language.editor.gutter.RelatedItemLineMarkerInfo;
+import consulo.language.editor.gutter.RelatedItemLineMarkerProvider;
+import consulo.language.editor.ui.PopupNavigationUtil;
+import consulo.language.editor.util.LanguageEditorNavigationUtil;
+import consulo.language.navigation.GotoRelatedItem;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.search.ReferencesSearch;
+import consulo.logging.Logger;
+import consulo.ui.ex.RelativePoint;
+import consulo.ui.ex.popup.JBPopup;
+import consulo.util.lang.function.Functions;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.indexing.JavaFxControllerClassIndex;
 
+import javax.annotation.Nonnull;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
-public class JavaFxRelatedItemLineMarkerProvider extends RelatedItemLineMarkerProvider
-{
-	private static final Logger LOG = Logger.getInstance(JavaFxRelatedItemLineMarkerProvider.class);
+public class JavaFxRelatedItemLineMarkerProvider extends RelatedItemLineMarkerProvider {
+  private static final Logger LOG = Logger.getInstance(JavaFxRelatedItemLineMarkerProvider.class);
 
-	@Override
-	protected void collectNavigationMarkers(@Nonnull PsiElement element, @Nonnull final Collection<? super RelatedItemLineMarkerInfo> result)
-	{
-		PsiElement f;
-		if(element instanceof PsiIdentifier && (f = element.getParent()) instanceof PsiField)
-		{
-			final PsiField field = (PsiField) f;
-			if(JavaFxPsiUtil.isVisibleInFxml(field) && !field.hasModifierProperty(PsiModifier.STATIC) && !field.hasModifierProperty(PsiModifier.FINAL))
-			{
-				final PsiClass containingClass = field.getContainingClass();
-				if(containingClass != null && containingClass.hasModifierProperty(PsiModifier.PUBLIC) && containingClass.getQualifiedName() != null)
-				{
-					final PsiMethod[] constructors = containingClass.getConstructors();
-					boolean defaultConstructor = constructors.length == 0;
-					for(PsiMethod constructor : constructors)
-					{
-						if(constructor.getParameterList().getParametersCount() == 0)
-						{
-							defaultConstructor = true;
-							break;
-						}
-					}
-					if(!defaultConstructor)
-					{
-						return;
-					}
-					final ArrayList<GotoRelatedItem> targets = new ArrayList<>();
-					collectTargets(field, targets, GotoRelatedItem::new, true);
-					if(targets.isEmpty())
-					{
-						return;
-					}
+  @Override
+  protected void collectNavigationMarkers(@Nonnull PsiElement element,
+                                          @Nonnull final Collection<? super RelatedItemLineMarkerInfo> result) {
+    PsiElement f;
+    if (element instanceof PsiIdentifier && (f = element.getParent()) instanceof PsiField) {
+      final PsiField field = (PsiField)f;
+      if (JavaFxPsiUtil.isVisibleInFxml(field) && !field.hasModifierProperty(PsiModifier.STATIC) && !field.hasModifierProperty(PsiModifier.FINAL)) {
+        final PsiClass containingClass = field.getContainingClass();
+        if (containingClass != null && containingClass.hasModifierProperty(PsiModifier.PUBLIC) && containingClass.getQualifiedName() != null) {
+          final PsiMethod[] constructors = containingClass.getConstructors();
+          boolean defaultConstructor = constructors.length == 0;
+          for (PsiMethod constructor : constructors) {
+            if (constructor.getParameterList().getParametersCount() == 0) {
+              defaultConstructor = true;
+              break;
+            }
+          }
+          if (!defaultConstructor) {
+            return;
+          }
+          final ArrayList<GotoRelatedItem> targets = new ArrayList<>();
+          collectTargets(field, targets, GotoRelatedItem::new, true);
+          if (targets.isEmpty()) {
+            return;
+          }
 
-					result.add(new RelatedItemLineMarkerInfo<>((PsiIdentifier) element, element.getTextRange(),
-							AllIcons.FileTypes.Xml, Pass.LINE_MARKERS, null,
-							new JavaFXIdIconNavigationHandler(), GutterIconRenderer.Alignment.LEFT,
-							targets));
-				}
-			}
-		}
-	}
+          result.add(new RelatedItemLineMarkerInfo<>((PsiIdentifier)element, element.getTextRange(),
+                                                     AllIcons.FileTypes.Xml, Pass.LINE_MARKERS, null,
+                                                     new JavaFXIdIconNavigationHandler(), GutterIconRenderer.Alignment.LEFT,
+                                                     targets));
+        }
+      }
+    }
+  }
 
-	private static <T> void collectTargets(PsiField field, List<T> targets, final Function<PsiElement, T> fun, final boolean stopAtFirst)
-	{
-		final PsiClass containingClass = field.getContainingClass();
-		LOG.assertTrue(containingClass != null);
-		final String qualifiedName = containingClass.getQualifiedName();
-		LOG.assertTrue(qualifiedName != null);
-		final List<VirtualFile> fxmls = JavaFxControllerClassIndex.findFxmlsWithController(field.getProject(), qualifiedName);
-		if(fxmls.isEmpty())
-		{
-			return;
-		}
-		ReferencesSearch.search(field, GlobalSearchScope.filesScope(field.getProject(), fxmls)).forEach(
-				reference -> {
-					final PsiElement referenceElement = reference.getElement();
-					if(referenceElement == null)
-					{
-						return true;
-					}
-					final PsiFile containingFile = referenceElement.getContainingFile();
-					if(containingFile == null)
-					{
-						return true;
-					}
-					if(!JavaFxFileTypeFactory.isFxml(containingFile))
-					{
-						return true;
-					}
-					if(!(referenceElement instanceof XmlAttributeValue))
-					{
-						return true;
-					}
-					final XmlAttributeValue attributeValue = (XmlAttributeValue) referenceElement;
-					final PsiElement parent = attributeValue.getParent();
-					if(!(parent instanceof XmlAttribute))
-					{
-						return true;
-					}
-					if(!FxmlConstants.FX_ID.equals(((XmlAttribute) parent).getName()))
-					{
-						return true;
-					}
-					targets.add(fun.fun(parent));
-					return !stopAtFirst;
-				});
-	}
+  private static <T> void collectTargets(PsiField field, List<T> targets, final Function<PsiElement, T> fun, final boolean stopAtFirst) {
+    final PsiClass containingClass = field.getContainingClass();
+    LOG.assertTrue(containingClass != null);
+    final String qualifiedName = containingClass.getQualifiedName();
+    LOG.assertTrue(qualifiedName != null);
+    final List<VirtualFile> fxmls = JavaFxControllerClassIndex.findFxmlsWithController(field.getProject(), qualifiedName);
+    if (fxmls.isEmpty()) {
+      return;
+    }
+    ReferencesSearch.search(field, GlobalSearchScope.filesScope(field.getProject(), fxmls)).forEach(
+      reference -> {
+        final PsiElement referenceElement = reference.getElement();
+        if (referenceElement == null) {
+          return true;
+        }
+        final PsiFile containingFile = referenceElement.getContainingFile();
+        if (containingFile == null) {
+          return true;
+        }
+        if (!JavaFxFileTypeFactory.isFxml(containingFile)) {
+          return true;
+        }
+        if (!(referenceElement instanceof XmlAttributeValue)) {
+          return true;
+        }
+        final XmlAttributeValue attributeValue = (XmlAttributeValue)referenceElement;
+        final PsiElement parent = attributeValue.getParent();
+        if (!(parent instanceof XmlAttribute)) {
+          return true;
+        }
+        if (!FxmlConstants.FX_ID.equals(((XmlAttribute)parent).getName())) {
+          return true;
+        }
+        targets.add(fun.apply(parent));
+        return !stopAtFirst;
+      });
+  }
 
-	private static class JavaFXIdIconNavigationHandler implements GutterIconNavigationHandler<PsiIdentifier>
-	{
-		@Override
-		public void navigate(MouseEvent e, PsiIdentifier fieldName)
-		{
-			List<PsiElement> relatedItems = new ArrayList<>();
-			PsiElement f = fieldName.getParent();
-			if(f instanceof PsiField)
-			{
-				collectTargets((PsiField) f, relatedItems, Functions.id(), false);
-			}
-			if(relatedItems.size() == 1)
-			{
-				NavigationUtil.activateFileWithPsiElement(relatedItems.get(0));
-				return;
-			}
-			final JBPopup popup = NavigationUtil
-					.getPsiElementPopup(relatedItems.toArray(PsiElement.EMPTY_ARRAY), "<html>Choose component with fx:id <b>" + fieldName.getText() + "<b></html>");
-			popup.show(new RelativePoint(e));
-		}
-	}
+  @Nonnull
+  @Override
+  public Language getLanguage() {
+    return JavaLanguage.INSTANCE;
+  }
+
+  private static class JavaFXIdIconNavigationHandler implements GutterIconNavigationHandler<PsiIdentifier> {
+    @Override
+    public void navigate(MouseEvent e, PsiIdentifier fieldName) {
+      List<PsiElement> relatedItems = new ArrayList<>();
+      PsiElement f = fieldName.getParent();
+      if (f instanceof PsiField) {
+        collectTargets((PsiField)f, relatedItems, Functions.id(), false);
+      }
+      if (relatedItems.size() == 1) {
+        LanguageEditorNavigationUtil.activateFileWithPsiElement(relatedItems.get(0));
+        return;
+      }
+      final JBPopup popup = PopupNavigationUtil
+        .getPsiElementPopup(relatedItems.toArray(PsiElement.EMPTY_ARRAY),
+                            "<html>Choose component with fx:id <b>" + fieldName.getText() + "<b></html>");
+      popup.show(new RelativePoint(e));
+    }
+  }
 }

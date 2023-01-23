@@ -15,35 +15,36 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import static com.intellij.patterns.PlatformPatterns.virtualFile;
-import static com.intellij.patterns.StandardPatterns.string;
+import com.intellij.java.impl.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMethod;
+import com.intellij.java.language.psi.PsiModifier;
+import com.intellij.xml.XmlElementDescriptor;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.pattern.PlatformPatterns;
+import consulo.language.psi.*;
+import consulo.language.util.IncorrectOperationException;
+import consulo.xml.lang.xml.XMLLanguage;
+import consulo.xml.patterns.XmlAttributeValuePattern;
+import consulo.xml.patterns.XmlPatterns;
+import consulo.xml.psi.xml.XmlProcessingInstruction;
+import consulo.xml.psi.xml.XmlTag;
+import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.patterns.PlatformPatterns;
-import com.intellij.patterns.XmlAttributeValuePattern;
-import com.intellij.patterns.XmlPatterns;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifier;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiReferenceContributor;
-import com.intellij.psi.PsiReferenceRegistrar;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider;
-import com.intellij.psi.xml.XmlProcessingInstruction;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
-import com.intellij.xml.XmlElementDescriptor;
-import consulo.psi.PsiPackage;
+
+import static consulo.language.pattern.PlatformPatterns.virtualFile;
+import static consulo.language.pattern.StandardPatterns.string;
 
 /**
  * User: anna
  * Date: 1/14/13
  */
+@ExtensionImpl
 public class FxmlReferencesContributor extends PsiReferenceContributor {
   public static final JavaClassReferenceProvider CLASS_REFERENCE_PROVIDER = new JavaClassReferenceProvider();
 
@@ -118,6 +119,12 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
                                         new JavaFxLocationReferenceProvider(true, "css"));
   }
 
+  @Nonnull
+  @Override
+  public Language getLanguage() {
+    return XMLLanguage.INSTANCE;
+  }
+
   private static class MyJavaClassReferenceProvider extends JavaClassReferenceProvider {
     @Nonnull
     @Override
@@ -128,8 +135,8 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
     @Nonnull
     @Override
     public PsiReference[] getReferencesByString(String str,
-                                                @Nonnull final PsiElement position,
-                                                int offsetInPosition) {
+																	 @Nonnull final PsiElement position,
+																	 int offsetInPosition) {
       final PsiReference[] references = super.getReferencesByString(str, position, offsetInPosition);
       if (references.length <= 1) return PsiReference.EMPTY_ARRAY;
       final PsiReference[] results = new PsiReference[references.length - 1];
@@ -139,7 +146,8 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
       return results;
     }
 
-    private static class JavaClassReferenceWrapper implements PsiReference {
+    private static class JavaClassReferenceWrapper implements PsiReference
+	{
       private final PsiReference myReference;
       private final PsiElement myPosition;
 
@@ -190,7 +198,8 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
         return myReference.getCanonicalText();
       }
 
-      public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+      public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException
+	  {
         String oldText = ((XmlTag)myPosition).getName();
         final TextRange range = getRangeInElement();
         final String newText =
@@ -199,7 +208,8 @@ public class FxmlReferencesContributor extends PsiReferenceContributor {
       }
 
       public PsiElement bindToElement(@Nonnull PsiElement element)
-        throws IncorrectOperationException {
+        throws IncorrectOperationException
+	  {
         String oldText = ((XmlTag)myPosition).getName();
         final TextRange range = getRangeInElement();
         final String newText = (element instanceof PsiPackage ? ((PsiPackage)element).getQualifiedName() : ((PsiClass)element).getName()) +

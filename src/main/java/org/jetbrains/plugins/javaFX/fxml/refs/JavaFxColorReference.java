@@ -15,18 +15,19 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
+import com.intellij.java.language.psi.JavaPsiFacade;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.xml.util.UserColorLookup;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReferenceBase;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.project.Project;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.util.ColorSampleLookupValue;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReferenceBase;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.util.ColorSampleLookupValue;
-import com.intellij.xml.util.UserColorLookup;
 
 /**
  * User: anna

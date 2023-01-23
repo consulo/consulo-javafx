@@ -1,35 +1,41 @@
 package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
-import com.intellij.codeInsight.AnnotationUtil;
-import com.intellij.codeInsight.daemon.Validator;
-import com.intellij.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.xml.XmlAttributeImpl;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.*;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.Function;
+import com.intellij.java.language.codeInsight.AnnotationUtil;
+import com.intellij.java.language.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
+import com.intellij.java.language.psi.*;
+import com.intellij.java.language.psi.util.InheritanceUtil;
+import com.intellij.java.language.psi.util.PropertyUtil;
+import com.intellij.java.language.psi.util.PsiUtil;
 import com.intellij.xml.XmlAttributeDescriptor;
 import com.intellij.xml.XmlElementDescriptor;
 import com.intellij.xml.XmlElementsGroup;
 import com.intellij.xml.XmlNSDescriptor;
+import consulo.application.util.CachedValueProvider;
+import consulo.application.util.CachedValuesManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiModificationTracker;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.project.Project;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.StringUtil;
+import consulo.xml.Validator;
+import consulo.xml.psi.impl.source.xml.XmlAttributeImpl;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * User: anna
@@ -63,12 +69,8 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
     if (context != null) {
       if (myPsiClass != null) {
         final List<XmlElementDescriptor> children = new ArrayList<XmlElementDescriptor>();
-        collectProperties(children, new Function<PsiMember, XmlElementDescriptor>() {
-          @Override
-          public XmlElementDescriptor fun(PsiMember member) {
-            return new JavaFxPropertyElementDescriptor(myPsiClass, member instanceof PsiMethod ? PropertyUtil.getPropertyName(member) : member.getName(), false);
-          }
-        }, false);
+        collectProperties(children,
+                          member -> new JavaFxPropertyElementDescriptor(myPsiClass, member instanceof PsiMethod ? PropertyUtil.getPropertyName(member) : member.getName(), false), false);
 
         final JavaFxPropertyElementDescriptor defaultPropertyDescriptor = getDefaultPropertyDescriptor();
         if (defaultPropertyDescriptor != null) {
@@ -106,21 +108,14 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
 
   static void collectStaticAttributesDescriptors(@Nullable XmlTag context, List<XmlAttributeDescriptor> simpleAttrs) {
     if (context == null) return;
-    collectParentStaticProperties(context.getParentTag(), simpleAttrs, new Function<PsiMethod, XmlAttributeDescriptor>() {
-      @Override
-      public XmlAttributeDescriptor fun(PsiMethod method) {
-        return new JavaFxSetterAttributeDescriptor(method, method.getContainingClass());
-      }
-    });
+    collectParentStaticProperties(context.getParentTag(), simpleAttrs,
+                                  method -> new JavaFxSetterAttributeDescriptor(method, method.getContainingClass()));
   }
 
   protected static void collectStaticElementDescriptors(XmlTag context, List<XmlElementDescriptor> children) {
-    collectParentStaticProperties(context, children, new Function<PsiMethod, XmlElementDescriptor>() {
-      @Override
-      public XmlElementDescriptor fun(PsiMethod method) {
-        final PsiClass aClass = method.getContainingClass();
-        return new JavaFxPropertyElementDescriptor(aClass, PropertyUtil.getPropertyName(method.getName()), true);
-      }
+    collectParentStaticProperties(context, children, method -> {
+      final PsiClass aClass = method.getContainingClass();
+      return new JavaFxPropertyElementDescriptor(aClass, PropertyUtil.getPropertyName(method.getName()), true);
     });
   }
 
@@ -150,7 +145,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
             }
           });
           for (PsiMethod setter : setters) {
-            children.add(factory.fun(setter));
+            children.add(factory.apply(setter));
           }
         }
       }
@@ -229,12 +224,8 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
   }
 
   protected void collectInstanceProperties(List<XmlAttributeDescriptor> simpleAttrs) {
-    collectProperties(simpleAttrs, new Function<PsiMember, XmlAttributeDescriptor>() {
-      @Override
-      public XmlAttributeDescriptor fun(PsiMember member) {
-        return new JavaFxPropertyAttributeDescriptor(member instanceof PsiMethod ? PropertyUtil.getPropertyName(member) : member.getName(), myPsiClass);
-      }
-    }, true);
+    collectProperties(simpleAttrs,
+                      member -> new JavaFxPropertyAttributeDescriptor(member instanceof PsiMethod ? PropertyUtil.getPropertyName(member) : member.getName(), myPsiClass), true);
   }
 
   private <T> void collectProperties(final List<T> children, final Function<PsiMember, T> factory, final boolean acceptPrimitive) {
@@ -284,7 +275,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
       });
     if (fieldList != null) {
       for (PsiMember field : fieldList) {
-        children.add(factory.fun(field));
+        children.add(factory.apply(field));
       }
     }
   }
@@ -364,7 +355,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
   }
 
   @Override
-  public void validate(@Nonnull XmlTag context, @Nonnull ValidationHost host) {
+  public void validate(@Nonnull XmlTag context, @Nonnull consulo.xml.Validator.ValidationHost host) {
     final XmlTag parentTag = context.getParentTag();
     if (parentTag != null) {
       final XmlAttribute attribute = context.getAttribute(FxmlConstants.FX_CONTROLLER);

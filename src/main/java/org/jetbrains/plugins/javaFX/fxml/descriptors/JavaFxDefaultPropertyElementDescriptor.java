@@ -15,27 +15,32 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
-import com.intellij.codeInsight.daemon.Validator;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtil;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.psi.xml.XmlFile;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.ArrayUtil;
+import com.intellij.java.language.psi.JavaPsiFacade;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMethod;
+import com.intellij.java.language.psi.PsiParameter;
+import com.intellij.java.language.psi.util.PsiUtil;
 import com.intellij.xml.XmlAttributeDescriptor;
 import com.intellij.xml.XmlElementDescriptor;
 import com.intellij.xml.XmlElementsGroup;
 import com.intellij.xml.XmlNSDescriptor;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.project.Project;
+import consulo.util.collection.ArrayUtil;
+import consulo.xml.Validator;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +48,7 @@ import java.util.List;
 /**
  * User: anna
  */
-public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescriptor, Validator<XmlTag>{
+public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescriptor, Validator<XmlTag> {
   private final String myName;
   private final XmlTag myXmlTag;
 
@@ -112,7 +117,8 @@ public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescrip
             Collections.addAll(descriptors, attributesDescriptors);
           }
         }
-      } else {
+      }
+      else {
         final JavaFxClassBackedElementDescriptor rootTagDescriptor = getRootTagDescriptor(context);
         if (rootTagDescriptor != null) {
           Collections.addAll(descriptors, rootTagDescriptor.getAttributesDescriptors(context));
@@ -122,9 +128,10 @@ public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescrip
           final XmlElementDescriptor includedRootDescriptor = includedRoot.getDescriptor();
           if (includedRootDescriptor instanceof JavaFxClassBackedElementDescriptor) {
             ((JavaFxClassBackedElementDescriptor)includedRootDescriptor).collectInstanceProperties(descriptors);
-          } 
+          }
           else if (includedRootDescriptor instanceof JavaFxDefaultPropertyElementDescriptor) {
-            final JavaFxClassBackedElementDescriptor includedRootTagDescriptor = ((JavaFxDefaultPropertyElementDescriptor)includedRootDescriptor).getRootTagDescriptor(includedRoot);
+            final JavaFxClassBackedElementDescriptor includedRootTagDescriptor =
+              ((JavaFxDefaultPropertyElementDescriptor)includedRootDescriptor).getRootTagDescriptor(includedRoot);
             if (includedRootTagDescriptor != null) {
               includedRootTagDescriptor.collectInstanceProperties(descriptors);
             }
@@ -156,7 +163,7 @@ public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescrip
     }
     return null;
   }
-  
+
   @Nullable
   @Override
   public XmlAttributeDescriptor getAttributeDescriptor(@NonNls String attributeName, @Nullable XmlTag context) {
@@ -220,7 +227,9 @@ public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescrip
       if (typeAttr != null) {
         final String rootClassName = typeAttr.getValue();
         final Project project = context.getProject();
-        final PsiClass rootClass = rootClassName != null ? JavaPsiFacade.getInstance(project).findClass(rootClassName, GlobalSearchScope.allScope(project)) : null;
+        final PsiClass
+          rootClass =
+          rootClassName != null ? JavaPsiFacade.getInstance(project).findClass(rootClassName, GlobalSearchScope.allScope(project)) : null;
         if (rootClass != null) {
           return new JavaFxClassBackedElementDescriptor(getName(), rootClass);
         }
@@ -282,14 +291,15 @@ public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescrip
   }
 
   @Override
-  public void validate(@Nonnull XmlTag context, @Nonnull ValidationHost host) {
+  public void validate(@Nonnull XmlTag context, @Nonnull consulo.xml.Validator.ValidationHost host) {
     final String contextName = context.getName();
     if (FxmlConstants.FX_ROOT.equals(contextName)) {
       if (context.getParentTag() != null) {
         host.addMessage(context.getNavigationElement(), "<fx:root> is valid only as the root node of an FXML document",
                         ValidationHost.ErrorType.ERROR);
       }
-    } else {
+    }
+    else {
       final XmlTag referencedTag = getReferencedTag(context);
       if (referencedTag != null) {
         final XmlElementDescriptor descriptor = referencedTag.getDescriptor();

@@ -15,25 +15,37 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInspection.*;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.psi.*;
-import com.intellij.psi.xml.XmlTag;
 import com.intellij.xml.XmlElementDescriptor;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.javaFX.editor.inspection.JavaFXInspectionBase;
+import consulo.language.editor.inspection.LocalInspectionToolSession;
+import consulo.language.editor.inspection.ProblemHighlightType;
+import consulo.language.editor.inspection.ProblemsHolder;
+import consulo.language.psi.PsiElementVisitor;
+import consulo.util.lang.Comparing;
+import consulo.xml.psi.XmlElementVisitor;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
+
+import javax.annotation.Nonnull;
 
 /**
  * User: anna
  */
-public class JavaFxDefaultTagInspection extends XmlSuppressableInspectionTool{
+@ExtensionImpl
+public class JavaFxDefaultTagInspection extends JavaFXInspectionBase {
+  @Nonnull
+  @Override
+  public String getDisplayName() {
+    return "Unnecessary default tag";
+  }
+
   @Nonnull
   @Override
   public PsiElementVisitor buildVisitor(final @Nonnull ProblemsHolder holder,
-                                        boolean isOnTheFly,
-                                        @Nonnull LocalInspectionToolSession session) {
+										boolean isOnTheFly,
+										@Nonnull LocalInspectionToolSession session) {
     return new XmlElementVisitor() {
       @Override
       public void visitXmlTag(XmlTag tag) {

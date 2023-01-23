@@ -17,11 +17,11 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import javax.annotation.Nonnull;
 
+import consulo.module.content.layer.ContentEntry;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.roots.ContentEntry;
-import com.intellij.openapi.roots.ModifiableRootModel;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.module.Module;
+import consulo.module.content.layer.ModifiableRootModel;
 import com.intellij.testFramework.PsiTestUtil;
 import com.intellij.testFramework.TestModuleDescriptor;
 import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor;

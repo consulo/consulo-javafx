@@ -1,25 +1,27 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.xml.XmlFile;
 import com.intellij.xml.XmlSchemaProvider;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.logging.Logger;
+import consulo.module.Module;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.xml.psi.xml.XmlFile;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.net.URL;
 
 /**
  * User: anna
  * Date: 1/10/13
  */
+@ExtensionImpl
 public class JavaFXSchemaHandler extends XmlSchemaProvider {
-  private static final Logger LOG = Logger.getInstance("#" + JavaFXSchemaHandler.class.getName());
+  private static final Logger LOG = Logger.getInstance(JavaFXSchemaHandler.class);
 
   @Override
   public boolean isAvailable(final @Nonnull XmlFile file) {
@@ -34,7 +36,7 @@ public class JavaFXSchemaHandler extends XmlSchemaProvider {
 
   private static XmlFile getReference(@Nonnull Module module) {
     final URL resource = JavaFXSchemaHandler.class.getResource("fx.xsd");
-    final VirtualFile fileByURL = VfsUtil.findFileByURL(resource);
+    final VirtualFile fileByURL = VirtualFileUtil.findFileByURL(resource);
 
     PsiFile psiFile = PsiManager.getInstance(module.getProject()).findFile(fileByURL);
     LOG.assertTrue(psiFile != null);

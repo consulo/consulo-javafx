@@ -15,28 +15,35 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.TypeConversionUtil;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ProcessingContext;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiField;
+import com.intellij.java.language.psi.PsiModifier;
+import com.intellij.java.language.psi.PsiType;
+import com.intellij.java.language.psi.util.TypeConversionUtil;
 import com.intellij.xml.XmlAttributeDescriptor;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiReferenceBase;
+import consulo.language.psi.PsiReferenceProvider;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.ProcessingContext;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.StringUtil;
+import consulo.xml.psi.XmlRecursiveElementVisitor;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
-* User: anna
-*/
+ * User: anna
+ */
 class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
   @Nonnull
   @Override
@@ -72,8 +79,9 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
       final PsiField controllerField = controllerClass != null ? controllerClass.findFieldByName(newId, false) : null;
       if (controllerField == null) {
         idReferenceBase = new JavaFxIdReferenceBase(xmlAttributeValue, fileIds, newId);
-      } else {
-        idReferenceBase = new JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef(xmlAttributeValue, controllerField, controllerClass); 
+      }
+      else {
+        idReferenceBase = new JavaFxFieldIdReferenceProvider.JavaFxControllerFieldRef(xmlAttributeValue, controllerField, controllerClass);
       }
 
       final TextRange range = idReferenceBase.getRangeInElement();
@@ -87,17 +95,18 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
           final JavaFxExpressionReferenceBase referenceBase = new JavaFxExpressionReferenceBase(xmlAttributeValue, tagClass, fieldRef);
           final TextRange textRange = referenceBase.getRangeInElement();
           referenceBase.setRangeInElement(new TextRange(endOffset + 1, textRange.getEndOffset() - 1));
-          return new PsiReference[] {idReferenceBase, referenceBase};
+          return new PsiReference[]{idReferenceBase, referenceBase};
         }
       }
-      return new PsiReference[] {idReferenceBase};
+      return new PsiReference[]{idReferenceBase};
     }
     if (startsWithDollar) {
       final JavaFxIdReferenceBase idReferenceBase = new JavaFxIdReferenceBase(xmlAttributeValue, fileIds, referencesId);
       final TextRange rangeInElement = idReferenceBase.getRangeInElement();
       idReferenceBase.setRangeInElement(new TextRange(rangeInElement.getStartOffset() + 1, rangeInElement.getEndOffset()));
       return new PsiReference[]{idReferenceBase};
-    } else {
+    }
+    else {
       final Set<String> acceptableIds = new HashSet<String>();
       if (currentTag != null) {
         final XmlTag parentTag = currentTag.getParentTag();
@@ -119,8 +128,8 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
     private final String myReferencesId;
 
     private JavaFxIdReferenceBase(XmlAttributeValue element,
-                                  Map<String, XmlAttributeValue> fileIds, 
-                                  Set<String> acceptableIds, 
+                                  Map<String, XmlAttributeValue> fileIds,
+                                  Set<String> acceptableIds,
                                   String referencesId) {
       super(element);
       myFileIds = fileIds;
@@ -189,7 +198,8 @@ class JavaFxComponentIdReferenceProvider extends PsiReferenceProvider {
       for (PsiField field : myTagClass.getAllFields()) {
         if (field.hasModifierProperty(PsiModifier.STATIC)) continue;
         final PsiType fieldType = field.getType();
-        if (TypeConversionUtil.isAssignable(type, fieldType) || (propertyType != null && TypeConversionUtil.isAssignable(propertyType, fieldType))) {
+        if (TypeConversionUtil.isAssignable(type, fieldType) || (propertyType != null && TypeConversionUtil.isAssignable(propertyType,
+                                                                                                                         fieldType))) {
           objs.add(field);
         }
       }

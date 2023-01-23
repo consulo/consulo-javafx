@@ -1,12 +1,13 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.ide.highlighter.XmlFileType;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.FileTypeConsumer;
-import com.intellij.openapi.fileTypes.FileTypeFactory;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.file.FileTypeManager;
+import consulo.language.psi.PsiFile;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.fileType.FileType;
+import consulo.virtualFileSystem.fileType.FileTypeConsumer;
+import consulo.virtualFileSystem.fileType.FileTypeFactory;
+import consulo.xml.ide.highlighter.XmlFileType;
 
 import javax.annotation.Nonnull;
 
@@ -14,6 +15,7 @@ import javax.annotation.Nonnull;
  * User: anna
  * Date: 1/8/13
  */
+@ExtensionImpl
 public class JavaFxFileTypeFactory extends FileTypeFactory {
   public static final String FXML_EXTENSION = "fxml";
 

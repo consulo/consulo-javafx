@@ -5,40 +5,14 @@
 	<vendor>JetBrains</vendor>
 	<description>This plugin provides JavaFX2 support.</description>
 	<depends>consulo.java</depends>
-	<depends>com.intellij.properties</depends>
 	<depends>com.intellij.xml</depends>
 	<tags>
 		<tag>ui.framework</tag>
 	</tags>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<fileTypeFactory implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory"/>
-		<xml.xmlExtension implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxXmlExtension"/>
-		<xml.fileNSInfoProvider implementation="org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider"/>
-		<metaDataContributor implementation="org.jetbrains.plugins.javaFX.fxml.JavaFXMetaDataContributor"/>
-		<xml.schemaProvider implementation="org.jetbrains.plugins.javaFX.fxml.JavaFXSchemaHandler"/>
-		<psi.referenceContributor implementation="org.jetbrains.plugins.javaFX.fxml.refs.FxmlReferencesContributor"/>
-		<codeInsight.unresolvedReferenceQuickFixProvider implementation="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxEventHandlerReference$JavaFxUnresolvedReferenceHandlerQuickfixProvider"/>
-		<codeInsight.unresolvedReferenceQuickFixProvider implementation="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxTagNameReference$JavaFxUnresolvedTagRefsProvider"/>
-		<multiHostInjector forClass="com.intellij.psi.xml.XmlText" implementationClass="org.jetbrains.plugins.javaFX.fxml.ScriptLanguageInjector"/>
-		<annotator language="XML" implementationClass="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxAnnotator"/>
-		<codeInsight.lineMarkerProvider language="JAVA" implementationClass="org.jetbrains.plugins.javaFX.fxml.codeInsight.JavaFxRelatedItemLineMarkerProvider"/>
-		<codeInsight.lineMarkerProvider language="Groovy" implementationClass="org.jetbrains.plugins.javaFX.fxml.codeInsight.JavaFxRelatedItemLineMarkerProvider"/>
-		<useScopeEnlarger implementation="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxScopeEnlarger"/>
 
-		<localInspection language="XML" shortName="JavaFxDefaultTag" displayName="Unnecessary default tag" groupName="JavaFX"
-						 enabledByDefault="true" level="WARNING" implementationClass="org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxDefaultTagInspection"/>
-		<localInspection language="XML" implementationClass="org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection"
-						 displayName="Unresolved fx:id attribute reference"
-						 enabledByDefault="true" level="WARNING" groupName="JavaFX"/>
-		<localInspection language="XML" shortName="JavaFxUnusedImports" implementationClass="org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnusedImportsInspection"
-						 enabledByDefault="true" level="WARNING" displayName="JavaFX unused imports" groupName="JavaFX"/>
-
-		<applicationService serviceInterface="org.jetbrains.plugins.javaFX.JavaFxSettings" serviceImplementation="org.jetbrains.plugins.javaFX.JavaFxSettings"/>
 		<applicationConfigurable key="javafx" parentId="editor" displayName="JavaFX" instance="org.jetbrains.plugins.javaFX.JavaFxSettingsConfigurable"/>
-		<fileBasedIndex implementation="org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex"/>
-		<fileBasedIndex implementation="org.jetbrains.plugins.javaFX.JavaFxIdsIndex"/>
-		<fileBasedIndex implementation="org.jetbrains.plugins.javaFX.JavaFxCustomComponentsIndex"/>
 		<intentionAction>
 			<className>org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions.JavaFxCollapseSubTagToAttributeIntention</className>
 			<category>JavaFX</category>
@@ -47,28 +21,14 @@
 			<className>org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions.JavaFxExpandAttributeIntention</className>
 			<category>JavaFX</category>
 		</intentionAction>
-		<lang.importOptimizer language="XML" implementationClass="org.jetbrains.plugins.javaFX.fxml.codeInsight.JavaFxImportsOptimizer" order="before XML"/>
-		<psi.referenceContributor implementation="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxReferencesContributor"/>
-		<packaging.artifactPropertiesProvider implementation="org.jetbrains.plugins.javaFX.packaging.JavaFxArtifactPropertiesProvider"/>
-		<packaging.artifactType implementation="org.jetbrains.plugins.javaFX.packaging.JavaFxApplicationArtifactType"/>
-		<packaging.artifactType implementation="org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType"/>
-		<packaging.artifactPropertiesProvider implementation="org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider"/>
-		<implicitUsageProvider implementation="org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxImplicitUsageProvider"/>
-		<referencesSearch implementation="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxControllerFieldSearcher"/>
-		<renamePsiElementProcessor implementation="org.jetbrains.plugins.javaFX.JavaFxRenameAttributeProcessor" order="before xmlAttribute"/>
-		<completion.contributor implementationClass="org.jetbrains.plugins.javaFX.fxml.refs.JavaFxCompletionContributor" language="XML" order="before xmlNonFirst"/>
+
 	</extensions>
 
 	<extensions defaultExtensionNs="consulo.java">
-		<getterSetterProvider implementation="org.jetbrains.plugins.javaFX.codeInsight.JavaFxGetterSetterPrototypeProvider"/>
 
 		<manifest.headerParser key="JavaFX-Application-Class" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
 		<manifest.headerParser key="JavaFX-Version" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
 		<manifest.headerParser key="JavaFX-Class-Path" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
-		<manifest.headerParser key="Main-Class" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
-		<manifest.headerParser key="implementation-vendor" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
-		<manifest.headerParser key="implementation-title" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
-		<manifest.headerParser key="implementation-version" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
 		<manifest.headerParser key="JavaFX-Preloader-Class" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
 		<manifest.headerParser key="JavaFX-Fallback-Class" implementationClass="org.osmorc.manifest.lang.headerparser.impl.GenericComplexHeaderParser"/>
 	</extensions>

@@ -15,22 +15,22 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
-import javax.annotation.Nullable;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
+import consulo.compiler.artifact.Artifact;
+import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.util.lang.Comparing;
 import org.jetbrains.plugins.javaFX.packaging.JavaFxApplicationClassBrowser;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.packaging.artifacts.Artifact;
-import com.intellij.packaging.ui.ArtifactPropertiesEditor;
+
+import javax.annotation.Nullable;
+import javax.swing.*;
 
 /**
  * User: anna
  * Date: 3/19/13
  */
-public class JavaFxPreloaderArtifactPropertiesEditor extends ArtifactPropertiesEditor {
+public class JavaFxPreloaderArtifactPropertiesEditor extends ArtifactPropertiesEditor
+{
   private final JavaFxPreloaderArtifactProperties myProperties;
   private JPanel myPanel;
   private TextFieldWithBrowseButton myPreloaderTf;

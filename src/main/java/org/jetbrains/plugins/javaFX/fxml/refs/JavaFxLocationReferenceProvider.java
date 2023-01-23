@@ -15,17 +15,17 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.util.ArrayUtilRt;
-import com.intellij.util.ProcessingContext;
-import javax.annotation.Nonnull;
+import consulo.language.file.FileTypeManager;
+import consulo.language.psi.*;
+import consulo.language.psi.path.FileReferenceSet;
+import consulo.language.util.ProcessingContext;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.function.Condition;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.fileType.FileType;
+import consulo.xml.psi.xml.XmlAttributeValue;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,23 +65,31 @@ class JavaFxLocationReferenceProvider extends PsiReferenceProvider {
         List<PsiReference> refs = new ArrayList<PsiReference>();
         while (true) {
           endIdx = value.indexOf(",", startIdx);
-          Collections.addAll(refs, collectRefs(element, endIdx >= 0 ? value.substring(startIdx, endIdx) : value.substring(startIdx), startIdx + 1, myAcceptedFileTypes));
+          Collections.addAll(refs,
+                             collectRefs(element,
+                                         endIdx >= 0 ? value.substring(startIdx, endIdx) : value.substring(startIdx),
+                                         startIdx + 1,
+                                         myAcceptedFileTypes));
           startIdx = endIdx + 1;
           if (endIdx < 0) {
             break;
           }
         }
         return refs.toArray(new PsiReference[refs.size()]);
-      } else {
+      }
+      else {
         return collectRefs(element, value, 1, myAcceptedFileTypes);
       }
     }
   }
 
-  private static PsiReference[] collectRefs(PsiElement element, String value, final int startInElement, final FileType... acceptedFileTypes) {
-    final FileReferenceSet set = new FileReferenceSet(value, element, startInElement, null, true){
+  private static PsiReference[] collectRefs(PsiElement element,
+                                            String value,
+                                            final int startInElement,
+                                            final FileType... acceptedFileTypes) {
+    final FileReferenceSet set = new FileReferenceSet(value, element, startInElement, null, true) {
       @Override
-      protected Condition<PsiFileSystemItem> getReferenceCompletionFilter() {
+      public consulo.util.lang.function.Condition<PsiFileSystemItem> getReferenceCompletionFilter() {
         return new Condition<PsiFileSystemItem>() {
           @Override
           public boolean value(PsiFileSystemItem item) {
@@ -89,7 +97,7 @@ class JavaFxLocationReferenceProvider extends PsiReferenceProvider {
             final VirtualFile virtualFile = item.getVirtualFile();
             if (virtualFile == null) return false;
             final FileType fileType = virtualFile.getFileType();
-            return ArrayUtilRt.find(acceptedFileTypes, fileType) >= 0;
+            return ArrayUtil.find(acceptedFileTypes, fileType) >= 0;
           }
         };
       }

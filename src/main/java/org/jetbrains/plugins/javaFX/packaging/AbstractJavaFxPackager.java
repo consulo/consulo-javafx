@@ -15,15 +15,16 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import com.intellij.execution.CommandLineUtil;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ArrayUtilRt;
-import com.intellij.util.Base64Converter;
-import com.intellij.util.PathUtilRt;
-import com.intellij.util.io.ZipUtil;
 import consulo.container.boot.ContainerPathManager;
+import consulo.ide.util.ZipUtil;
+import consulo.logging.Logger;
+import consulo.process.CommandLineUtil;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.io.FilePermissionCopier;
+import consulo.util.io.FileUtil;
+import consulo.util.io.PathUtil;
+import consulo.util.io.StreamUtil;
+import consulo.util.lang.StringUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -38,12 +40,12 @@ import java.util.List;
  * Date: 3/12/13
  */
 public abstract class AbstractJavaFxPackager {
-  private static final Logger LOG = Logger.getInstance("#" + AbstractJavaFxPackager.class.getName());
+  private static final Logger LOG = Logger.getInstance(AbstractJavaFxPackager.class);
   private static final String JB_JFX_JKS = "jb-jfx.jks";
 
   //artifact description
   protected String getArtifactRootName() {
-    return PathUtilRt.getFileName(getArtifactOutputFilePath());
+    return PathUtil.getFileName(getArtifactOutputFilePath());
   }
   
   protected abstract String getArtifactName();
@@ -134,12 +136,12 @@ public abstract class AbstractJavaFxPackager {
       final String[] generatedItems = new String[] {JB_JFX_JKS, zipPath + ".jar", zipPath + ".jnlp", zipPath + ".html"};
       for (File file : outFiles) {
         final String fileName = file.getName();
-        if (ArrayUtilRt.find(generatedItems, fileName) < 0) {
+        if (ArrayUtil.find(generatedItems, fileName) < 0) {
           final File destination = new File(tempUnzippedArtifactOutput, fileName);
           if (file.isFile()) {
-            FileUtil.copy(file, destination);
+            FileUtil.copy(file, destination, FilePermissionCopier.BY_NIO2);
           } else {
-            FileUtil.copyDir(file, destination, true);
+            FileUtil.copyDir(file, destination, FilePermissionCopier.BY_NIO2);
           }
         }
       }
@@ -227,7 +229,7 @@ public abstract class AbstractJavaFxPackager {
   private void copyResultsToArtifactsOutput(final File tempDirectory) {
     try {
       final File resultedJar = new File(getArtifactOutputPath());
-      FileUtil.copyDir(tempDirectory, resultedJar);
+      FileUtil.copyDir(tempDirectory, resultedJar, FilePermissionCopier.BY_NIO2);
     }
     catch (IOException e) {
       LOG.info(e);
@@ -248,13 +250,13 @@ public abstract class AbstractJavaFxPackager {
   private int startProcess(List<String> commands) {
     try {
       final Process process = new ProcessBuilder(CommandLineUtil.toCommandLine(commands)).start();
-      final String message = new String(FileUtil.loadBytes(process.getErrorStream()));
+      final String message = new String(StreamUtil.loadFromStream(process.getErrorStream()));
       if (!StringUtil.isEmptyOrSpaces(message)) {
         registerJavaFxPackagerError(message);
       }
       final int result = process.waitFor();
       if (result != 0) {
-        final String explanationMessage = new String(FileUtil.loadBytes(process.getInputStream()));
+        final String explanationMessage = new String(StreamUtil.loadFromStream(process.getInputStream()));
         if (!StringUtil.isEmptyOrSpaces(explanationMessage)) {
           registerJavaFxPackagerError(explanationMessage);
         }
@@ -330,7 +332,7 @@ public abstract class AbstractJavaFxPackager {
   }
 
   private String getKeypass(boolean selfSigning) {
-    return selfSigning ? "keypass" : Base64Converter.decode(getKeypass());
+    return selfSigning ? "keypass" : new String(Base64.getDecoder().decode(getKeypass()));
   }
 
   private String getKeystore(boolean selfSigning) {
@@ -338,7 +340,7 @@ public abstract class AbstractJavaFxPackager {
   }
 
   private String getStorepass(boolean selfSigning) {
-    return selfSigning ? "storepass" : Base64Converter.decode(getStorepass());
+    return selfSigning ? "storepass" : new String(Base64.getDecoder().decode(getStorepass()));
   }
 
   public abstract String getKeypass();

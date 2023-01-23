@@ -15,40 +15,35 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.XmlElementFactory;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
+import consulo.codeEditor.Editor;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.intention.PsiElementBaseIntentionAction;
+import consulo.language.editor.intention.SyntheticIntentionAction;
+import consulo.language.psi.PsiElement;
+import consulo.language.util.IncorrectOperationException;
+import consulo.project.Project;
+import consulo.xml.psi.XmlElementFactory;
+import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+
+import javax.annotation.Nonnull;
 
 /**
  * User: anna
  * Date: 4/1/13
  */
-public class JavaFxWrapWithDefineIntention extends PsiElementBaseIntentionAction {
+public class JavaFxWrapWithDefineIntention extends PsiElementBaseIntentionAction implements SyntheticIntentionAction {
   private final XmlTag myTag;
   private final String myId;
 
   public JavaFxWrapWithDefineIntention(@Nonnull XmlTag tag, @Nonnull String id) {
     myTag = tag;
     myId = id;
-  }
-
-  @Nonnull
-  @Override
-  public String getFamilyName() {
-    return "Wrap with fx:define";
+    setText("Wrap \"" + myId + "\" with fx:define");
   }
 
   @Override
   public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
-    setText("Wrap \"" + myId + "\" with fx:define");
     return myTag.isValid();
   }
 

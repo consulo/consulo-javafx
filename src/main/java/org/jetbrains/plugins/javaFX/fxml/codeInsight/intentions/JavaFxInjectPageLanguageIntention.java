@@ -15,27 +15,28 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.ide.highlighter.XmlFileType;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.OrderEnumerator;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.PsiParserFacade;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.xml.XmlDocument;
-import com.intellij.psi.xml.XmlFile;
-import com.intellij.psi.xml.XmlProcessingInstruction;
-import com.intellij.psi.xml.XmlProlog;
-import com.intellij.ui.components.JBList;
-import com.intellij.util.IncorrectOperationException;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.EditorPopupHelper;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.WriteCommandAction;
+import consulo.language.editor.intention.PsiElementBaseIntentionAction;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFileFactory;
+import consulo.language.psi.PsiParserFacade;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
 import consulo.logging.Logger;
-import consulo.util.nodep.classloader.UrlClassLoader;
+import consulo.module.content.layer.OrderEnumerator;
+import consulo.project.Project;
+import consulo.ui.ex.popup.IPopupChooserBuilder;
+import consulo.ui.ex.popup.JBPopup;
+import consulo.ui.ex.popup.JBPopupFactory;
+import consulo.util.io.FileUtil;
+import consulo.xml.ide.highlighter.XmlFileType;
+import consulo.xml.psi.xml.XmlDocument;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlProcessingInstruction;
+import consulo.xml.psi.xml.XmlProlog;
 
 import javax.annotation.Nonnull;
 import javax.script.ScriptEngine;
@@ -44,6 +45,7 @@ import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 /**
@@ -52,6 +54,10 @@ import java.util.*;
 */
 public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAction {
   public static final Logger LOG = Logger.getInstance(JavaFxInjectPageLanguageIntention.class.getName());
+
+  public JavaFxInjectPageLanguageIntention() {
+    setText("Specify page language");
+  }
 
   private static Set<String> getAvailableLanguages(Project project) {
     final List<ScriptEngineFactory> engineFactories = new ScriptEngineManager(composeUserClassLoader(project)).getEngineFactories();
@@ -68,7 +74,7 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
     return null;
   }
 
-  private static UrlClassLoader composeUserClassLoader(Project project) {
+  private static URLClassLoader composeUserClassLoader(Project project) {
     final List<URL> urls = new ArrayList<URL>();
     final List<String> list = OrderEnumerator.orderEntries(project).recursively().runtimeOnly().getPathsList().getPathList();
     for (String path : list) {
@@ -80,11 +86,12 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
       }
     }
 
-    return UrlClassLoader.build().urls(urls).get();
+    return new URLClassLoader(urls.toArray(URL[]::new));
   }
 
   @Override
-  public void invoke(@Nonnull final Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
+  public void invoke(@Nonnull final Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException
+  {
     if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
     final XmlFile containingFile = (XmlFile)element.getContainingFile();
 
@@ -92,19 +99,16 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
     if (availableLanguages.size() == 1) {
       registerPageLanguage(project, containingFile, availableLanguages.iterator().next());
     } else {
-      final JBList list = new JBList(availableLanguages);
-      JBPopupFactory.getInstance().createListPopupBuilder(list)
-        .setItemChoosenCallback(new Runnable() {
-          @Override
-          public void run() {
-            registerPageLanguage(project, containingFile, (String)list.getSelectedValue());
-          }
-        }).createPopup().showInBestPositionFor(editor);
+      IPopupChooserBuilder<String> builder = JBPopupFactory.getInstance().createPopupChooserBuilder(List.copyOf(availableLanguages));
+      builder.setItemChosenCallback(s -> registerPageLanguage(project, containingFile, (String)s));
+      JBPopup popup = builder.createPopup();
+
+      EditorPopupHelper.getInstance().showPopupInBestPositionFor(editor, popup);
     }
   }
 
   private void registerPageLanguage(final Project project, final XmlFile containingFile, final String languageName) {
-    new WriteCommandAction.Simple(project, getFamilyName()) {
+    new WriteCommandAction.Simple(project, getText()) {
       @Override
       protected void run() {
         final PsiFileFactory factory = PsiFileFactory.getInstance(project);
@@ -120,7 +124,7 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
             final XmlProlog xmlProlog = xmlDocument.getProlog();
             if (xmlProlog != null) {
               final PsiElement element = xmlProlog.addBefore(instructions.iterator().next(), xmlProlog.getFirstChild());
-              xmlProlog.addAfter(PsiParserFacade.SERVICE.getInstance(project).createWhiteSpaceFromText("\n\n"), element);
+              xmlProlog.addAfter(PsiParserFacade.getInstance(project).createWhiteSpaceFromText("\n\n"), element);
             }
           }
         }
@@ -130,14 +134,7 @@ public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAc
 
   @Override
   public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
-    setText(getFamilyName());
     return element.isValid();
-  }
-
-  @Nonnull
-  @Override
-  public String getFamilyName() {
-    return "Specify page language";
   }
 
   @Override

@@ -15,22 +15,26 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.psi.*;
-import com.intellij.psi.util.InheritanceUtil;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.util.ProcessingContext;
+import com.intellij.java.language.psi.PsiClassType;
+import com.intellij.java.language.psi.PsiField;
+import com.intellij.java.language.psi.util.InheritanceUtil;
 import com.intellij.xml.XmlAttributeDescriptor;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiReferenceProvider;
+import consulo.language.util.ProcessingContext;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyAttributeDescriptor;
 
+import javax.annotation.Nonnull;
+
 /**
-* User: anna
-* Date: 3/7/13
-*/
+ * User: anna
+ * Date: 3/7/13
+ */
 class JavaFxColorReferenceProvider extends PsiReferenceProvider {
   @Nonnull
   @Override
@@ -46,7 +50,7 @@ class JavaFxColorReferenceProvider extends PsiReferenceProvider {
           final PsiField field = (PsiField)declaration;
           final PsiClassType propertyClassType = JavaFxPsiUtil.getPropertyClassType(field);
           if (propertyClassType != null && InheritanceUtil.isInheritor(propertyClassType, JavaFxCommonClassNames.JAVAFX_SCENE_PAINT)) {
-            return new PsiReference[] {new JavaFxColorReference(attributeValue)};
+            return new PsiReference[]{new JavaFxColorReference(attributeValue)};
           }
         }
       }

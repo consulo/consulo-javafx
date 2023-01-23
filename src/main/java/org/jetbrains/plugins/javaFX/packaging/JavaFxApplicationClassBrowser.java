@@ -15,26 +15,26 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import com.intellij.execution.JavaExecutionUtil;
-import com.intellij.execution.ui.ClassBrowser;
-import com.intellij.ide.util.ClassFilter;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.packaging.artifacts.Artifact;
-import com.intellij.packaging.impl.artifacts.ArtifactUtil;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.InheritanceUtil;
+import com.intellij.java.execution.JavaExecutionUtil;
+import com.intellij.java.execution.impl.ui.ClassBrowser;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.util.InheritanceUtil;
+import com.intellij.java.language.util.ClassFilter;
+import consulo.application.ApplicationManager;
+import consulo.application.util.function.Computable;
+import consulo.compiler.artifact.Artifact;
+import consulo.compiler.artifact.ArtifactUtil;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.module.Module;
+import consulo.project.Project;
 
 import java.util.Collections;
 import java.util.Set;
 
 /**
-* User: anna
-* Date: 3/19/13
-*/
+ * User: anna
+ * Date: 3/19/13
+ */
 public class JavaFxApplicationClassBrowser extends ClassBrowser {
 
   private final Artifact myArtifact;
@@ -74,7 +74,8 @@ public class JavaFxApplicationClassBrowser extends ClassBrowser {
     final Set<Module> modules = ApplicationManager.getApplication().runReadAction(new Computable<Set<Module>>() {
       @Override
       public Set<Module> compute() {
-        return ArtifactUtil.getModulesIncludedInArtifacts(Collections.singletonList(myArtifact), getProject());
+        return ArtifactUtil.getModulesIncludedInArtifacts(Collections.singletonList(
+          myArtifact), getProject());
       }
     });
     for (Module module : modules) {

@@ -15,26 +15,25 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.indexing.DataIndexer;
-import com.intellij.util.indexing.FileContent;
-import com.intellij.util.xml.NanoXmlUtil;
-import net.n3.nanoxml.IXMLBuilder;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.index.io.DataIndexer;
+import consulo.language.psi.stub.FileContent;
+import consulo.module.content.ProjectRootManager;
+import consulo.project.Project;
+import consulo.util.xml.fastReader.IXMLBuilder;
+import consulo.util.xml.fastReader.NanoXmlUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.StringReader;
 import java.util.*;
 
 /**
-* User: anna
-* Date: 3/14/13
-*/
+ * User: anna
+ * Date: 3/14/13
+ */
 public class FxmlDataIndexer implements DataIndexer<String, Set<String>, FileContent> {
   @Override
   @Nonnull
@@ -58,13 +57,15 @@ public class FxmlDataIndexer implements DataIndexer<String, Set<String>, FileCon
     try {
       NanoXmlUtil.parse(new StringReader(content), handler);
     }
-    catch (StopException ignore) {}
+    catch (StopException ignore) {
+    }
     final VirtualFile sourceRoot = ProjectRootManager.getInstance(project).getFileIndex().getSourceRootForFile(file);
     endDocument(path, sourceRoot, map, handler);
     return map;
   }
-  
-  protected void endDocument(String math, VirtualFile sourceRoot, Map<String, Set<String>> map, IXMLBuilder handler){}
+
+  protected void endDocument(String math, VirtualFile sourceRoot, Map<String, Set<String>> map, IXMLBuilder handler) {
+  }
 
   protected IXMLBuilder createParseHandler(final String path, final Map<String, Set<String>> map) {
     return new NanoXmlUtil.IXMLBuilderAdapter() {
@@ -82,5 +83,6 @@ public class FxmlDataIndexer implements DataIndexer<String, Set<String>, FileCon
     };
   }
 
-  protected static class StopException extends RuntimeException {}
+  protected static class StopException extends RuntimeException {
+  }
 }

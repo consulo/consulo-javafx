@@ -1,37 +1,42 @@
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.XmlPatterns.xmlTag;
+import com.intellij.xml.XmlElementDescriptor;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.Language;
+import consulo.language.editor.completion.*;
+import consulo.language.editor.completion.lookup.InsertionContext;
+import consulo.language.editor.completion.lookup.LookupElement;
+import consulo.language.editor.completion.lookup.LookupElementBuilder;
+import consulo.language.psi.PsiReference;
+import consulo.language.util.ProcessingContext;
+import consulo.xml.codeInsight.completion.XmlTagInsertHandler;
+import consulo.xml.lang.xml.XMLLanguage;
+import consulo.xml.patterns.XmlPatterns;
+import consulo.xml.psi.impl.source.xml.TagNameVariantCollector;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlTag;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
+import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
-import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
-import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
-import com.intellij.codeInsight.completion.CompletionContributor;
-import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.codeInsight.completion.InsertionContext;
-import com.intellij.codeInsight.completion.XmlTagInsertHandler;
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.xml.TagNameVariantCollector;
-import com.intellij.psi.xml.XmlFile;
-import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.ProcessingContext;
-import com.intellij.xml.XmlElementDescriptor;
-import consulo.codeInsight.completion.CompletionProvider;
+import static consulo.language.pattern.PlatformPatterns.psiElement;
 
 /**
  * @author yole
  */
+@ExtensionImpl(order = "before xmlNonFirst")
 public class JavaFxCompletionContributor extends CompletionContributor {
   public JavaFxCompletionContributor() {
-    extend(CompletionType.BASIC, psiElement().inside(xmlTag()), new JavaFxTagCompletionContributor());
+    extend(CompletionType.BASIC, psiElement().inside(XmlPatterns.xmlTag()), new JavaFxTagCompletionContributor());
+  }
+
+  @Nonnull
+  @Override
+  public Language getLanguage() {
+    return XMLLanguage.INSTANCE;
   }
 
   private static class JavaFxTagCompletionContributor implements CompletionProvider

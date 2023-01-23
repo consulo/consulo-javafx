@@ -15,33 +15,38 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.intentions;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
-import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.util.PsiUtil;
-import com.intellij.psi.xml.*;
-import com.intellij.util.Function;
-import com.intellij.util.IncorrectOperationException;
+import com.intellij.java.language.codeInsight.daemon.impl.analysis.JavaGenericsUtil;
+import com.intellij.java.language.psi.*;
+import com.intellij.java.language.psi.util.PsiUtil;
 import com.intellij.xml.XmlAttributeDescriptor;
+import consulo.codeEditor.Editor;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.intention.PsiElementBaseIntentionAction;
+import consulo.language.psi.PsiElement;
+import consulo.language.util.IncorrectOperationException;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
+import consulo.xml.psi.XmlElementFactory;
+import consulo.xml.psi.xml.*;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultAttributeDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyAttributeDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxStaticPropertyAttributeDescriptor;
 
+import javax.annotation.Nonnull;
+
 /**
  * User: anna
  * Date: 2/22/13
  */
 public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionAction{
-  private static final Logger LOG = Logger.getInstance("#" + JavaFxExpandAttributeIntention.class.getName());
+  private static final Logger LOG = Logger.getInstance(JavaFxExpandAttributeIntention.class);
+
+  public JavaFxExpandAttributeIntention() {
+    setText("Expand attribute to tag");
+  }
 
   @Override
   public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
@@ -59,12 +64,7 @@ public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionActio
         final String typeNode = itemType.getPresentableText();
         JavaFxPsiUtil.insertImportWhenNeeded((XmlFile)attr.getContainingFile(), typeNode, itemType.getCanonicalText());
         final String[] vals = value.split(",");
-        value = StringUtil.join(vals, new Function<String, String>() {
-          @Override
-          public String fun(String s) {
-            return "<" + typeNode + " " + FxmlConstants.FX_VALUE + "=\"" + s.trim() + "\"/>";
-          }
-        }, "\n");
+        value = StringUtil.join(vals, s -> "<" + typeNode + " " + FxmlConstants.FX_VALUE + "=\"" + s.trim() + "\"/>", "\n");
       }
     }
     final XmlTag childTag = XmlElementFactory.getInstance(project).createTagFromText("<" + name + ">" + value + "</" + name + ">");
@@ -90,7 +90,8 @@ public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionActio
               tagType = parameters[0].getType();
             }
           }
-          PsiClass tagClass = PsiUtil.resolveClassInType(tagType instanceof PsiPrimitiveType ? ((PsiPrimitiveType)tagType).getBoxedType(parent) : tagType);
+          PsiClass
+            tagClass = PsiUtil.resolveClassInType(tagType instanceof PsiPrimitiveType ? ((PsiPrimitiveType)tagType).getBoxedType(parent) : tagType);
           if ((tagClass != null && JavaFxPsiUtil.isAbleToInstantiate(tagClass) == null) || descriptor instanceof JavaFxStaticPropertyAttributeDescriptor) {
             setText("Expand '" + ((XmlAttribute)parent).getName() + "' to tag");
             return true;
@@ -99,11 +100,5 @@ public class JavaFxExpandAttributeIntention extends PsiElementBaseIntentionActio
       }
     }
     return false;
-  }
-
-  @Nonnull
-  @Override
-  public String getFamilyName() {
-    return "Expand attribute to tag";
   }
 }

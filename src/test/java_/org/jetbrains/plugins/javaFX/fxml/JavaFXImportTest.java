@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
-import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import consulo.language.editor.rawHighlight.HighlightInfo;
 import com.intellij.testFramework.PsiTestUtil;
 
 public abstract class JavaFXImportTest extends DaemonAnalyzerTestCase {

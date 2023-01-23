@@ -15,31 +15,25 @@
  */
 package org.jetbrains.plugins.javaFX.codeInsight;
 
+import com.intellij.java.impl.codeInsight.generation.GetterSetterPrototypeProvider;
+import com.intellij.java.language.psi.*;
+import com.intellij.java.language.psi.codeStyle.JavaCodeStyleManager;
+import com.intellij.java.language.psi.codeStyle.VariableKind;
+import com.intellij.java.language.psi.util.InheritanceUtil;
+import com.intellij.java.language.psi.util.PropertyUtil;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.logging.Logger;
+import consulo.project.Project;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
-import com.intellij.codeInsight.generation.GetterSetterPrototypeProvider;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiCodeBlock;
-import com.intellij.psi.PsiElementFactory;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiType;
-import com.intellij.psi.PsiTypeElement;
-import com.intellij.psi.codeStyle.JavaCodeStyleManager;
-import com.intellij.psi.codeStyle.VariableKind;
-import com.intellij.psi.util.InheritanceUtil;
-import com.intellij.psi.util.PropertyUtil;
 
 /**
  * User: anna
  * Date: 3/4/13
  */
+@ExtensionImpl
 public class JavaFxGetterSetterPrototypeProvider extends GetterSetterPrototypeProvider {
-  private static final Logger LOG = Logger.getInstance("#" + JavaFxGetterSetterPrototypeProvider.class.getName());
+  private static final Logger LOG = Logger.getInstance(JavaFxGetterSetterPrototypeProvider.class);
 
   @Override
   public boolean canGeneratePrototypeFor(PsiField field) {

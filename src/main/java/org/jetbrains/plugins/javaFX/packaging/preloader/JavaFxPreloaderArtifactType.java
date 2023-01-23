@@ -15,60 +15,55 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
+import com.intellij.java.compiler.artifact.impl.artifacts.JarArtifactType;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.AllIcons;
+import consulo.compiler.artifact.ArtifactType;
+import consulo.compiler.artifact.element.CompositePackagingElement;
+import consulo.compiler.artifact.element.PackagingElementFactory;
+import consulo.compiler.artifact.element.PackagingElementOutputKind;
+import consulo.java.language.module.extension.JavaModuleExtension;
+import consulo.language.util.ModuleUtilCore;
+import consulo.module.content.layer.ModulesProvider;
+import consulo.ui.image.Image;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.module.ModuleUtil;
-import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.packaging.artifacts.ArtifactType;
-import com.intellij.packaging.elements.CompositePackagingElement;
-import com.intellij.packaging.elements.PackagingElementFactory;
-import com.intellij.packaging.elements.PackagingElementOutputKind;
-import com.intellij.packaging.impl.artifacts.JarArtifactType;
-import consulo.java.module.extension.JavaModuleExtension;
-import consulo.ui.image.Image;
 
 /**
  * User: anna
  * Date: 3/12/13
  */
-public class JavaFxPreloaderArtifactType extends ArtifactType
-{
-	public static JavaFxPreloaderArtifactType getInstance()
-	{
-		return EP_NAME.findExtension(JavaFxPreloaderArtifactType.class);
-	}
+@ExtensionImpl
+public class JavaFxPreloaderArtifactType extends ArtifactType {
+  public static JavaFxPreloaderArtifactType getInstance() {
+    return EP_NAME.findExtension(JavaFxPreloaderArtifactType.class);
+  }
 
-	@Override
-	public boolean isAvailableForAdd(@Nonnull ModulesProvider modulesProvider)
-	{
-		return ModuleUtil.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
-	}
+  @Override
+  public boolean isAvailableForAdd(@Nonnull ModulesProvider modulesProvider) {
+    return ModuleUtilCore.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
+  }
 
-	protected JavaFxPreloaderArtifactType()
-	{
-		super("javafx-preloader", "JavaFx Preloader");
-	}
+  public JavaFxPreloaderArtifactType() {
+    super("javafx-preloader", "JavaFx Preloader");
+  }
 
-	@Nonnull
-	@Override
-	public Image getIcon()
-	{
-		return AllIcons.Nodes.Artifact;
-	}
+  @Nonnull
+  @Override
+  public Image getIcon() {
+    return AllIcons.Nodes.Artifact;
+  }
 
-	@Nullable
-	@Override
-	public String getDefaultPathFor(@Nonnull PackagingElementOutputKind kind)
-	{
-		return "/";
-	}
+  @Nullable
+  @Override
+  public String getDefaultPathFor(@Nonnull PackagingElementOutputKind kind) {
+    return "/";
+  }
 
-	@Nonnull
-	@Override
-	public CompositePackagingElement<?> createRootElement(@Nonnull PackagingElementFactory factory, @Nonnull String artifactName)
-	{
-		return JarArtifactType.getInstance().createRootElement(factory, artifactName);
-	}
+  @Nonnull
+  @Override
+  public CompositePackagingElement<?> createRootElement(@Nonnull PackagingElementFactory factory, @Nonnull String artifactName) {
+    return JarArtifactType.getInstance().createRootElement(factory, artifactName);
+  }
 }

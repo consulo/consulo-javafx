@@ -15,15 +15,15 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
-import javax.annotation.Nullable;
-
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.xml.XmlElement;
-import com.intellij.util.ArrayUtil;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMethod;
 import com.intellij.xml.XmlAttributeDescriptor;
+import consulo.language.psi.PsiElement;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.StringUtil;
+import consulo.xml.psi.xml.XmlElement;
+
+import javax.annotation.Nullable;
 
 /**
  * User: anna

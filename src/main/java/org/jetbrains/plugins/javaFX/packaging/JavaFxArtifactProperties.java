@@ -15,43 +15,42 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.intellij.java.language.projectRoots.JavaSdk;
+import com.intellij.java.language.projectRoots.JavaSdkVersion;
+import consulo.application.ApplicationManager;
+import consulo.application.util.function.Computable;
+import consulo.compiler.CompileContext;
+import consulo.compiler.CompilerMessageCategory;
+import consulo.compiler.artifact.Artifact;
+import consulo.compiler.artifact.ArtifactManager;
+import consulo.compiler.artifact.ArtifactProperties;
+import consulo.compiler.artifact.ArtifactUtil;
+import consulo.compiler.artifact.element.ArchivePackagingElement;
+import consulo.compiler.artifact.element.ArtifactPackagingElement;
+import consulo.compiler.artifact.element.PackagingElement;
+import consulo.compiler.artifact.ui.ArtifactEditorContext;
+import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
+import consulo.content.bundle.Sdk;
+import consulo.java.language.module.extension.JavaModuleExtension;
+import consulo.language.util.ModuleUtilCore;
+import consulo.module.Module;
+import consulo.project.Project;
+import consulo.util.xml.serializer.XmlSerializerUtil;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactProperties;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.compiler.CompileContext;
-import com.intellij.openapi.compiler.CompilerMessageCategory;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtilCore;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.JavaSdk;
-import com.intellij.openapi.projectRoots.JavaSdkVersion;
-import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.util.Computable;
-import com.intellij.packaging.artifacts.Artifact;
-import com.intellij.packaging.artifacts.ArtifactManager;
-import com.intellij.packaging.artifacts.ArtifactProperties;
-import com.intellij.packaging.elements.PackagingElement;
-import com.intellij.packaging.impl.artifacts.ArtifactUtil;
-import com.intellij.packaging.impl.elements.ArchivePackagingElement;
-import com.intellij.packaging.impl.elements.ArtifactPackagingElement;
-import com.intellij.packaging.ui.ArtifactEditorContext;
-import com.intellij.packaging.ui.ArtifactPropertiesEditor;
-import com.intellij.util.xmlb.XmlSerializerUtil;
-import consulo.java.module.extension.JavaModuleExtension;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * User: anna
  * Date: 3/12/13
  */
 public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactProperties> {
-
   private String myTitle;
   private String myVendor;
   private String myDescription;
@@ -99,12 +98,16 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
     }
 
     if (fxCompatibleSdk == null) {
-      compileContext.addMessage(CompilerMessageCategory.ERROR, "Java version 7 or higher is required to build JavaFX package", null, -1, -1);
+      compileContext.addMessage(consulo.compiler.CompilerMessageCategory.ERROR,
+                                "Java version 7 or higher is required to build JavaFX package",
+                                null,
+                                -1,
+                                -1);
       return;
     }
 
     final JavaFxArtifactProperties properties =
-            (JavaFxArtifactProperties)artifact.getProperties(JavaFxArtifactPropertiesProvider.getInstance());
+      (JavaFxArtifactProperties)artifact.getProperties(JavaFxArtifactPropertiesProvider.getInstance());
 
     final JavaFxPackager javaFxPackager = new JavaFxPackager(artifact, properties, project) {
       @Override
@@ -324,7 +327,8 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
     protected String getArtifactOutputFilePath() {
       for (PackagingElement<?> element : myArtifact.getRootElement().getChildren()) {
         if (element instanceof ArchivePackagingElement) {
-          return myArtifact.getOutputFilePath() + File.separator + ((ArchivePackagingElement)element).getArchiveFileName();
+          return myArtifact.getOutputFilePath() + File.separator + ((ArchivePackagingElement)element)
+            .getArchiveFileName();
         }
       }
       return myArtifact.getOutputFilePath();

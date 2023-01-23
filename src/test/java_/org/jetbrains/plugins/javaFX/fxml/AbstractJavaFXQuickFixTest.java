@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.codeInsight.intention.IntentionAction;
+import consulo.language.editor.intention.IntentionAction;
 
 /**
  * User: anna

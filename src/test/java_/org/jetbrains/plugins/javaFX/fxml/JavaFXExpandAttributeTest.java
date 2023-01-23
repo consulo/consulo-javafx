@@ -19,12 +19,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
-import com.intellij.codeInsight.daemon.impl.HighlightInfo;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.codeInsight.intention.impl.ShowIntentionActionsHandler;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.psi.PsiFile;
+import consulo.codeEditor.Editor;
+import consulo.ide.impl.idea.codeInsight.intention.impl.ShowIntentionActionsHandler;
+import consulo.language.psi.PsiFile;
 import com.intellij.testFramework.PsiTestUtil;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.language.editor.rawHighlight.HighlightInfo;
 
 public abstract class JavaFXExpandAttributeTest extends DaemonAnalyzerTestCase {
   @Override
@@ -65,7 +65,7 @@ public abstract class JavaFXExpandAttributeTest extends DaemonAnalyzerTestCase {
 
     if (available) {
       assertNotNull(actionName, intentionAction);
-      assertTrue(ShowIntentionActionsHandler.chooseActionAndInvoke(file, editor, intentionAction, actionName));
+      assertTrue(consulo.ide.impl.idea.codeInsight.intention.impl.ShowIntentionActionsHandler.chooseActionAndInvoke(file, editor, intentionAction, actionName));
       checkResultByFile(getTestName(true) + "_after.fxml");
     } else {
       assertNull(intentionAction);

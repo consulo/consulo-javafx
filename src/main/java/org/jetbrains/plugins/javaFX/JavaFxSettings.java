@@ -15,24 +15,36 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import com.intellij.openapi.components.*;
-import com.intellij.util.xmlb.XmlSerializerUtil;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceAPI;
+import consulo.annotation.component.ServiceImpl;
+import consulo.component.persist.PersistentStateComponent;
+import consulo.component.persist.State;
+import consulo.component.persist.Storage;
+import consulo.component.persist.StoragePathMacros;
+import consulo.ide.ServiceManager;
+import consulo.util.xml.serializer.XmlSerializerUtil;
+import jakarta.inject.Singleton;
+
 import javax.annotation.Nullable;
 
 /**
  * User: anna
  * Date: 2/14/13
  */
+@Singleton
 @State(
-  name="JavaFxSettings",
+  name = "JavaFxSettings",
   storages = {
     @Storage(
       file = StoragePathMacros.APP_CONFIG + "/other.xml"
     )}
 )
+@ServiceAPI(ComponentScope.APPLICATION)
+@ServiceImpl
 public class JavaFxSettings implements PersistentStateComponent<JavaFxSettings> {
   public String myPathToSceneBuilder = null;
-  
+
   public static JavaFxSettings getInstance() {
     return ServiceManager.getService(JavaFxSettings.class);
   }

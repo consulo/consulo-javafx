@@ -15,24 +15,27 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.*;
-import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.psi.xml.XmlElement;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiField;
+import com.intellij.java.language.psi.PsiMethod;
+import com.intellij.java.language.psi.PsiModifier;
+import consulo.language.psi.PsiElement;
+import consulo.logging.Logger;
+import consulo.xml.psi.xml.XmlAttribute;
+import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.psi.xml.XmlElement;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * User: anna
  * Date: 1/10/13
  */
 public class JavaFxDefaultAttributeDescriptor extends JavaFxPropertyAttributeDescriptor {
-  private static final Logger LOG = Logger.getInstance("#" + JavaFxDefaultAttributeDescriptor.class.getName());
+  private static final Logger LOG = Logger.getInstance(JavaFxDefaultAttributeDescriptor.class);
 
   private String myDefaultPropertyName = null;
   public JavaFxDefaultAttributeDescriptor(String name, PsiClass psiClass) {

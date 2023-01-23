@@ -15,9 +15,9 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Pair;
+import consulo.util.lang.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

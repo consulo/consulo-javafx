@@ -17,13 +17,13 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.roots.ContentEntry;
-import com.intellij.openapi.roots.ModifiableRootModel;
+import consulo.module.Module;
 import com.intellij.testFramework.PsiTestUtil;
 import com.intellij.testFramework.TestModuleDescriptor;
 import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
+import consulo.module.content.layer.ContentEntry;
+import consulo.module.content.layer.ModifiableRootModel;
 
 /**
  * User: anna

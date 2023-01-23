@@ -1,10 +1,12 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.psi.xml.XmlFile;
-import com.intellij.psi.xml.XmlFileNSInfoProvider;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlFileNSInfoProvider;
 
 import javax.annotation.Nonnull;
 
+@ExtensionImpl
 public class JavaFxNamespaceDataProvider implements XmlFileNSInfoProvider {
   public static final String JAVAFX_NAMESPACE = "http://javafx.com/fxml";
 

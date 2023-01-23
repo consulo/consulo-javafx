@@ -15,10 +15,13 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
-import com.intellij.codeInsight.daemon.ImplicitUsageProvider;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiField;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.editor.ImplicitUsageProvider;
+import consulo.language.psi.PsiElement;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
 import org.jetbrains.plugins.javaFX.JavaFxIdsIndex;
 
@@ -29,8 +32,9 @@ import java.util.List;
  * User: anna
  * Date: 3/22/13
  */
+@ExtensionImpl
 public class JavaFxImplicitUsageProvider implements ImplicitUsageProvider {
-  
+
   @Override
   public boolean isImplicitUsage(PsiElement element) {
     return isImplicitWrite(element);

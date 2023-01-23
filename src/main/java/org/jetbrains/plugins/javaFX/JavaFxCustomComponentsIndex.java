@@ -15,35 +15,42 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.IndexNotReadyException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.Function;
-import com.intellij.util.indexing.*;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.EnumeratorStringDescriptor;
-import com.intellij.util.io.KeyDescriptor;
-import com.intellij.util.xml.NanoXmlUtil;
-import net.n3.nanoxml.IXMLBuilder;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.ApplicationManager;
+import consulo.application.dumb.IndexNotReadyException;
+import consulo.application.util.function.Computable;
+import consulo.index.io.DataIndexer;
+import consulo.index.io.EnumeratorStringDescriptor;
+import consulo.index.io.ID;
+import consulo.index.io.KeyDescriptor;
+import consulo.index.io.data.DataExternalizer;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.stub.FileBasedIndex;
+import consulo.language.psi.stub.FileBasedIndexExtension;
+import consulo.language.psi.stub.FileContent;
+import consulo.project.Project;
+import consulo.util.xml.fastReader.IXMLBuilder;
+import consulo.util.xml.fastReader.NanoXmlBuilder;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 
+import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Function;
 
+@ExtensionImpl
 public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String, Set<String>> {
 
-  @NonNls public static final ID<String, Set<String>> KEY = ID.create("javafx.custom.component");
+  @NonNls
+  public static final ID<String, Set<String>> KEY = ID.create("javafx.custom.component");
 
   private final KeyDescriptor<String> myKeyDescriptor = new EnumeratorStringDescriptor();
   private final FileBasedIndex.InputFilter myInputFilter = new JavaFxControllerClassIndex.MyInputFilter();
   private final FxmlDataIndexer myDataIndexer = new FxmlDataIndexer() {
     @Override
     protected IXMLBuilder createParseHandler(final String path, final Map<String, Set<String>> map) {
-      return new NanoXmlUtil.IXMLBuilderAdapter() {
+      return new NanoXmlBuilder() {
         public boolean myFxRootUsed = false;
 
         @Override
@@ -81,11 +88,13 @@ public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String,
     return myDataIndexer;
   }
 
+  @Nonnull
   @Override
   public DataExternalizer<Set<String>> getValueExternalizer() {
     return myDataExternalizer;
   }
 
+  @Nonnull
   @Override
   public FileBasedIndex.InputFilter getInputFilter() {
     return myInputFilter;
@@ -97,6 +106,7 @@ public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String,
     return KEY;
   }
 
+  @Nonnull
   @Override
   public KeyDescriptor<String> getKeyDescriptor() {
     return myKeyDescriptor;
@@ -131,7 +141,7 @@ public class JavaFxCustomComponentsIndex extends FileBasedIndexExtension<String,
         List<T> result = new ArrayList<T>();
         for (VirtualFile file : files) {
           if (!file.isValid()) continue;
-          final T fFile = f.fun(file);
+          final T fFile = f.apply(file);
           if (fFile != null) {
             result.add(fFile);
           }

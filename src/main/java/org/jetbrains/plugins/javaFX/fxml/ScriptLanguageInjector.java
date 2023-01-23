@@ -1,40 +1,48 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import java.util.List;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.inject.MultiHostInjector;
+import consulo.language.inject.MultiHostRegistrar;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiLanguageInjectionHost;
+import consulo.util.lang.StringUtil;
+import consulo.xml.patterns.XmlElementPattern;
+import consulo.xml.patterns.XmlPatterns;
+import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.psi.xml.XmlText;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
-import com.intellij.lang.Language;
-import com.intellij.lang.injection.MultiHostInjector;
-import com.intellij.lang.injection.MultiHostRegistrar;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.patterns.XmlElementPattern;
-import com.intellij.patterns.XmlPatterns;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiLanguageInjectionHost;
-import com.intellij.psi.xml.XmlFile;
-
+@ExtensionImpl
 public class ScriptLanguageInjector implements MultiHostInjector {
 
-	private static final XmlElementPattern.XmlTextPattern SCRIPT_PATTERN = XmlPatterns.xmlText().withParent(
-			XmlPatterns.xmlTag().withName(FxmlConstants.FX_SCRIPT));
+  private static final XmlElementPattern.XmlTextPattern SCRIPT_PATTERN = XmlPatterns.xmlText().withParent(
+    XmlPatterns.xmlTag().withName(FxmlConstants.FX_SCRIPT));
 
-	@Override
-	public void injectLanguages(@Nonnull MultiHostRegistrar multiHostRegistrar, @Nonnull PsiElement element) {
-		if (SCRIPT_PATTERN.accepts(element)) {
-			final List<String> registeredLanguages = JavaFxPsiUtil.parseInjectedLanguages((XmlFile) element.getContainingFile());
-			for (Language language : Language.getRegisteredLanguages()) {
-				for (String registeredLanguage : registeredLanguages) {
-					if (StringUtil.equalsIgnoreCase(language.getID(), registeredLanguage)) {
-						multiHostRegistrar.startInjecting(language)
-								.addPlace(null, null, (PsiLanguageInjectionHost) element,
-										TextRange.from(0, element.getTextLength() - 1))
-								.doneInjecting();
-						break;
-					}
-				}
-			}
-		}
-	}
+  @Nonnull
+  @Override
+  public Class<? extends PsiElement> getElementClass() {
+    return XmlText.class;
+  }
+
+  @Override
+  public void injectLanguages(@Nonnull MultiHostRegistrar multiHostRegistrar, @Nonnull PsiElement element) {
+    if (SCRIPT_PATTERN.accepts(element)) {
+      final List<String> registeredLanguages = JavaFxPsiUtil.parseInjectedLanguages((XmlFile)element.getContainingFile());
+      for (Language language : Language.getRegisteredLanguages()) {
+        for (String registeredLanguage : registeredLanguages) {
+          if (StringUtil.equalsIgnoreCase(language.getID(), registeredLanguage)) {
+            multiHostRegistrar.startInjecting(language)
+                              .addPlace(null, null, (PsiLanguageInjectionHost)element,
+                                        TextRange.from(0, element.getTextLength() - 1))
+                              .doneInjecting();
+            break;
+          }
+        }
+      }
+    }
+  }
 }

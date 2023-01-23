@@ -15,11 +15,11 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.util.PsiUtil;
+import com.intellij.java.language.psi.PsiClass;
+import com.intellij.java.language.psi.PsiMethod;
+import com.intellij.java.language.psi.PsiParameter;
+import com.intellij.java.language.psi.util.PsiUtil;
+import consulo.language.psi.PsiElement;
 
 /**
  * User: anna

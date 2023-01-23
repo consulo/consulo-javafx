@@ -15,42 +15,42 @@
  */
 package org.jetbrains.plugins.javaFX.actions;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
+import consulo.application.CommonBundle;
+import consulo.application.util.SystemInfo;
+import consulo.fileChooser.IdeaFileChooser;
+import consulo.java.execution.configurations.OwnJavaParameters;
+import consulo.language.editor.CommonDataKeys;
+import consulo.language.util.ModuleUtilCore;
+import consulo.logging.Logger;
+import consulo.module.Module;
+import consulo.process.PathEnvironmentVariableUtil;
+import consulo.process.ProcessHandler;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.project.Project;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.Presentation;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.plugins.javaFX.JavaFxSettings;
 import org.jetbrains.plugins.javaFX.JavaFxSettingsConfigurable;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-import com.intellij.CommonBundle;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.JavaParameters;
-import com.intellij.execution.configurations.PathEnvironmentVariableUtil;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtilCore;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ArrayUtil;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: anna
  * Date: 2/14/13
  */
 public class OpenInSceneBuilderAction extends AnAction {
-  private static final Logger LOG = Logger.getInstance("#" + OpenInSceneBuilderAction.class.getName());
+  private static final Logger LOG = Logger.getInstance(OpenInSceneBuilderAction.class);
   public static final String ORACLE = "Oracle";
 
   @Override
@@ -59,28 +59,30 @@ public class OpenInSceneBuilderAction extends AnAction {
     LOG.assertTrue(virtualFile != null);
     final String path = virtualFile.getPath();
 
+    Project project = e.getData(Project.KEY);
     final JavaFxSettings settings = JavaFxSettings.getInstance();
     String pathToSceneBuilder = settings.getPathToSceneBuilder();
-    if (StringUtil.isEmptyOrSpaces(settings.getPathToSceneBuilder())){
-      final VirtualFile sceneBuilderFile = FileChooser.chooseFile(JavaFxSettingsConfigurable.createSceneBuilderDescriptor(), e.getProject(), getPredefinedPath());
+    if (StringUtil.isEmptyOrSpaces(settings.getPathToSceneBuilder())) {
+      final VirtualFile sceneBuilderFile = IdeaFileChooser.chooseFile(JavaFxSettingsConfigurable.createSceneBuilderDescriptor(), project,
+                                                                      getPredefinedPath());
       if (sceneBuilderFile == null) return;
 
       pathToSceneBuilder = sceneBuilderFile.getPath();
       settings.setPathToSceneBuilder(FileUtil.toSystemIndependentName(pathToSceneBuilder));
     }
 
-    final Project project = getEventProject(e);
     if (project != null) {
       final Module module = ModuleUtilCore.findModuleForFile(virtualFile, project);
       if (module != null) {
         try {
-          final JavaParameters javaParameters = new JavaParameters();
-          javaParameters.configureByModule(module, JavaParameters.JDK_AND_CLASSES);
+          final OwnJavaParameters javaParameters = new OwnJavaParameters();
+          javaParameters.configureByModule(module, OwnJavaParameters.JDK_AND_CLASSES);
 
           final File sceneBuilderLibsFile;
           if (SystemInfo.isMac) {
             sceneBuilderLibsFile = new File(new File(pathToSceneBuilder, "Contents"), "Java");
-          } else if (SystemInfo.isWindows) {
+          }
+          else if (SystemInfo.isWindows) {
             File sceneBuilderRoot = new File(pathToSceneBuilder);
             File sceneBuilderRootDir = sceneBuilderRoot.getParentFile();
             if (sceneBuilderRootDir == null) {
@@ -103,7 +105,8 @@ public class OpenInSceneBuilderAction extends AnAction {
             else {
               sceneBuilderLibsFile = null;
             }
-          } else {
+          }
+          else {
             sceneBuilderLibsFile = new File(new File(pathToSceneBuilder).getParent(), "app");
           }
           if (sceneBuilderLibsFile != null) {
@@ -115,9 +118,8 @@ public class OpenInSceneBuilderAction extends AnAction {
               javaParameters.setMainClass("com.oracle.javafx.authoring.Main");
               javaParameters.getProgramParametersList().add(path);
 
-              final OSProcessHandler processHandler = javaParameters.createOSProcessHandler();
-              final String commandLine = processHandler.getCommandLine();
-              LOG.info("scene builder command line: " + commandLine);
+              final ProcessHandler processHandler = javaParameters.createOSProcessHandler();
+              LOG.info("scene builder command line: " + javaParameters.toCommandLine());
               processHandler.startNotify();
               return;
             }
@@ -150,9 +152,9 @@ public class OpenInSceneBuilderAction extends AnAction {
     presentation.setEnabled(false);
     presentation.setVisible(false);
     final VirtualFile virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE);
-    if (virtualFile != null && 
-        JavaFxFileTypeFactory.isFxml(virtualFile) &&
-        e.getProject() != null) {
+    if (virtualFile != null &&
+      JavaFxFileTypeFactory.isFxml(virtualFile) &&
+      e.getData(Project.KEY) != null) {
       presentation.setEnabled(true);
       presentation.setVisible(true);
     }
@@ -174,12 +176,12 @@ public class OpenInSceneBuilderAction extends AnAction {
       }
     }
     else if (SystemInfo.isMac) {
-      final File sb = FileUtil.findFirstThatExist("/Applications/JavaFX Scene Builder 1.1.app", 
+      final File sb = FileUtil.findFirstThatExist("/Applications/JavaFX Scene Builder 1.1.app",
                                                   "/Applications/JavaFX Scene Builder 1.0.app");
       if (sb != null) {
         path = sb.getPath();
       }
-    } 
+    }
     else if (SystemInfo.isUnix) {
       path = "/opt/JavaFXSceneBuilder1.1/JavaFXSceneBuilder1.1";
     }

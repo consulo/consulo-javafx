@@ -15,39 +15,48 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.patterns.PsiJavaElementPattern;
-import com.intellij.psi.*;
-import com.intellij.psi.filters.ElementFilter;
-import com.intellij.psi.filters.position.FilterPattern;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtil;
+import com.intellij.java.language.JavaLanguage;
+import com.intellij.java.language.patterns.PsiJavaElementPattern;
+import com.intellij.java.language.psi.*;
+import com.intellij.java.language.psi.util.PsiUtil;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.Language;
+import consulo.language.pattern.FilterPattern;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReferenceContributor;
+import consulo.language.psi.PsiReferenceRegistrar;
+import consulo.language.psi.filter.ElementFilter;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.plugins.javaFX.JavaFxFileReferenceProvider;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
-import static com.intellij.patterns.PsiJavaPatterns.literalExpression;
+import javax.annotation.Nonnull;
+
+import static com.intellij.java.language.patterns.PsiJavaPatterns.literalExpression;
 
 /**
  * User: anna
  * Date: 2/22/13
  */
+@ExtensionImpl
 public class JavaFxReferencesContributor extends PsiReferenceContributor {
   public static final PsiJavaElementPattern.Capture<PsiLiteralExpression> STYLESHEET_PATTERN =
-      literalExpression().and(new FilterPattern(new ElementFilter() {
-        public boolean isAcceptable(Object element, PsiElement context) {
-          final PsiExpression psiExpression = getParentElement((PsiLiteralExpression)context);
-          if (psiExpression != null) {
-            final PsiType psiType = psiExpression.getType();
-            return psiType != null && psiType.equalsToText(JavaFxCommonClassNames.JAVA_FX_PARENT);
-          }
-          return false;
+    literalExpression().and(new FilterPattern(new ElementFilter() {
+      public boolean isAcceptable(Object element, PsiElement context) {
+        final PsiExpression psiExpression = getParentElement((PsiLiteralExpression)context);
+        if (psiExpression != null) {
+          final PsiType psiType = psiExpression.getType();
+          return psiType != null && psiType.equalsToText(JavaFxCommonClassNames.JAVA_FX_PARENT);
         }
-  
-        public boolean isClassAcceptable(Class hintClass) {
-          return true;
-        }
-      }));
+        return false;
+      }
+
+      public boolean isClassAcceptable(Class hintClass) {
+        return true;
+      }
+    }));
 
   public static PsiExpression getParentElement(PsiLiteralExpression context) {
     PsiMethodCallExpression methodCallExpression = PsiTreeUtil.getParentOfType(context, PsiMethodCallExpression.class);
@@ -67,10 +76,11 @@ public class JavaFxReferencesContributor extends PsiReferenceContributor {
         }
         if ("add".equals(psiMethod.getName())) {
           final PsiClass containingClass = psiMethod.getContainingClass();
-          if (containingClass != null ) {
+          if (containingClass != null) {
             final PsiExpression qualifierExpression = methodCallExpression.getMethodExpression().getQualifierExpression();
             if (qualifierExpression instanceof PsiMethodCallExpression) {
-              final PsiReferenceExpression getStylesheetsMethodExpression = ((PsiMethodCallExpression)qualifierExpression).getMethodExpression();
+              final PsiReferenceExpression getStylesheetsMethodExpression =
+                ((PsiMethodCallExpression)qualifierExpression).getMethodExpression();
               if ("getStylesheets".equals(getStylesheetsMethodExpression.getReferenceName())) {
                 return getStylesheetsMethodExpression.getQualifierExpression();
               }
@@ -99,14 +109,16 @@ public class JavaFxReferencesContributor extends PsiReferenceContributor {
                 if (resolve instanceof PsiClass) {
                   psiClass = (PsiClass)resolve;
                 }
-              } else if (qualifierExpression != null) {
+              }
+              else if (qualifierExpression != null) {
                 psiClass = PsiUtil.resolveClassInType(qualifierExpression.getType());
               }
               if (psiClass != null && JavaFxCommonClassNames.JAVAFX_FXML_FXMLLOADER.equals(psiClass.getQualifiedName())) {
                 return true;
               }
             }
-          } else if (superCall instanceof PsiNewExpression) {
+          }
+          else if (superCall instanceof PsiNewExpression) {
             final PsiJavaCodeReferenceElement reference = ((PsiNewExpression)superCall).getClassOrAnonymousClassReference();
             if (reference != null) {
               final PsiElement resolve = reference.resolve();
@@ -136,5 +148,11 @@ public class JavaFxReferencesContributor extends PsiReferenceContributor {
         return value;
       }
     });
+  }
+
+  @Nonnull
+  @Override
+  public Language getLanguage() {
+    return JavaLanguage.INSTANCE;
   }
 }

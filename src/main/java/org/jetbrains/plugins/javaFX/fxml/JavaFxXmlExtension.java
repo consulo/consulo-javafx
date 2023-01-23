@@ -1,15 +1,17 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nullable;
-
-import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxTagNameReference;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.source.xml.TagNameReference;
-import com.intellij.psi.xml.XmlDocument;
 import com.intellij.xml.DefaultXmlExtension;
 import com.intellij.xml.util.XmlUtil;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiFile;
+import consulo.xml.psi.impl.source.xml.TagNameReference;
+import consulo.xml.psi.xml.XmlDocument;
+import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxTagNameReference;
 
+import javax.annotation.Nullable;
+
+@ExtensionImpl
 public class JavaFxXmlExtension extends DefaultXmlExtension {
   @Override
   public boolean isAvailable(final PsiFile file) {

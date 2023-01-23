@@ -15,43 +15,42 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.ApplicationManager;
+import consulo.application.dumb.IndexNotReadyException;
+import consulo.application.util.function.Computable;
+import consulo.index.io.DataIndexer;
+import consulo.index.io.EnumeratorStringDescriptor;
+import consulo.index.io.ID;
+import consulo.index.io.KeyDescriptor;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.stub.DefaultFileTypeSpecificInputFilter;
+import consulo.language.psi.stub.FileBasedIndex;
+import consulo.language.psi.stub.FileContent;
+import consulo.language.psi.stub.ScalarIndexExtension;
+import consulo.project.Project;
+import consulo.project.content.scope.ProjectAwareSearchScope;
+import consulo.project.content.scope.ProjectScopes;
+import consulo.util.xml.fastReader.NanoXmlUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.xml.ide.highlighter.XmlFileType;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
+import org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.StringReader;
+import java.util.*;
+import java.util.function.Function;
 
-import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
-import com.intellij.ide.highlighter.XmlFileType;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.IndexNotReadyException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.ProjectScope;
-import com.intellij.util.Function;
-import com.intellij.util.indexing.DataIndexer;
-import com.intellij.util.indexing.DefaultFileTypeSpecificInputFilter;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.intellij.util.indexing.FileContent;
-import com.intellij.util.indexing.ID;
-import com.intellij.util.indexing.ScalarIndexExtension;
-import com.intellij.util.io.EnumeratorStringDescriptor;
-import com.intellij.util.io.KeyDescriptor;
-import com.intellij.util.xml.NanoXmlUtil;
-
+@ExtensionImpl
 public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
-  @NonNls public static final ID<String, Void> NAME = ID.create("JavaFxControllerClassIndex");
+  @NonNls
+  public static final ID<String, Void> NAME = ID.create("JavaFxControllerClassIndex");
   private final EnumeratorStringDescriptor myKeyDescriptor = new EnumeratorStringDescriptor();
   private final MyInputFilter myInputFilter = new MyInputFilter();
   private final MyDataIndexer myDataIndexer = new MyDataIndexer();
@@ -106,8 +105,9 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
       }
 
       final String[] className = new String[]{null};
-      
-      class StopException extends RuntimeException {}
+
+      class StopException extends RuntimeException {
+      }
 
       try {
         NanoXmlUtil.parse(new StringReader(content), new NanoXmlUtil.IXMLBuilderAdapter() {
@@ -116,7 +116,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
           @Override
           public void addAttribute(String key, String nsPrefix, String nsURI, String value, String type) throws Exception {
             if (value != null &&
-                (FxmlConstants.FX_CONTROLLER.equals(nsPrefix + ":" + key) || FxmlConstants.TYPE.equals(key) && myFxRootUsed)) {
+              (FxmlConstants.FX_CONTROLLER.equals(nsPrefix + ":" + key) || FxmlConstants.TYPE.equals(key) && myFxRootUsed)) {
               className[0] = value;
             }
           }
@@ -133,7 +133,8 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
           }
         });
       }
-      catch (StopException ignore){}
+      catch (StopException ignore) {
+      }
       return className[0];
     }
   }
@@ -142,6 +143,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
     public MyInputFilter() {
       super(XmlFileType.INSTANCE);
     }
+
     @Override
     public boolean acceptInput(final Project project, final VirtualFile file) {
       return JavaFxFileTypeFactory.isFxml(file);
@@ -149,22 +151,21 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
   }
 
   public static List<PsiFile> findFxmlWithController(final Project project, @Nonnull String className) {
-    return findFxmlWithController(project, className, new Function<VirtualFile, PsiFile>() {
-      @Override
-      public PsiFile fun(VirtualFile file) {
-        return PsiManager.getInstance(project).findFile(file);
-      }
-    }, ProjectScope.getAllScope(project));
+    return findFxmlWithController(project,
+                                  className,
+                                  file -> PsiManager.getInstance(project).findFile(file),
+                                  ProjectScopes
+                                    .getAllScope(project));
   }
 
   public static List<VirtualFile> findFxmlsWithController(final Project project, @Nonnull String className) {
-    return findFxmlWithController(project, className, Function.ID, ProjectScope.getAllScope(project));
+    return findFxmlWithController(project, className, Function.identity(), ProjectScopes.getAllScope(project));
   }
 
   public static <T> List<T> findFxmlWithController(final Project project,
-                                                     @Nonnull final String className,
-                                                     final Function<VirtualFile, T> f,
-                                                     final GlobalSearchScope scope) {
+                                                   @Nonnull final String className,
+                                                   final Function<VirtualFile, T> f,
+                                                   final ProjectAwareSearchScope scope) {
     return ApplicationManager.getApplication().runReadAction(new Computable<List<T>>() {
       @Override
       public List<T> compute() {
@@ -180,8 +181,8 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
         List<T> result = new ArrayList<T>();
         for (VirtualFile file : files) {
           if (!file.isValid()) continue;
-          final T fFile = f.fun(file);
-          if (fFile != null) { 
+          final T fFile = f.apply(file);
+          if (fFile != null) {
             result.add(fFile);
           }
         }
