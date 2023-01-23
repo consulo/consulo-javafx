@@ -1,0 +1,12 @@
+<consulo-plugin url="https://github.com/consulo/consulo-javafx">
+	<name>JavaFX</name>
+	<id>org.jetbrains.plugins.javaFX</id>
+	<version>SNAPSHOT</version>
+	<vendor>JetBrains</vendor>
+	<description>This plugin provides JavaFX2 support.</description>
+	<depends>consulo.java</depends>
+	<depends>com.intellij.xml</depends>
+	<tags>
+		<tag>ui.framework</tag>
+	</tags>
+</consulo-plugin>
