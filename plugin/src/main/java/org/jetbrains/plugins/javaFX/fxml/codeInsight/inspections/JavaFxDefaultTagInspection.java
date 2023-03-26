@@ -34,37 +34,46 @@ import javax.annotation.Nonnull;
  * User: anna
  */
 @ExtensionImpl
-public class JavaFxDefaultTagInspection extends JavaFXInspectionBase {
-  @Nonnull
-  @Override
-  public String getDisplayName() {
-    return "Unnecessary default tag";
-  }
+public class JavaFxDefaultTagInspection extends JavaFXInspectionBase
+{
+	@Nonnull
+	@Override
+	public String getDisplayName()
+	{
+		return "Unnecessary default tag";
+	}
 
-  @Nonnull
-  @Override
-  public PsiElementVisitor buildVisitor(final @Nonnull ProblemsHolder holder,
-										boolean isOnTheFly,
-										@Nonnull LocalInspectionToolSession session) {
-    return new XmlElementVisitor() {
-      @Override
-      public void visitXmlTag(XmlTag tag) {
-        super.visitXmlTag(tag);
-        final XmlElementDescriptor descriptor = tag.getDescriptor();
-        if (descriptor instanceof JavaFxPropertyElementDescriptor) {
-          final XmlTag parentTag = tag.getParentTag();
-          if (parentTag != null) {
-            final String propertyName = JavaFxPsiUtil.getDefaultPropertyName(JavaFxPsiUtil.getTagClass(parentTag));
-            final String tagName = tag.getName();
-            if (Comparing.strEqual(tagName, propertyName)) {
-              holder.registerProblem(tag.getFirstChild(), 
-                                     "Default property tag could be removed", 
-                                     ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-                                     new UnwrapTagFix(tagName));
-            }
-          }
-        }
-      }
-    };
-  }
+	@Nonnull
+	@Override
+	public PsiElementVisitor buildVisitor(final @Nonnull ProblemsHolder holder,
+										  boolean isOnTheFly,
+										  @Nonnull LocalInspectionToolSession session,
+										  @Nonnull Object state)
+	{
+		return new XmlElementVisitor()
+		{
+			@Override
+			public void visitXmlTag(XmlTag tag)
+			{
+				super.visitXmlTag(tag);
+				final XmlElementDescriptor descriptor = tag.getDescriptor();
+				if(descriptor instanceof JavaFxPropertyElementDescriptor)
+				{
+					final XmlTag parentTag = tag.getParentTag();
+					if(parentTag != null)
+					{
+						final String propertyName = JavaFxPsiUtil.getDefaultPropertyName(JavaFxPsiUtil.getTagClass(parentTag));
+						final String tagName = tag.getName();
+						if(Comparing.strEqual(tagName, propertyName))
+						{
+							holder.registerProblem(tag.getFirstChild(),
+									"Default property tag could be removed",
+									ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+									new UnwrapTagFix(tagName));
+						}
+					}
+				}
+			}
+		};
+	}
 }
