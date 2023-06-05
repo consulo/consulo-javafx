@@ -21,11 +21,11 @@ import consulo.application.AllIcons;
 import consulo.compiler.artifact.ArtifactTemplate;
 import consulo.compiler.artifact.ArtifactType;
 import consulo.compiler.artifact.element.*;
-import consulo.ide.impl.idea.openapi.roots.ui.configuration.ChooseModulesDialog;
 import consulo.java.language.module.extension.JavaModuleExtension;
 import consulo.language.util.ModuleUtilCore;
 import consulo.module.Module;
 import consulo.module.content.layer.ModulesProvider;
+import consulo.module.ui.awt.ChooseModulesDialog;
 import consulo.ui.image.Image;
 import consulo.util.io.FileUtil;
 

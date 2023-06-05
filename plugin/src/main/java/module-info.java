@@ -14,8 +14,9 @@ module org.jetbrains.plugins.javaFX {
 
   requires java.scripting;
 
+  requires consulo.util.xml.fast.reader;
+
   // TODO remove in future
-  requires consulo.ide.impl;
   requires java.desktop;
   requires forms.rt;
 
