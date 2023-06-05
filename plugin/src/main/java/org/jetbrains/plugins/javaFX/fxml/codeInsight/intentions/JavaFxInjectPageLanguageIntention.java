@@ -20,6 +20,7 @@ import consulo.codeEditor.EditorPopupHelper;
 import consulo.language.editor.FileModificationService;
 import consulo.language.editor.WriteCommandAction;
 import consulo.language.editor.intention.PsiElementBaseIntentionAction;
+import consulo.language.editor.intention.SyntheticIntentionAction;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFileFactory;
 import consulo.language.psi.PsiParserFacade;
@@ -52,8 +53,8 @@ import java.util.*;
 * User: anna
 * Date: 4/8/13
 */
-public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAction {
-  public static final Logger LOG = Logger.getInstance(JavaFxInjectPageLanguageIntention.class.getName());
+public class JavaFxInjectPageLanguageIntention extends PsiElementBaseIntentionAction implements SyntheticIntentionAction {
+  public static final Logger LOG = Logger.getInstance(JavaFxInjectPageLanguageIntention.class);
 
   public JavaFxInjectPageLanguageIntention() {
     setText("Specify page language");
