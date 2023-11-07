@@ -19,6 +19,7 @@ import com.intellij.java.language.psi.*;
 import com.intellij.java.language.psi.util.PropertyUtil;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.content.scope.SearchScope;
+import consulo.javaFX.fxml.FXMLFileType;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.UseScopeEnlarger;
 import consulo.language.psi.scope.DelegatingGlobalSearchScope;
@@ -26,7 +27,6 @@ import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
-import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
  * User: anna
  */
 @ExtensionImpl
-public class JavaFxScopeEnlarger extends UseScopeEnlarger {
+public class JavaFxScopeEnlarger implements UseScopeEnlarger {
   @Nullable
   @Override
   public SearchScope getAdditionalUseScope(@Nonnull PsiElement element) {
@@ -58,8 +58,8 @@ public class JavaFxScopeEnlarger extends UseScopeEnlarger {
           final GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
           return new DelegatingGlobalSearchScope(projectScope){
             @Override
-            public boolean contains(VirtualFile file) {
-              return super.contains(file) && JavaFxFileTypeFactory.isFxml(file);
+            public boolean contains(@Nonnull VirtualFile file) {
+              return super.contains(file) && FXMLFileType.isFxml(file);
             }
           };
         }
