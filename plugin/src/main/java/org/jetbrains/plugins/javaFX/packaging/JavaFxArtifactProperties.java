@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import com.intellij.java.language.projectRoots.JavaSdk;
+import com.intellij.java.language.projectRoots.JavaSdkType;
 import com.intellij.java.language.projectRoots.JavaSdkVersion;
 import consulo.application.ApplicationManager;
 import consulo.application.util.function.Computable;
@@ -31,6 +31,7 @@ import consulo.compiler.artifact.element.PackagingElement;
 import consulo.compiler.artifact.ui.ArtifactEditorContext;
 import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
 import consulo.content.bundle.Sdk;
+import consulo.java.language.bundle.JavaSdkTypeUtil;
 import consulo.java.language.module.extension.JavaModuleExtension;
 import consulo.language.util.ModuleUtilCore;
 import consulo.module.Module;
@@ -89,8 +90,8 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
     Sdk fxCompatibleSdk = null;
     for (Module module : modules) {
       final Sdk sdk = ModuleUtilCore.getSdk(module, JavaModuleExtension.class);
-      if (sdk != null && sdk.getSdkType() instanceof JavaSdk) {
-        if (((JavaSdk)sdk.getSdkType()).isOfVersionOrHigher(sdk, JavaSdkVersion.JDK_1_7)) {
+      if (sdk != null && sdk.getSdkType() instanceof JavaSdkType) {
+        if (JavaSdkTypeUtil.isOfVersionOrHigher(sdk, JavaSdkVersion.JDK_1_7)) {
           fxCompatibleSdk = sdk;
           break;
         }
