@@ -18,7 +18,6 @@ package org.jetbrains.plugins.javaFX.packaging;
 import consulo.application.Application;
 import consulo.application.util.TempFileService;
 import consulo.container.boot.ContainerPathManager;
-import consulo.ide.util.ZipUtil;
 import consulo.logging.Logger;
 import consulo.process.CommandLineUtil;
 import consulo.util.collection.ArrayUtil;
@@ -26,6 +25,7 @@ import consulo.util.io.FilePermissionCopier;
 import consulo.util.io.FileUtil;
 import consulo.util.io.PathUtil;
 import consulo.util.io.StreamUtil;
+import consulo.util.io.zip.ZipUtil;
 import consulo.util.lang.StringUtil;
 
 import java.io.File;
