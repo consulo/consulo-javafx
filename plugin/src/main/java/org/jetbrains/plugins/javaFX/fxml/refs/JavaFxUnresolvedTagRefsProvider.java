@@ -5,7 +5,7 @@ import consulo.language.editor.intention.QuickFixActionRegistrar;
 import consulo.language.editor.intention.UnresolvedReferenceQuickFixProvider;
 import consulo.xml.psi.xml.XmlTag;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 @ExtensionImpl
 public class JavaFxUnresolvedTagRefsProvider extends UnresolvedReferenceQuickFixProvider<JavaFxTagNameReference> {

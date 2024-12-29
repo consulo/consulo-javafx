@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import consulo.module.content.layer.ContentEntry;
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxUnresolvedFxIdReferenceInspection;

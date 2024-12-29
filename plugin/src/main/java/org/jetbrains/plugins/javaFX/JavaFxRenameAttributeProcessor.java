@@ -26,7 +26,7 @@ import consulo.xml.refactoring.rename.RenameXmlAttributeProcessor;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.Map;
 
 /**

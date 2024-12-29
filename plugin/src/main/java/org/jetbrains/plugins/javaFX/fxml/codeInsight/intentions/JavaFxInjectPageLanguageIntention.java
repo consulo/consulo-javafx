@@ -39,7 +39,7 @@ import consulo.xml.psi.xml.XmlFile;
 import consulo.xml.psi.xml.XmlProcessingInstruction;
 import consulo.xml.psi.xml.XmlProlog;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;

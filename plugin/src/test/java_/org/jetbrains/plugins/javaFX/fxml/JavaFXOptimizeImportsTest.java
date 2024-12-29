@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import consulo.ide.impl.idea.codeInsight.actions.OptimizeImportsProcessor;
 
 public abstract class JavaFXOptimizeImportsTest extends AbstractJavaFXTestCase {

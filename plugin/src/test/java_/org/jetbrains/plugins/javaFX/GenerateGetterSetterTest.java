@@ -15,8 +15,8 @@
  */
 package org.jetbrains.plugins.javaFX;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import consulo.ide.impl.idea.codeInsight.generation.ClassMember;

@@ -45,7 +45,7 @@ import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDes
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxStaticPropertyAttributeDescriptor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.*;
 
 /**

@@ -9,7 +9,7 @@ import consulo.xml.psi.impl.source.xml.TagNameReference;
 import consulo.xml.psi.xml.XmlDocument;
 import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxTagNameReference;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 @ExtensionImpl
 public class JavaFxXmlExtension extends DefaultXmlExtension {

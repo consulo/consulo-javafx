@@ -28,8 +28,8 @@ import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * User: anna

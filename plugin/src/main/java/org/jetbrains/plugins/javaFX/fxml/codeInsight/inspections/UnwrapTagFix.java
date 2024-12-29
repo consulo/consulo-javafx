@@ -28,7 +28,7 @@ import consulo.xml.psi.xml.XmlTag;
 import consulo.xml.psi.xml.XmlTagChild;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
 * User: anna

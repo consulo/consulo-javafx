@@ -37,7 +37,7 @@ import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxDefaultAttributeDescr
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyAttributeDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxStaticPropertyAttributeDescriptor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * User: anna

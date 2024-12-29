@@ -25,8 +25,8 @@ import consulo.virtualFileSystem.VirtualFile;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxNamespaceDataProvider;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.StringReader;
 import java.util.*;
 

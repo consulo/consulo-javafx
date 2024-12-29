@@ -32,7 +32,7 @@ import org.jetbrains.plugins.javaFX.JavaFxFileReferenceProvider;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import static com.intellij.java.language.patterns.PsiJavaPatterns.literalExpression;
 

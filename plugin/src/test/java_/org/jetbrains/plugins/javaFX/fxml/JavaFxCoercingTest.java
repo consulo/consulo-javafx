@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import com.intellij.codeInsight.daemon.impl.analysis.XmlPathReferenceInspection;
 import com.intellij.codeInspection.deadCode.UnusedDeclarationInspection;

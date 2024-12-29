@@ -22,8 +22,8 @@ import consulo.compiler.artifact.ui.ArtifactEditorContext;
 import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
 import consulo.util.xml.serializer.XmlSerializerUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * User: anna

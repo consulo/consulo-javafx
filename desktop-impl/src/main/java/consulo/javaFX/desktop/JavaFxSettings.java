@@ -26,7 +26,7 @@ import consulo.ide.ServiceManager;
 import consulo.util.xml.serializer.XmlSerializerUtil;
 import jakarta.inject.Singleton;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * User: anna

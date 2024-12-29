@@ -17,7 +17,7 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import com.intellij.codeInsight.completion.LightFixtureCompletionTestCase;
 import consulo.language.editor.completion.lookup.LookupElement;

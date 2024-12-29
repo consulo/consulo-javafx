@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections.JavaFxDefaultTagInspection;
 

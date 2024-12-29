@@ -4,7 +4,7 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.xml.psi.xml.XmlFile;
 import consulo.xml.psi.xml.XmlFileNSInfoProvider;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 @ExtensionImpl
 public class JavaFxNamespaceDataProvider implements XmlFileNSInfoProvider {

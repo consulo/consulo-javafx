@@ -22,7 +22,7 @@ import consulo.ui.ex.awt.TextFieldWithBrowseButton;
 import consulo.util.lang.Comparing;
 import org.jetbrains.plugins.javaFX.packaging.JavaFxApplicationClassBrowser;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 
 /**

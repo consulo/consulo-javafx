@@ -25,7 +25,7 @@ import consulo.xml.psi.xml.XmlProcessingInstruction;
 import consulo.xml.psi.xml.XmlTokenType;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * User: anna

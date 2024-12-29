@@ -17,7 +17,7 @@ package org.jetbrains.plugins.javaFX.fxml;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import consulo.ide.impl.idea.codeInsight.intention.impl.ShowIntentionActionsHandler;
 import consulo.codeEditor.Editor;

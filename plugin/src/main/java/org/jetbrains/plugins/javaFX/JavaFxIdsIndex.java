@@ -29,7 +29,7 @@ import consulo.language.psi.stub.FileContent;
 import consulo.project.Project;
 import org.jetbrains.annotations.NonNls;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.*;
 
 @ExtensionImpl

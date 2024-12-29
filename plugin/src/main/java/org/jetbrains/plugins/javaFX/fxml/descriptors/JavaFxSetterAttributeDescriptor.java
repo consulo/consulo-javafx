@@ -23,7 +23,7 @@ import consulo.util.collection.ArrayUtil;
 import consulo.util.lang.StringUtil;
 import consulo.xml.psi.xml.XmlElement;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * User: anna

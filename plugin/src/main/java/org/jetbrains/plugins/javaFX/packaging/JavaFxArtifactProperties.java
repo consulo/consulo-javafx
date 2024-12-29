@@ -41,8 +41,8 @@ import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactP
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;

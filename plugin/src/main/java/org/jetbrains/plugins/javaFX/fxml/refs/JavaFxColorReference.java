@@ -26,8 +26,8 @@ import consulo.xml.psi.xml.XmlAttributeValue;
 import consulo.xml.util.ColorSampleLookupValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * User: anna

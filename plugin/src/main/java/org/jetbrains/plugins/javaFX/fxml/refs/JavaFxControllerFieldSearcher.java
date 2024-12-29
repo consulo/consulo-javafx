@@ -22,7 +22,7 @@ import consulo.xml.psi.xml.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.indexing.JavaFxControllerClassIndex;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 
 @ExtensionImpl

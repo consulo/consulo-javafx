@@ -48,7 +48,7 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxFieldIdReferenceProvider;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * User: anna

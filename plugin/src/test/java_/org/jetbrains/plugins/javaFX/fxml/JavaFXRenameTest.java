@@ -15,7 +15,7 @@
  */
 package org.jetbrains.plugins.javaFX.fxml;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonAnalyzerTestCase;
 import com.intellij.psi.PsiClass;
 import consulo.language.editor.refactoring.rename.inplace.MemberInplaceRenameHandler;

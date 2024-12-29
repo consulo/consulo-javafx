@@ -43,7 +43,7 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.indexing.JavaFxControllerClassIndex;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;

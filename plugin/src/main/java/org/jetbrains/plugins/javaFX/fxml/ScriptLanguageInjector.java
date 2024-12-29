@@ -13,7 +13,7 @@ import consulo.xml.patterns.XmlPatterns;
 import consulo.xml.psi.xml.XmlFile;
 import consulo.xml.psi.xml.XmlText;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 
 @ExtensionImpl

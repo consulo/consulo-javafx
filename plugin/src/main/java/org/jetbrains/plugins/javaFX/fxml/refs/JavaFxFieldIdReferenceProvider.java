@@ -27,8 +27,8 @@ import consulo.xml.psi.xml.XmlAttributeValue;
 import consulo.xml.psi.xml.XmlFile;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

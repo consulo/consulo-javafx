@@ -27,8 +27,8 @@ import consulo.language.util.ModuleUtilCore;
 import consulo.module.content.layer.ModulesProvider;
 import consulo.ui.image.Image;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * User: anna
