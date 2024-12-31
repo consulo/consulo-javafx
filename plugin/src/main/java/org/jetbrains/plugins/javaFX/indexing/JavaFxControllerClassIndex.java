@@ -121,7 +121,7 @@ public class JavaFxControllerClassIndex extends ScalarIndexExtension<String> {
     }
 
     @Override
-    public boolean acceptInput(@javax.annotation.Nullable Project project, @Nonnull final VirtualFile file) {
+    public boolean acceptInput(@Nullable Project project, @Nonnull final VirtualFile file) {
       return JavaFxFileTypeFactory.isFxml(file);
     }
   }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jetbrains.plugins.javaFX;
+package org.jetbrains.plugins.javaFX.indexing;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.application.util.function.CommonProcessors;
@@ -27,9 +27,9 @@ import consulo.language.psi.stub.FileBasedIndex;
 import consulo.language.psi.stub.FileBasedIndexExtension;
 import consulo.language.psi.stub.FileContent;
 import consulo.project.Project;
+import jakarta.annotation.Nonnull;
 import org.jetbrains.annotations.NonNls;
 
-import jakarta.annotation.Nonnull;
 import java.util.*;
 
 @ExtensionImpl

@@ -26,10 +26,9 @@ import consulo.language.psi.scope.DelegatingGlobalSearchScope;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
-import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import org.jetbrains.plugins.javaFX.indexing.JavaFxControllerClassIndex;
 
 /**
  * User: anna

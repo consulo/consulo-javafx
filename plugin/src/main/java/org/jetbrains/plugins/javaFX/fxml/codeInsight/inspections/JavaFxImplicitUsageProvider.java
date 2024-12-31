@@ -22,8 +22,8 @@ import consulo.language.editor.ImplicitUsageProvider;
 import consulo.language.psi.PsiElement;
 import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
-import org.jetbrains.plugins.javaFX.JavaFxControllerClassIndex;
-import org.jetbrains.plugins.javaFX.JavaFxIdsIndex;
+import org.jetbrains.plugins.javaFX.indexing.JavaFxIdsIndex;
+import org.jetbrains.plugins.javaFX.indexing.JavaFxControllerClassIndex;
 
 import java.util.Collection;
 import java.util.List;
