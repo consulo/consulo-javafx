@@ -23,6 +23,7 @@ import consulo.compiler.artifact.ArtifactType;
 import consulo.compiler.artifact.element.*;
 import consulo.java.language.module.extension.JavaModuleExtension;
 import consulo.language.util.ModuleUtilCore;
+import consulo.localize.LocalizeValue;
 import consulo.module.Module;
 import consulo.module.content.layer.ModulesProvider;
 import consulo.module.ui.awt.ChooseModulesDialog;
@@ -41,12 +42,8 @@ import java.util.List;
  */
 @ExtensionImpl
 public class JavaFxApplicationArtifactType extends ArtifactType {
-  public static JavaFxApplicationArtifactType getInstance() {
-    return EP_NAME.findExtension(JavaFxApplicationArtifactType.class);
-  }
-
   public JavaFxApplicationArtifactType() {
-    super("javafx", "JavaFx Application");
+    super("javafx", LocalizeValue.localizeTODO("JavaFx Application"));
   }
 
   @Override
@@ -91,11 +88,11 @@ public class JavaFxApplicationArtifactType extends ArtifactType {
     }
 
     @Override
-    public String getPresentableName() {
+    public LocalizeValue getPresentableName() {
       if (myModules.size() == 1) {
-        return "From module '" + myModules.get(0).getName() + "'";
+        return LocalizeValue.localizeTODO("From module '" + myModules.get(0).getName() + "'");
       }
-      return "From module...";
+      return LocalizeValue.localizeTODO("From module...");
     }
 
     @Override

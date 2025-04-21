@@ -16,6 +16,7 @@
 package org.jetbrains.plugins.javaFX.packaging;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.application.Application;
 import consulo.compiler.artifact.ArtifactProperties;
 import consulo.compiler.artifact.ArtifactPropertiesProvider;
 import consulo.compiler.artifact.ArtifactType;
@@ -44,6 +45,6 @@ public class JavaFxArtifactPropertiesProvider extends ArtifactPropertiesProvider
   }
   
   public static JavaFxArtifactPropertiesProvider getInstance() {
-    return EP_NAME.findExtension(JavaFxArtifactPropertiesProvider.class);
+    return Application.get().getExtensionPoint(ArtifactPropertiesProvider.class).findExtensionOrFail(JavaFxArtifactPropertiesProvider.class);
   }
 }

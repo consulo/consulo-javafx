@@ -24,6 +24,7 @@ import consulo.compiler.artifact.element.PackagingElementFactory;
 import consulo.compiler.artifact.element.PackagingElementOutputKind;
 import consulo.java.language.module.extension.JavaModuleExtension;
 import consulo.language.util.ModuleUtilCore;
+import consulo.localize.LocalizeValue;
 import consulo.module.content.layer.ModulesProvider;
 import consulo.ui.image.Image;
 
@@ -36,17 +37,13 @@ import jakarta.annotation.Nullable;
  */
 @ExtensionImpl
 public class JavaFxPreloaderArtifactType extends ArtifactType {
-  public static JavaFxPreloaderArtifactType getInstance() {
-    return EP_NAME.findExtension(JavaFxPreloaderArtifactType.class);
-  }
-
   @Override
   public boolean isAvailableForAdd(@Nonnull ModulesProvider modulesProvider) {
     return ModuleUtilCore.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
   }
 
   public JavaFxPreloaderArtifactType() {
-    super("javafx-preloader", "JavaFx Preloader");
+    super("javafx-preloader", LocalizeValue.localizeTODO("JavaFx Preloader"));
   }
 
   @Nonnull

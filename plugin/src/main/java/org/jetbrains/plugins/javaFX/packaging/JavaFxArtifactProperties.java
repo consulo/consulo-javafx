@@ -18,7 +18,6 @@ package org.jetbrains.plugins.javaFX.packaging;
 import com.intellij.java.language.projectRoots.JavaSdkType;
 import com.intellij.java.language.projectRoots.JavaSdkVersion;
 import consulo.application.ApplicationManager;
-import consulo.application.util.function.Computable;
 import consulo.compiler.CompileContext;
 import consulo.compiler.CompilerMessageCategory;
 import consulo.compiler.artifact.Artifact;
@@ -37,15 +36,16 @@ import consulo.language.util.ModuleUtilCore;
 import consulo.module.Module;
 import consulo.project.Project;
 import consulo.util.xml.serializer.XmlSerializerUtil;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactProperties;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactPropertiesProvider;
 import org.jetbrains.plugins.javaFX.packaging.preloader.JavaFxPreloaderArtifactType;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * User: anna
@@ -77,9 +77,9 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
       return;
     }
     final Project project = compileContext.getProject();
-    final Set<Module> modules = ApplicationManager.getApplication().runReadAction(new Computable<Set<Module>>() {
+    final Set<Module> modules = ApplicationManager.getApplication().runReadAction(new Supplier<Set<Module>>() {
       @Override
-      public Set<Module> compute() {
+      public Set<Module> get() {
         return ArtifactUtil.getModulesIncludedInArtifacts(Collections.singletonList(artifact), project);
       }
     });
