@@ -79,8 +79,8 @@ public class JavaFxSettingsConfigurable extends SimpleConfigurableByProperties i
 
   @Nonnull
   @Override
-  public String getDisplayName() {
-    return "JavaFX";
+  public LocalizeValue getDisplayName() {
+    return LocalizeValue.localizeTODO("JavaFX");
   }
 
   @Nullable
