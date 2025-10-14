@@ -21,42 +21,44 @@ import consulo.language.editor.intention.PsiElementBaseIntentionAction;
 import consulo.language.editor.intention.SyntheticIntentionAction;
 import consulo.language.psi.PsiElement;
 import consulo.language.util.IncorrectOperationException;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
 import consulo.xml.psi.XmlElementFactory;
 import consulo.xml.psi.xml.XmlTag;
+import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 
-import jakarta.annotation.Nonnull;
-
 /**
- * User: anna
- * Date: 4/1/13
+ * @author anna
+ * @since 2013-04-01
  */
 public class JavaFxWrapWithDefineIntention extends PsiElementBaseIntentionAction implements SyntheticIntentionAction {
-  private final XmlTag myTag;
-  private final String myId;
+    private final XmlTag myTag;
+    private final String myId;
 
-  public JavaFxWrapWithDefineIntention(@Nonnull XmlTag tag, @Nonnull String id) {
-    myTag = tag;
-    myId = id;
-    setText("Wrap \"" + myId + "\" with fx:define");
-  }
+    public JavaFxWrapWithDefineIntention(@Nonnull XmlTag tag, @Nonnull String id) {
+        myTag = tag;
+        myId = id;
+        setText(LocalizeValue.localizeTODO("Wrap \"" + myId + "\" with fx:define"));
+    }
 
-  @Override
-  public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
-    return myTag.isValid();
-  }
+    @Override
+    public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
+        return myTag.isValid();
+    }
 
-  @Override
-  public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
-    if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
-    final XmlTag tagFromText = XmlElementFactory.getInstance(project).createTagFromText("<" + FxmlConstants.FX_DEFINE + "/>");
-    tagFromText.addSubTag(myTag, true);
-    myTag.replace(tagFromText);
-  }
+    @Override
+    public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
+        if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) {
+            return;
+        }
+        final XmlTag tagFromText = XmlElementFactory.getInstance(project).createTagFromText("<" + FxmlConstants.FX_DEFINE + "/>");
+        tagFromText.addSubTag(myTag, true);
+        myTag.replace(tagFromText);
+    }
 
-  @Override
-  public boolean startInWriteAction() {
-    return true;
-  }
+    @Override
+    public boolean startInWriteAction() {
+        return true;
+    }
 }
