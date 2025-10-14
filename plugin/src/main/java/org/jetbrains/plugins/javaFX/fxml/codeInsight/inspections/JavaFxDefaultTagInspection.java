@@ -22,58 +22,54 @@ import consulo.language.editor.inspection.LocalInspectionToolSession;
 import consulo.language.editor.inspection.ProblemHighlightType;
 import consulo.language.editor.inspection.ProblemsHolder;
 import consulo.language.psi.PsiElementVisitor;
+import consulo.localize.LocalizeValue;
 import consulo.util.lang.Comparing;
 import consulo.xml.psi.XmlElementVisitor;
 import consulo.xml.psi.xml.XmlTag;
+import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
 
-import jakarta.annotation.Nonnull;
-
 /**
- * User: anna
+ * @author anna
  */
 @ExtensionImpl
-public class JavaFxDefaultTagInspection extends JavaFXInspectionBase
-{
-	@Nonnull
-	@Override
-	public String getDisplayName()
-	{
-		return "Unnecessary default tag";
-	}
+public class JavaFxDefaultTagInspection extends JavaFXInspectionBase {
+    @Nonnull
+    @Override
+    public LocalizeValue getDisplayName() {
+        return LocalizeValue.localizeTODO("Unnecessary default tag");
+    }
 
-	@Nonnull
-	@Override
-	public PsiElementVisitor buildVisitor(final @Nonnull ProblemsHolder holder,
-										  boolean isOnTheFly,
-										  @Nonnull LocalInspectionToolSession session,
-										  @Nonnull Object state)
-	{
-		return new XmlElementVisitor()
-		{
-			@Override
-			public void visitXmlTag(XmlTag tag)
-			{
-				super.visitXmlTag(tag);
-				final XmlElementDescriptor descriptor = tag.getDescriptor();
-				if(descriptor instanceof JavaFxPropertyElementDescriptor)
-				{
-					final XmlTag parentTag = tag.getParentTag();
-					if(parentTag != null)
-					{
-						final String propertyName = JavaFxPsiUtil.getDefaultPropertyName(JavaFxPsiUtil.getTagClass(parentTag));
-						final String tagName = tag.getName();
-						if(Comparing.strEqual(tagName, propertyName))
-						{
-							holder.registerProblem(tag.getFirstChild(),
-									"Default property tag could be removed",
-									ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-									new UnwrapTagFix(tagName));
-						}
-					}
-				}
-			}
-		};
-	}
+    @Nonnull
+    @Override
+    public PsiElementVisitor buildVisitor(
+        final @Nonnull ProblemsHolder holder,
+        boolean isOnTheFly,
+        @Nonnull LocalInspectionToolSession session,
+        @Nonnull Object state
+    ) {
+        return new XmlElementVisitor() {
+            @Override
+            public void visitXmlTag(XmlTag tag) {
+                super.visitXmlTag(tag);
+                final XmlElementDescriptor descriptor = tag.getDescriptor();
+                if (descriptor instanceof JavaFxPropertyElementDescriptor) {
+                    final XmlTag parentTag = tag.getParentTag();
+                    if (parentTag != null) {
+                        final String propertyName = JavaFxPsiUtil.getDefaultPropertyName(JavaFxPsiUtil.getTagClass(parentTag));
+                        final String tagName = tag.getName();
+                        if (Comparing.strEqual(tagName, propertyName)) {
+                            holder.registerProblem(
+                                tag.getFirstChild(),
+                                "Default property tag could be removed",
+                                ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                                new UnwrapTagFix(tagName)
+                            );
+                        }
+                    }
+                }
+            }
+        };
+    }
 }

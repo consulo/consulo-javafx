@@ -22,56 +22,55 @@ import consulo.language.editor.inspection.ProblemDescriptor;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.util.PsiTreeUtil;
+import consulo.localize.LocalizeValue;
 import consulo.logging.Logger;
 import consulo.project.Project;
 import consulo.xml.psi.xml.XmlTag;
 import consulo.xml.psi.xml.XmlTagChild;
+import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 
-import jakarta.annotation.Nonnull;
-
 /**
-* User: anna
-*/
+ * @author anna
+ */
 public class UnwrapTagFix implements LocalQuickFix {
-  private static final Logger LOG = Logger.getInstance(UnwrapTagFix.class);
-  private final String myTagName;
+    private static final Logger LOG = Logger.getInstance(UnwrapTagFix.class);
+    private final String myTagName;
 
-  public UnwrapTagFix(String tagName) {
-    myTagName = tagName;
-  }
-
-  @Nonnull
-  @Override
-  public String getName() {
-    return "Unwrap '" + myTagName + "'";
-  }
-
-  @Nonnull
-  @Override
-  public String getFamilyName() {
-    return getName();
-  }
-
-  @Override
-  public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
-    final PsiElement element = descriptor.getPsiElement();
-    if (element != null) {
-      final PsiFile containingFile = element.getContainingFile();
-      LOG.assertTrue(containingFile != null && JavaFxFileTypeFactory.isFxml(containingFile), containingFile == null ? "no containing file found" : "containing file: " + containingFile.getName());
-      final XmlTag xmlTag = PsiTreeUtil.getParentOfType(element, XmlTag.class);
-      if (xmlTag != null) {
-        final XmlTag parentTag = xmlTag.getParentTag();
-        final PsiElement[] children = PsiTreeUtil.getChildrenOfType(xmlTag, XmlTagChild.class);
-        if (children != null) {
-          if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
-          if (children.length > 0) {
-            parentTag.addRange(children[0], children[children.length - 1]);
-          }
-          xmlTag.delete();
-          CodeStyleManager.getInstance(project).reformat(parentTag);
-        }
-      }
+    public UnwrapTagFix(String tagName) {
+        myTagName = tagName;
     }
-  }
+
+    @Nonnull
+    @Override
+    public LocalizeValue getName() {
+        return LocalizeValue.localizeTODO("Unwrap '" + myTagName + "'");
+    }
+
+    @Override
+    public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
+        final PsiElement element = descriptor.getPsiElement();
+        if (element != null) {
+            final PsiFile containingFile = element.getContainingFile();
+            LOG.assertTrue(
+                containingFile != null && JavaFxFileTypeFactory.isFxml(containingFile),
+                containingFile == null ? "no containing file found" : "containing file: " + containingFile.getName()
+            );
+            final XmlTag xmlTag = PsiTreeUtil.getParentOfType(element, XmlTag.class);
+            if (xmlTag != null) {
+                final XmlTag parentTag = xmlTag.getParentTag();
+                final PsiElement[] children = PsiTreeUtil.getChildrenOfType(xmlTag, XmlTagChild.class);
+                if (children != null) {
+                    if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) {
+                        return;
+                    }
+                    if (children.length > 0) {
+                        parentTag.addRange(children[0], children[children.length - 1]);
+                    }
+                    xmlTag.delete();
+                    CodeStyleManager.getInstance(project).reformat(parentTag);
+                }
+            }
+        }
+    }
 }

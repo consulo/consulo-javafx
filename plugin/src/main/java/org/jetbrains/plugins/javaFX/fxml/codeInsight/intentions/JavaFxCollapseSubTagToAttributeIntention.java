@@ -22,6 +22,7 @@ import consulo.language.editor.intention.IntentionMetaData;
 import consulo.language.editor.intention.PsiElementBaseIntentionAction;
 import consulo.language.psi.PsiElement;
 import consulo.language.util.IncorrectOperationException;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
 import consulo.util.lang.StringUtil;
 import consulo.xml.psi.XmlElementFactory;
@@ -29,62 +30,65 @@ import consulo.xml.psi.xml.XmlAttribute;
 import consulo.xml.psi.xml.XmlTag;
 import consulo.xml.psi.xml.XmlToken;
 import consulo.xml.psi.xml.XmlTokenType;
+import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;
 
-import jakarta.annotation.Nonnull;
-
 /**
- * User: anna
- * Date: 2/22/13
+ * @author anna
+ * @since 2013-02-22
  */
 @ExtensionImpl
 @IntentionMetaData(ignoreId = "javafx.collapse.sub.tag.to.attribute", categories = {"XML", "JavaFX"}, fileExtensions = "fxml")
 public class JavaFxCollapseSubTagToAttributeIntention extends PsiElementBaseIntentionAction {
-  public JavaFxCollapseSubTagToAttributeIntention() {
-    setText("Collapse tag to attribute");
-  }
-
-  @Override
-  public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
-    if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) return;
-    final XmlTag tag = (XmlTag)element.getParent();
-    final String value;
-    if (tag.getSubTags().length == 0) {
-      value = tag.getValue().getText().trim();
+    public JavaFxCollapseSubTagToAttributeIntention() {
+        setText(LocalizeValue.localizeTODO("Collapse tag to attribute"));
     }
-    else {
-      value = StringUtil.join(tag.getSubTags(), childTag -> {
-        final XmlAttribute valueAttr = childTag.getAttribute(FxmlConstants.FX_VALUE);
-        if (valueAttr != null) {
-          return valueAttr.getValue();
+
+    @Override
+    public void invoke(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) throws IncorrectOperationException {
+        if (!FileModificationService.getInstance().preparePsiElementsForWrite(element)) {
+            return;
         }
-        return "";
-      }, ", ");
+        final XmlTag tag = (XmlTag) element.getParent();
+        final String value;
+        if (tag.getSubTags().length == 0) {
+            value = tag.getValue().getText().trim();
+        }
+        else {
+            value = StringUtil.join(tag.getSubTags(), childTag -> {
+                final XmlAttribute valueAttr = childTag.getAttribute(FxmlConstants.FX_VALUE);
+                if (valueAttr != null) {
+                    return valueAttr.getValue();
+                }
+                return "";
+            }, ", ");
+        }
+        final XmlAttribute attribute = XmlElementFactory.getInstance(project).createXmlAttribute(tag.getName(), value);
+        final XmlTag parentTag = tag.getParentTag();
+        parentTag.add(attribute);
+        tag.delete();
     }
-    final XmlAttribute attribute = XmlElementFactory.getInstance(project).createXmlAttribute(tag.getName(), value);
-    final XmlTag parentTag = tag.getParentTag();
-    parentTag.add(attribute);
-    tag.delete();
-  }
 
-  @Override
-  public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
-    if (element instanceof XmlToken && ((XmlToken)element).getTokenType() == XmlTokenType.XML_NAME && element.getParent() instanceof XmlTag) {
-      final XmlTag tag = (XmlTag)element.getParent();
-      for (XmlTag xmlTag : tag.getSubTags()) {
-        if (xmlTag.getAttribute(FxmlConstants.FX_VALUE) == null) return false;
-      }
-      final XmlTag parentTag = tag.getParentTag();
-      if (parentTag != null &&
-        tag.getDescriptor() instanceof JavaFxPropertyElementDescriptor &&
-        parentTag.getDescriptor() instanceof JavaFxClassBackedElementDescriptor) {
+    @Override
+    public boolean isAvailable(@Nonnull Project project, Editor editor, @Nonnull PsiElement element) {
+        if (element instanceof XmlToken && ((XmlToken) element).getTokenType() == XmlTokenType.XML_NAME && element.getParent() instanceof XmlTag) {
+            final XmlTag tag = (XmlTag) element.getParent();
+            for (XmlTag xmlTag : tag.getSubTags()) {
+                if (xmlTag.getAttribute(FxmlConstants.FX_VALUE) == null) {
+                    return false;
+                }
+            }
+            final XmlTag parentTag = tag.getParentTag();
+            if (parentTag != null &&
+                tag.getDescriptor() instanceof JavaFxPropertyElementDescriptor &&
+                parentTag.getDescriptor() instanceof JavaFxClassBackedElementDescriptor) {
 
-        setText("Collapse tag '" + tag.getName() + "' to attribute");
-        return true;
-      }
+                setText(LocalizeValue.localizeTODO("Collapse tag '" + tag.getName() + "' to attribute"));
+                return true;
+            }
+        }
+        return false;
     }
-    return false;
-  }
 }

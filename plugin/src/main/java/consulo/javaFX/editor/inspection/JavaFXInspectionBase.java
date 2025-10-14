@@ -2,37 +2,37 @@ package consulo.javaFX.editor.inspection;
 
 import consulo.language.Language;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
+import consulo.localize.LocalizeValue;
 import consulo.xml.codeInspection.XmlSuppressableInspectionTool;
 import consulo.xml.lang.xml.XMLLanguage;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 /**
  * @author VISTALL
- * @since 23/01/2023
+ * @since 2023-01-23
  */
 public abstract class JavaFXInspectionBase extends XmlSuppressableInspectionTool {
-  @Override
-  public boolean isEnabledByDefault() {
-    return true;
-  }
+    @Override
+    public boolean isEnabledByDefault() {
+        return true;
+    }
 
-  @Nonnull
-  @Override
-  public HighlightDisplayLevel getDefaultLevel() {
-    return HighlightDisplayLevel.WARNING;
-  }
+    @Nonnull
+    @Override
+    public HighlightDisplayLevel getDefaultLevel() {
+        return HighlightDisplayLevel.WARNING;
+    }
 
-  @Nullable
-  @Override
-  public Language getLanguage() {
-    return XMLLanguage.INSTANCE;
-  }
+    @Nullable
+    @Override
+    public Language getLanguage() {
+        return XMLLanguage.INSTANCE;
+    }
 
-  @Nonnull
-  @Override
-  public String getGroupDisplayName() {
-    return "JavaFX";
-  }
+    @Nonnull
+    @Override
+    public LocalizeValue getGroupDisplayName() {
+        return LocalizeValue.localizeTODO("JavaFX");
+    }
 }
