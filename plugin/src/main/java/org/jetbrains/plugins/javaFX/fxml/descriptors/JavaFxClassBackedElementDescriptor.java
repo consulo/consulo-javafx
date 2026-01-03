@@ -141,7 +141,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
                   }
                 }
               }
-              return Result.create(meths, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+              return Result.create(meths, PsiModificationTracker.MODIFICATION_COUNT);
             }
           });
           for (PsiMethod setter : setters) {
@@ -261,7 +261,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
               acceptableFields.add(method);
             }
           }
-          return Result.create(acceptableFields, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+          return Result.create(acceptableFields, PsiModificationTracker.MODIFICATION_COUNT);
         }
 
         private boolean acceptablePropertyType(PsiType fieldType) {

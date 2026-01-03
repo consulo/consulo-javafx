@@ -453,11 +453,11 @@ public class JavaFxPsiUtil {
                 return !Comparing.equal(psiClass, PsiUtil.resolveClassInClassTypeOnly(returnType));
               }
             })) {
-              return Result.create(false, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+              return Result.create(false, PsiModificationTracker.MODIFICATION_COUNT);
             }
           }
         }
-        return Result.create(true, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+        return Result.create(true, PsiModificationTracker.MODIFICATION_COUNT);
       }
     });
   }
@@ -543,7 +543,7 @@ public class JavaFxPsiUtil {
         }
         if (substitute == null) {
           if (!InheritanceUtil.isInheritor(fieldType, JavaFxCommonClassNames.JAVAFX_BEANS_VALUE_OBSERVABLE_VALUE)) {
-            return Result.create(fieldType, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+            return Result.create(fieldType, PsiModificationTracker.MODIFICATION_COUNT);
           }
           final PsiClass aClass = JavaPsiFacade.getInstance(project)
             .findClass(JavaFxCommonClassNames.JAVAFX_BEANS_VALUE_OBSERVABLE_VALUE, GlobalSearchScope.allScope(project));
@@ -554,7 +554,7 @@ public class JavaFxPsiUtil {
           substitute = substitutor.substitute(values[0].getReturnType());
         }
 
-        return Result.create(substitute, PsiModificationTracker.JAVA_STRUCTURE_MODIFICATION_COUNT);
+        return Result.create(substitute, PsiModificationTracker.MODIFICATION_COUNT);
       }
     });
   }
