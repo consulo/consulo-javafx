@@ -21,9 +21,9 @@ import com.intellij.java.language.psi.PsiMethod;
 import com.intellij.java.language.psi.PsiModifier;
 import consulo.language.psi.PsiElement;
 import consulo.logging.Logger;
-import consulo.xml.psi.xml.XmlAttribute;
-import consulo.xml.psi.xml.XmlAttributeValue;
-import consulo.xml.psi.xml.XmlElement;
+import consulo.xml.language.psi.XmlAttribute;
+import consulo.xml.language.psi.XmlAttributeValue;
+import consulo.xml.language.psi.XmlElement;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 

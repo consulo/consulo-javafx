@@ -3,8 +3,8 @@ package org.jetbrains.plugins.javaFX.fxml.refs;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.intention.QuickFixActionRegistrar;
 import consulo.language.editor.intention.UnresolvedReferenceQuickFixProvider;
-import consulo.xml.psi.xml.XmlTag;
 
+import consulo.xml.language.psi.XmlTag;
 import jakarta.annotation.Nonnull;
 
 @ExtensionImpl

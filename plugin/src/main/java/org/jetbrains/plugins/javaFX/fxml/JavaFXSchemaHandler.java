@@ -8,7 +8,7 @@ import consulo.logging.Logger;
 import consulo.module.Module;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.util.VirtualFileUtil;
-import consulo.xml.psi.xml.XmlFile;
+import consulo.xml.language.psi.XmlFile;
 import org.jetbrains.annotations.NonNls;
 
 import jakarta.annotation.Nonnull;

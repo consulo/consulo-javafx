@@ -17,12 +17,12 @@ package org.jetbrains.plugins.javaFX.fxml.descriptors;
 
 import com.intellij.java.language.psi.PsiClass;
 import com.intellij.java.language.psi.PsiMethod;
-import com.intellij.xml.XmlAttributeDescriptor;
 import consulo.language.psi.PsiElement;
 import consulo.util.collection.ArrayUtil;
 import consulo.util.lang.StringUtil;
-import consulo.xml.psi.xml.XmlElement;
 
+import consulo.xml.descriptor.XmlAttributeDescriptor;
+import consulo.xml.language.psi.XmlElement;
 import jakarta.annotation.Nullable;
 
 /**

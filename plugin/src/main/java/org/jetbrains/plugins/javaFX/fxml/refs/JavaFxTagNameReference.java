@@ -6,8 +6,8 @@ import consulo.language.ast.ASTNode;
 import consulo.language.psi.PsiElement;
 import consulo.language.util.IncorrectOperationException;
 import consulo.util.lang.StringUtil;
+import consulo.xml.language.psi.XmlTag;
 import consulo.xml.psi.impl.source.xml.TagNameReference;
-import consulo.xml.psi.xml.XmlTag;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

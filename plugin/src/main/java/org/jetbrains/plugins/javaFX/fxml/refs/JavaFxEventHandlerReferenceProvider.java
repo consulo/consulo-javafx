@@ -17,15 +17,15 @@ package org.jetbrains.plugins.javaFX.fxml.refs;
 
 import com.intellij.java.language.psi.PsiClass;
 import com.intellij.java.language.psi.PsiMethod;
-import com.intellij.xml.XmlElementDescriptor;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiReference;
 import consulo.language.util.ProcessingContext;
 import consulo.logging.Logger;
-import consulo.xml.psi.xml.XmlAttribute;
-import consulo.xml.psi.xml.XmlAttributeValue;
-import consulo.xml.psi.xml.XmlFile;
-import consulo.xml.psi.xml.XmlTag;
+import consulo.xml.descriptor.XmlElementDescriptor;
+import consulo.xml.language.psi.XmlAttribute;
+import consulo.xml.language.psi.XmlAttributeValue;
+import consulo.xml.language.psi.XmlFile;
+import consulo.xml.language.psi.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 

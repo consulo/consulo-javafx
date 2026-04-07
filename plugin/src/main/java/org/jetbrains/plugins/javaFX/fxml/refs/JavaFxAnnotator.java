@@ -39,7 +39,7 @@ import consulo.ui.util.ColorValueUtil;
 import consulo.util.collection.ArrayUtil;
 import consulo.util.lang.StringUtil;
 import consulo.xml.codeInsight.intentions.XmlChooseColorIntentionAction;
-import consulo.xml.psi.xml.*;
+import consulo.xml.language.psi.*;
 import consulo.xml.util.ColorSampleLookupValue;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;

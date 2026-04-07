@@ -15,7 +15,6 @@
  */
 package org.jetbrains.plugins.javaFX.fxml.codeInsight.inspections;
 
-import com.intellij.xml.XmlElementDescriptor;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.javaFX.editor.inspection.JavaFXInspectionBase;
 import consulo.language.editor.inspection.LocalInspectionToolSession;
@@ -24,8 +23,9 @@ import consulo.language.editor.inspection.ProblemsHolder;
 import consulo.language.psi.PsiElementVisitor;
 import consulo.localize.LocalizeValue;
 import consulo.util.lang.Comparing;
-import consulo.xml.psi.XmlElementVisitor;
-import consulo.xml.psi.xml.XmlTag;
+import consulo.xml.descriptor.XmlElementDescriptor;
+import consulo.xml.language.psi.XmlElementVisitor;
+import consulo.xml.language.psi.XmlTag;
 import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxPropertyElementDescriptor;

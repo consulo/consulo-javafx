@@ -21,7 +21,7 @@ import consulo.document.util.TextRange;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiReferenceBase;
 import consulo.util.collection.ArrayUtil;
-import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.language.psi.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 
 import jakarta.annotation.Nonnull;

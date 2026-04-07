@@ -9,8 +9,8 @@ import consulo.language.editor.intention.UnresolvedReferenceQuickFixProvider;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.project.Project;
-import consulo.xml.psi.xml.XmlAttribute;
-import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.language.psi.XmlAttribute;
+import consulo.xml.language.psi.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 

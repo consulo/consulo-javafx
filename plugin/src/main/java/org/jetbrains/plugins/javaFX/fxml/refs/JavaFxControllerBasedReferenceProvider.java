@@ -18,7 +18,7 @@ package org.jetbrains.plugins.javaFX.fxml.refs;
 import com.intellij.java.language.psi.PsiClass;
 import consulo.language.psi.*;
 import consulo.language.util.ProcessingContext;
-import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.language.psi.XmlAttributeValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 

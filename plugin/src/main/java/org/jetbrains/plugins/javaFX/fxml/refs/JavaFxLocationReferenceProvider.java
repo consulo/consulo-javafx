@@ -23,8 +23,8 @@ import consulo.util.collection.ArrayUtil;
 import consulo.util.lang.function.Condition;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.fileType.FileType;
-import consulo.xml.psi.xml.XmlAttributeValue;
 
+import consulo.xml.language.psi.XmlAttributeValue;
 import jakarta.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;

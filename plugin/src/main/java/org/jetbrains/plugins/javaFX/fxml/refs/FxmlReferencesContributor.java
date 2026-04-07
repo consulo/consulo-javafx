@@ -19,18 +19,18 @@ import com.intellij.java.impl.psi.impl.source.resolve.reference.impl.providers.J
 import com.intellij.java.language.psi.PsiClass;
 import com.intellij.java.language.psi.PsiMethod;
 import com.intellij.java.language.psi.PsiModifier;
-import com.intellij.xml.XmlElementDescriptor;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.document.util.TextRange;
 import consulo.language.Language;
 import consulo.language.pattern.PlatformPatterns;
 import consulo.language.psi.*;
 import consulo.language.util.IncorrectOperationException;
-import consulo.xml.lang.xml.XMLLanguage;
+import consulo.xml.descriptor.XmlElementDescriptor;
+import consulo.xml.language.XMLLanguage;
+import consulo.xml.language.psi.XmlProcessingInstruction;
+import consulo.xml.language.psi.XmlTag;
 import consulo.xml.patterns.XmlAttributeValuePattern;
 import consulo.xml.patterns.XmlPatterns;
-import consulo.xml.psi.xml.XmlProcessingInstruction;
-import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 

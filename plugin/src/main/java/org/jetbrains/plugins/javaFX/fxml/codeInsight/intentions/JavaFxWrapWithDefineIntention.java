@@ -23,8 +23,8 @@ import consulo.language.psi.PsiElement;
 import consulo.language.util.IncorrectOperationException;
 import consulo.localize.LocalizeValue;
 import consulo.project.Project;
-import consulo.xml.psi.XmlElementFactory;
-import consulo.xml.psi.xml.XmlTag;
+import consulo.xml.language.psi.XmlElementFactory;
+import consulo.xml.language.psi.XmlTag;
 import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 

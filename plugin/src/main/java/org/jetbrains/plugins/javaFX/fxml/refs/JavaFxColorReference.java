@@ -22,7 +22,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiReferenceBase;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.project.Project;
-import consulo.xml.psi.xml.XmlAttributeValue;
+import consulo.xml.language.psi.XmlAttributeValue;
 import consulo.xml.util.ColorSampleLookupValue;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxCommonClassNames;
 

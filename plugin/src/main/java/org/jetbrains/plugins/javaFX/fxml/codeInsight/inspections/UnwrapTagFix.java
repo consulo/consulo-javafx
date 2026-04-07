@@ -25,8 +25,8 @@ import consulo.language.psi.util.PsiTreeUtil;
 import consulo.localize.LocalizeValue;
 import consulo.logging.Logger;
 import consulo.project.Project;
-import consulo.xml.psi.xml.XmlTag;
-import consulo.xml.psi.xml.XmlTagChild;
+import consulo.xml.language.psi.XmlTag;
+import consulo.xml.language.psi.XmlTagChild;
 import jakarta.annotation.Nonnull;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 

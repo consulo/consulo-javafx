@@ -22,8 +22,8 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiReference;
 import consulo.util.lang.StringUtil;
-import consulo.xml.psi.xml.XmlFile;
-import consulo.xml.psi.xml.XmlTag;
+import consulo.xml.language.psi.XmlFile;
+import consulo.xml.language.psi.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 
 import jakarta.annotation.Nonnull;

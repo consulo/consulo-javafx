@@ -35,10 +35,10 @@ import consulo.ui.ex.popup.JBPopup;
 import consulo.ui.ex.popup.JBPopupFactory;
 import consulo.util.io.FileUtil;
 import consulo.xml.ide.highlighter.XmlFileType;
-import consulo.xml.psi.xml.XmlDocument;
-import consulo.xml.psi.xml.XmlFile;
-import consulo.xml.psi.xml.XmlProcessingInstruction;
-import consulo.xml.psi.xml.XmlProlog;
+import consulo.xml.language.psi.XmlDocument;
+import consulo.xml.language.psi.XmlFile;
+import consulo.xml.language.psi.XmlProcessingInstruction;
+import consulo.xml.language.psi.XmlProlog;
 import jakarta.annotation.Nonnull;
 
 import javax.script.ScriptEngine;

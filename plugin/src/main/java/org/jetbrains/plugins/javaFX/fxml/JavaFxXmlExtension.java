@@ -5,8 +5,8 @@ import com.intellij.xml.util.XmlUtil;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.ast.ASTNode;
 import consulo.language.psi.PsiFile;
+import consulo.xml.language.psi.XmlDocument;
 import consulo.xml.psi.impl.source.xml.TagNameReference;
-import consulo.xml.psi.xml.XmlDocument;
 import org.jetbrains.plugins.javaFX.fxml.refs.JavaFxTagNameReference;
 
 import jakarta.annotation.Nullable;

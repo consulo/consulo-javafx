@@ -1,6 +1,5 @@
 package org.jetbrains.plugins.javaFX.fxml.refs;
 
-import com.intellij.xml.XmlElementDescriptor;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.Language;
 import consulo.language.editor.completion.*;
@@ -10,11 +9,12 @@ import consulo.language.editor.completion.lookup.LookupElementBuilder;
 import consulo.language.psi.PsiReference;
 import consulo.language.util.ProcessingContext;
 import consulo.xml.codeInsight.completion.XmlTagInsertHandler;
-import consulo.xml.lang.xml.XMLLanguage;
+import consulo.xml.descriptor.XmlElementDescriptor;
+import consulo.xml.language.XMLLanguage;
+import consulo.xml.language.psi.XmlFile;
+import consulo.xml.language.psi.XmlTag;
 import consulo.xml.patterns.XmlPatterns;
 import consulo.xml.psi.impl.source.xml.TagNameVariantCollector;
-import consulo.xml.psi.xml.XmlFile;
-import consulo.xml.psi.xml.XmlTag;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;
 
