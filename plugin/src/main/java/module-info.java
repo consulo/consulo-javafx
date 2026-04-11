@@ -6,6 +6,9 @@ module org.jetbrains.plugins.javaFX {
   requires transitive org.jetbrains.plugins.javaFX.api;
   
   requires consulo.ide.api;
+  
+  requires com.intellij.xml.api;
+  requires com.intellij.xml.editor.api;
   requires com.intellij.xml;
 
   requires consulo.java;

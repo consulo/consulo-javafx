@@ -20,7 +20,7 @@ import consulo.util.lang.function.Functions;
 import consulo.util.xml.fastReader.NanoXmlBuilder;
 import consulo.util.xml.fastReader.NanoXmlUtil;
 import consulo.virtualFileSystem.VirtualFile;
-import consulo.xml.ide.highlighter.XmlFileType;
+import consulo.xml.language.XmlFileType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;

@@ -6,8 +6,8 @@ import consulo.language.psi.PsiFile;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.fileType.FileTypeConsumer;
 import consulo.virtualFileSystem.fileType.FileTypeFactory;
-import consulo.xml.ide.highlighter.XmlFileType;
 
+import consulo.xml.language.XmlFileType;
 import jakarta.annotation.Nonnull;
 
 /**

@@ -16,11 +16,11 @@ import consulo.project.Project;
 import consulo.util.collection.ArrayUtil;
 import consulo.util.lang.Comparing;
 import consulo.util.lang.StringUtil;
-import consulo.xml.Validator;
 import consulo.xml.descriptor.XmlAttributeDescriptor;
 import consulo.xml.descriptor.XmlElementDescriptor;
 import consulo.xml.descriptor.XmlElementsGroup;
 import consulo.xml.descriptor.XmlNSDescriptor;
+import consulo.xml.language.Validator;
 import consulo.xml.language.psi.XmlAttribute;
 import consulo.xml.language.psi.XmlAttributeValue;
 import consulo.xml.language.psi.XmlTag;
@@ -355,7 +355,7 @@ public class JavaFxClassBackedElementDescriptor implements XmlElementDescriptor,
   }
 
   @Override
-  public void validate(@Nonnull XmlTag context, @Nonnull consulo.xml.Validator.ValidationHost host) {
+  public void validate(@Nonnull XmlTag context, @Nonnull Validator.ValidationHost host) {
     final XmlTag parentTag = context.getParentTag();
     if (parentTag != null) {
       final XmlAttribute attribute = context.getAttribute(FxmlConstants.FX_CONTROLLER);

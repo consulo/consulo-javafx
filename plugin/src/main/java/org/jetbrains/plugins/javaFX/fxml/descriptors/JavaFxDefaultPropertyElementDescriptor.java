@@ -26,11 +26,11 @@ import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.language.psi.util.PsiTreeUtil;
 import consulo.project.Project;
 import consulo.util.collection.ArrayUtil;
-import consulo.xml.Validator;
 import consulo.xml.descriptor.XmlAttributeDescriptor;
 import consulo.xml.descriptor.XmlElementDescriptor;
 import consulo.xml.descriptor.XmlElementsGroup;
 import consulo.xml.descriptor.XmlNSDescriptor;
+import consulo.xml.language.Validator;
 import consulo.xml.language.psi.XmlAttribute;
 import consulo.xml.language.psi.XmlAttributeValue;
 import consulo.xml.language.psi.XmlFile;
@@ -291,12 +291,12 @@ public class JavaFxDefaultPropertyElementDescriptor implements XmlElementDescrip
   }
 
   @Override
-  public void validate(@Nonnull XmlTag context, @Nonnull consulo.xml.Validator.ValidationHost host) {
+  public void validate(@Nonnull XmlTag context, @Nonnull ValidationHost host) {
     final String contextName = context.getName();
     if (FxmlConstants.FX_ROOT.equals(contextName)) {
       if (context.getParentTag() != null) {
         host.addMessage(context.getNavigationElement(), "<fx:root> is valid only as the root node of an FXML document",
-                        ValidationHost.ErrorType.ERROR);
+                        Validator.ValidationHost.ErrorType.ERROR);
       }
     }
     else {

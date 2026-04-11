@@ -10,9 +10,9 @@ import consulo.language.psi.PsiLanguageInjectionHost;
 import consulo.util.lang.StringUtil;
 import consulo.xml.language.psi.XmlFile;
 import consulo.xml.language.psi.XmlText;
-import consulo.xml.patterns.XmlElementPattern;
-import consulo.xml.patterns.XmlPatterns;
 
+import consulo.xml.language.psi.pattern.XmlElementPattern;
+import consulo.xml.language.psi.pattern.XmlPatterns;
 import jakarta.annotation.Nonnull;
 import java.util.List;
 

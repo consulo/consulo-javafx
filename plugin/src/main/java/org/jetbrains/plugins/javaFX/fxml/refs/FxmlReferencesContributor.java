@@ -29,8 +29,8 @@ import consulo.xml.descriptor.XmlElementDescriptor;
 import consulo.xml.language.XMLLanguage;
 import consulo.xml.language.psi.XmlProcessingInstruction;
 import consulo.xml.language.psi.XmlTag;
-import consulo.xml.patterns.XmlAttributeValuePattern;
-import consulo.xml.patterns.XmlPatterns;
+import consulo.xml.language.psi.pattern.XmlAttributeValuePattern;
+import consulo.xml.language.psi.pattern.XmlPatterns;
 import org.jetbrains.plugins.javaFX.fxml.FxmlConstants;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxFileTypeFactory;
 

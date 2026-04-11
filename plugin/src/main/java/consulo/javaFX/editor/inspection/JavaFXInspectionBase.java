@@ -3,7 +3,7 @@ package consulo.javaFX.editor.inspection;
 import consulo.language.Language;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import consulo.localize.LocalizeValue;
-import consulo.xml.codeInspection.XmlSuppressableInspectionTool;
+import consulo.xml.editor.XmlSuppressableInspectionTool;
 import consulo.xml.language.XMLLanguage;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

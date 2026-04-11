@@ -13,7 +13,7 @@ import consulo.xml.descriptor.XmlElementDescriptor;
 import consulo.xml.language.XMLLanguage;
 import consulo.xml.language.psi.XmlFile;
 import consulo.xml.language.psi.XmlTag;
-import consulo.xml.patterns.XmlPatterns;
+import consulo.xml.language.psi.pattern.XmlPatterns;
 import consulo.xml.psi.impl.source.xml.TagNameVariantCollector;
 import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.fxml.descriptors.JavaFxClassBackedElementDescriptor;

@@ -34,7 +34,7 @@ import consulo.ui.ex.popup.IPopupChooserBuilder;
 import consulo.ui.ex.popup.JBPopup;
 import consulo.ui.ex.popup.JBPopupFactory;
 import consulo.util.io.FileUtil;
-import consulo.xml.ide.highlighter.XmlFileType;
+import consulo.xml.language.XmlFileType;
 import consulo.xml.language.psi.XmlDocument;
 import consulo.xml.language.psi.XmlFile;
 import consulo.xml.language.psi.XmlProcessingInstruction;
