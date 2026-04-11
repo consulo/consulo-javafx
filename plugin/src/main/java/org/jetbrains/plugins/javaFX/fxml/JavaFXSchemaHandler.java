@@ -1,6 +1,5 @@
 package org.jetbrains.plugins.javaFX.fxml;
 
-import com.intellij.xml.XmlSchemaProvider;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiManager;
@@ -8,6 +7,7 @@ import consulo.logging.Logger;
 import consulo.module.Module;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.xml.descriptor.XmlSchemaProvider;
 import consulo.xml.language.psi.XmlFile;
 import org.jetbrains.annotations.NonNls;
 
