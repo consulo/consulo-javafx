@@ -75,7 +75,7 @@ public class JavaFxImportsOptimizer implements ImportOptimizer {
     final JavaCodeStyleSettings settings = JavaCodeStyleSettings.getInstance(file);
     final List<Pair<String, Boolean>> sortedNames = ImportHelper.sortItemsAccordingToSettings(names, settings);
     final Map<String, Boolean> onDemand = new HashMap<>();
-    ImportHelper.collectOnDemandImports(sortedNames, settings, onDemand);
+    ImportHelper.collectOnDemandImports(sortedNames, settings, onDemand, new HashMap<>());
     final Set<String> imported = new HashSet<>();
     final List<String> imports = new ArrayList<>();
     for (Pair<String, Boolean> pair : sortedNames) {
