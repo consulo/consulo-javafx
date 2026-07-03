@@ -35,6 +35,7 @@ import consulo.process.cmd.GeneralCommandLine;
 import consulo.project.Project;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.Presentation;
 import consulo.ui.ex.awt.Messages;
 import consulo.util.collection.ArrayUtil;
@@ -57,7 +58,7 @@ import java.util.List;
   @ActionParentRef(@ActionRef(id = "EditorPopupMenu")),
   @ActionParentRef(@ActionRef(id = "ProjectViewPopupMenu"))
 })
-public class OpenInSceneBuilderAction extends AnAction {
+public class OpenInSceneBuilderAction extends AnAction implements AnActionWithSyncUpdate {
   private static final Logger LOG = Logger.getInstance(OpenInSceneBuilderAction.class);
   public static final String ORACLE = "Oracle";
 
