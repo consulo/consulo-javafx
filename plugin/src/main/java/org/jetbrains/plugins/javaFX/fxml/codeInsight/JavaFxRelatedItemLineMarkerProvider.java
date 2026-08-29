@@ -18,22 +18,25 @@ package org.jetbrains.plugins.javaFX.fxml.codeInsight;
 import com.intellij.java.language.JavaLanguage;
 import com.intellij.java.language.psi.*;
 import consulo.application.AllIcons;
+import consulo.application.Application;
+import consulo.application.ReadAction;
 import consulo.codeEditor.markup.GutterIconRenderer;
 import consulo.language.Language;
 import consulo.language.editor.Pass;
 import consulo.language.editor.gutter.GutterIconNavigationHandler;
 import consulo.language.editor.gutter.RelatedItemLineMarkerInfo;
 import consulo.language.editor.gutter.RelatedItemLineMarkerProvider;
-import consulo.language.editor.ui.PopupNavigationUtil;
+import consulo.language.editor.ui.navigation.PsiTargetNavigationService;
 import consulo.language.editor.util.LanguageEditorNavigationUtil;
 import consulo.language.navigation.GotoRelatedItem;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.language.psi.search.ReferencesSearch;
+import consulo.localize.LocalizeValue;
 import consulo.logging.Logger;
-import consulo.ui.ex.RelativePoint;
-import consulo.ui.ex.popup.JBPopup;
+import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.event.ComponentEvent;
 import consulo.util.lang.function.Functions;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.xml.language.psi.XmlAttribute;
@@ -44,7 +47,6 @@ import org.jetbrains.plugins.javaFX.fxml.JavaFxPsiUtil;
 import org.jetbrains.plugins.javaFX.indexing.JavaFxControllerClassIndex;
 
 import jakarta.annotation.Nonnull;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -134,20 +136,25 @@ public class JavaFxRelatedItemLineMarkerProvider extends RelatedItemLineMarkerPr
 
   private static class JavaFXIdIconNavigationHandler implements GutterIconNavigationHandler<PsiIdentifier> {
     @Override
-    public void navigate(MouseEvent e, PsiIdentifier fieldName) {
-      List<PsiElement> relatedItems = new ArrayList<>();
-      PsiElement f = fieldName.getParent();
-      if (f instanceof PsiField) {
-        collectTargets((PsiField)f, relatedItems, Functions.id(), false);
-      }
-      if (relatedItems.size() == 1) {
-        LanguageEditorNavigationUtil.activateFileWithPsiElement(relatedItems.get(0));
-        return;
-      }
-      final JBPopup popup = PopupNavigationUtil
-        .getPsiElementPopup(relatedItems.toArray(PsiElement.EMPTY_ARRAY),
-                            "<html>Choose component with fx:id <b>" + fieldName.getText() + "<b></html>");
-      popup.show(new RelativePoint(e));
+    @RequiredUIAccess
+    public void navigate(ComponentEvent<?> e, PsiIdentifier fieldName) {
+      LocalizeValue title = LocalizeValue.localizeTODO(
+        "Choose component with fx:id " + ReadAction.compute(fieldName::getText));
+
+      Application.get().getInstance(PsiTargetNavigationService.class)
+        .<PsiElement>newNavigator(() -> {
+          List<PsiElement> relatedItems = new ArrayList<>();
+          if (fieldName.getParent() instanceof PsiField field) {
+            collectTargets(field, relatedItems, Functions.id(), false);
+          }
+          return relatedItems;
+        })
+        .title(title)
+        .processor(element -> {
+          LanguageEditorNavigationUtil.activateFileWithPsiElement(element);
+          return true;
+        })
+        .navigate(e, fieldName.getProject());
     }
   }
 }
