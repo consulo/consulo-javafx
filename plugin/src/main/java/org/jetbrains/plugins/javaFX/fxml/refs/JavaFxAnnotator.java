@@ -30,6 +30,8 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiReference;
 import consulo.language.psi.util.SymbolPresentationUtil;
+import consulo.localize.LocalizeValue;
+import consulo.ui.annotation.RequiredUIAccess;
 import consulo.ui.color.ColorValue;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
@@ -178,11 +180,12 @@ public class JavaFxAnnotator implements Annotator {
     @Override
     public AnAction getClickAction() {
       return new AnAction() {
+        @RequiredUIAccess
         @Override
         public void actionPerformed(AnActionEvent e) {
-          final Editor editor = e.getData(CommonDataKeys.EDITOR);
+          final Editor editor = e.getData(Editor.KEY);
           if (editor != null) {
-            XmlChooseColorIntentionAction.chooseColor(editor.getComponent(), myElement, "Color Chooser");
+            XmlChooseColorIntentionAction.chooseColor(editor.getUIComponent(), myElement, LocalizeValue.localizeTODO("Color Chooser"));
           }
         }
       };
