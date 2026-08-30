@@ -19,7 +19,6 @@ import com.intellij.java.language.projectRoots.JavaSdkType;
 import com.intellij.java.language.projectRoots.JavaSdkVersion;
 import consulo.application.ApplicationManager;
 import consulo.compiler.CompileContext;
-import consulo.compiler.CompilerMessageCategory;
 import consulo.compiler.artifact.Artifact;
 import consulo.compiler.artifact.ArtifactManager;
 import consulo.compiler.artifact.ArtifactProperties;
@@ -33,6 +32,7 @@ import consulo.content.bundle.Sdk;
 import consulo.java.language.bundle.JavaSdkTypeUtil;
 import consulo.java.language.module.extension.JavaModuleExtension;
 import consulo.language.util.ModuleUtilCore;
+import consulo.localize.LocalizeValue;
 import consulo.module.Module;
 import consulo.project.Project;
 import consulo.util.xml.serializer.XmlSerializerUtil;
@@ -99,11 +99,7 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
     }
 
     if (fxCompatibleSdk == null) {
-      compileContext.addMessage(consulo.compiler.CompilerMessageCategory.ERROR,
-                                "Java version 7 or higher is required to build JavaFX package",
-                                null,
-                                -1,
-                                -1);
+      compileContext.newError(LocalizeValue.localizeTODO("Java version 7 or higher is required to build JavaFX package")).add();
       return;
     }
 
@@ -113,7 +109,7 @@ public class JavaFxArtifactProperties extends ArtifactProperties<JavaFxArtifactP
     final JavaFxPackager javaFxPackager = new JavaFxPackager(artifact, properties, project) {
       @Override
       protected void registerJavaFxPackagerError(String message) {
-        compileContext.addMessage(CompilerMessageCategory.ERROR, message, null, -1, -1);
+        compileContext.newError(LocalizeValue.of(message)).add();
       }
     };
     javaFxPackager.buildJavaFxArtifact(fxCompatibleSdk.getHomePath());

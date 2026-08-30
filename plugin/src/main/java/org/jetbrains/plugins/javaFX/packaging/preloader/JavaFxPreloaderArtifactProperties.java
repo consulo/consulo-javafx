@@ -15,8 +15,6 @@
  */
 package org.jetbrains.plugins.javaFX.packaging.preloader;
 
-import consulo.compiler.CompileContext;
-import consulo.compiler.artifact.Artifact;
 import consulo.compiler.artifact.ArtifactProperties;
 import consulo.compiler.artifact.ui.ArtifactEditorContext;
 import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
@@ -32,10 +30,6 @@ import jakarta.annotation.Nullable;
 public class JavaFxPreloaderArtifactProperties extends ArtifactProperties<JavaFxPreloaderArtifactProperties> {
 
   private String myPreloaderClass;
-
-  @Override
-  public void onBuildFinished(@Nonnull final Artifact artifact, @Nonnull final CompileContext compileContext) {
-  }
 
   @Override
   public ArtifactPropertiesEditor createEditor(@Nonnull ArtifactEditorContext context) {
