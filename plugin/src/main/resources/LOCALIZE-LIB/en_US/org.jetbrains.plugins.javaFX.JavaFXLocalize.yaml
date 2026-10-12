@@ -1,0 +1,78 @@
+artifact.application.class.label:
+    text: 'A&pplication class:'
+artifact.choose.application.class.title:
+    text: Choose Application Class
+artifact.choose.module.description:
+    text: Selected module output will be included in the artifact
+artifact.choose.module.title:
+    text: Select Module
+artifact.choose.preloader.class.title:
+    text: Choose Preloader Class
+artifact.choose.properties.file.title:
+    text: Choose Properties File
+artifact.convert.css.to.bin.checkbox:
+    text: Convert css to bin
+artifact.description.label:
+    text: '&Description:'
+artifact.edit.certificates.button:
+    text: Edit &Certificates
+artifact.enable.signing.checkbox:
+    text: Enable &signing
+artifact.height.label:
+    text: '&Height:'
+artifact.html.parameters.description:
+    text: Parameters for the resulting application to run in the browser.
+artifact.html.parameters.label:
+    text: 'HTM&L Parameters:'
+artifact.native.bundle.label:
+    text: 'Nat&ive bundle:'
+artifact.parameters.description:
+    text: Parameters for the resulting application to run standalone.
+artifact.parameters.label:
+    text: 'Application Pa&rameters:'
+artifact.preloader.class.label:
+    text: '&Preloader class:'
+artifact.preloader.tab:
+    text: JavaFX Preloader
+artifact.tab:
+    text: Java FX
+artifact.template.from.module:
+    text: From module ''{0}''
+artifact.template.from.modules:
+    text: From module...
+artifact.title.label:
+    text: '&Title:'
+artifact.type.application:
+    text: JavaFx Application
+artifact.update.in.background.checkbox:
+    text: Update in &background
+artifact.vendor.label:
+    text: '&Vendor:'
+artifact.width.label:
+    text: '&Width:'
+certificates.alias.empty.error:
+    text: Alias should be non-empty
+certificates.alias.label:
+    text: '&Alias:'
+certificates.dialog.title:
+    text: Choose Certificate
+certificates.keypass.label:
+    text: 'K&eypass:'
+certificates.keystore.choose.description:
+    text: Select file containing generated keys
+certificates.keystore.choose.title:
+    text: Choose Keystore File
+certificates.keystore.empty.error:
+    text: Path to the keystore file should be set
+certificates.keystore.label:
+    text: 'Ke&ystore:'
+certificates.keystore.missing.error:
+    text: Keystore file should exist
+certificates.passwords.empty.error:
+    text: Passwords should be set
+certificates.self.signed.radio:
+    text: '&Self signed'
+certificates.signed.by.key.radio:
+    text: Signed by &key
+certificates.storepass.label:
+    text: 'Store&pass:'

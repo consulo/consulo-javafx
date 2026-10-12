@@ -15,101 +15,137 @@
  */
 package org.jetbrains.plugins.javaFX.packaging;
 
-import consulo.ui.ex.awt.Messages;
-import consulo.ui.ex.awt.TextFieldWithBrowseButton;
-import consulo.ui.ex.awt.util.BrowseFilesListener;
+import consulo.disposer.Disposable;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.fileChooser.FileChooserTextBoxBuilder;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
-import consulo.ui.ex.awt.DialogWrapper;
-import consulo.ui.ex.awt.UIUtil;
+import consulo.ui.Component;
+import consulo.ui.MessageBoxes;
+import consulo.ui.PasswordBox;
+import consulo.ui.RadioButton;
+import consulo.ui.RadioGroup;
+import consulo.ui.TextBox;
+import consulo.ui.Window;
+import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.dialog.DialogDescriptor;
+import consulo.ui.ex.dialog.DialogValue;
+import consulo.ui.layout.VerticalLayout;
+import consulo.ui.util.FormBuilder;
 import consulo.util.lang.StringUtil;
+import org.jetbrains.plugins.javaFX.localize.JavaFXLocalize;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nullable;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Base64;
 
-/**
- * User: anna
- * Date: 3/15/13
- */
-public class JavaFxEditCertificatesDialog extends DialogWrapper {
-
-  Panel myPanel;
-
-  protected JavaFxEditCertificatesDialog(JComponent parent, JavaFxArtifactProperties properties, Project project) {
-    super(parent, true);
-    setTitle("Choose Certificate");
-    init();
-    final ActionListener actionListener = new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        UIUtil.setEnabled(myPanel.myKeysPanel, !myPanel.mySelfSignedRadioButton.isSelected(), true);
-      }
-    };
-    myPanel.mySelfSignedRadioButton.addActionListener(actionListener);
-    myPanel.mySignedByKeyRadioButton.addActionListener(actionListener);
-    final boolean selfSigning = properties.isSelfSigning();
-    UIUtil.setEnabled(myPanel.myKeysPanel, !selfSigning, true);
-    myPanel.mySelfSignedRadioButton.setSelected(selfSigning);
-    myPanel.mySignedByKeyRadioButton.setSelected(!selfSigning);
-
-    myPanel.myAliasTF.setText(properties.getAlias());
-    myPanel.myKeystore.setText(properties.getKeystore());
-    final String keypass = properties.getKeypass();
-    myPanel.myKeypassTF.setText(keypass != null ? new String(Base64.getDecoder().decode(keypass)) : "");
-    final String storepass = properties.getStorepass();
-    myPanel.myStorePassTF.setText(storepass != null ? new String(Base64.getDecoder().decode(storepass)) : "");
-    myPanel.myKeystore.addBrowseFolderListener("Choose Keystore File", "Select file containing generated keys", project, BrowseFilesListener.SINGLE_FILE_DESCRIPTOR);
-  }
-
-  @Override
-  protected void doOKAction() {
-    if (myPanel.mySignedByKeyRadioButton.isSelected()) {
-      if (StringUtil.isEmptyOrSpaces(myPanel.myAliasTF.getText())) {
-        Messages.showErrorDialog(myPanel.myWholePanel, "Alias should be non-empty");
-        return;
-      }
-      final String keystore = myPanel.myKeystore.getText();
-      if (StringUtil.isEmptyOrSpaces(keystore)) {
-        Messages.showErrorDialog(myPanel.myWholePanel, "Path to the keystore file should be set");
-        return;
-      }
-      if (!new File(keystore).isFile()) {
-        Messages.showErrorDialog(myPanel.myWholePanel, "Keystore file should exist");
-        return;
-      }
-      if (StringUtil.isEmptyOrSpaces(String.valueOf(myPanel.myKeypassTF.getPassword())) ||
-          StringUtil.isEmptyOrSpaces(String.valueOf(myPanel.myStorePassTF.getPassword()))) {
-        Messages.showErrorDialog(myPanel.myWholePanel, "Passwords should be set");
-        return;
-      }
+public class JavaFxEditCertificatesDialog extends DialogDescriptor {
+    public record Result(boolean selfSigning, String alias, String keystore, String keypass, String storepass) implements DialogValue {
     }
-    super.doOKAction();
-  }
 
-  @Nullable
-  @Override
-  protected JComponent createCenterPanel() {
-    myPanel = new Panel();
-    return myPanel.myWholePanel;
-  }
+    private final Project myProject;
+    private final Result myInitial;
 
-  @Override
-  protected void dispose() {
-    super.dispose();
-  }
+    private @Nullable RadioGroup<Boolean> mySigningGroup;
+    private @Nullable TextBox myAliasField;
+    private FileChooserTextBoxBuilder.@Nullable Controller myKeystoreField;
+    private @Nullable PasswordBox myKeypassField;
+    private @Nullable PasswordBox myStorepassField;
 
-  protected static class Panel {
-    JRadioButton mySelfSignedRadioButton;
-    JRadioButton mySignedByKeyRadioButton;
-    JPasswordField myStorePassTF;
-    JPasswordField myKeypassTF;
-    JTextField myAliasTF;
-    TextFieldWithBrowseButton myKeystore;
-    JPanel myWholePanel;
-    JPanel myKeysPanel;
-  }
+    public JavaFxEditCertificatesDialog(Project project, Result initial) {
+        super(JavaFXLocalize.certificatesDialogTitle());
+        myProject = project;
+        myInitial = initial;
+    }
+
+    @Override
+    @RequiredUIAccess
+    public Component createCenterComponent(Disposable uiDisposable) {
+        RadioGroup<Boolean> signingGroup = RadioGroup.create();
+        RadioButton selfSignedRadioButton = signingGroup.newButton(JavaFXLocalize.certificatesSelfSignedRadio(), Boolean.TRUE);
+        RadioButton signedByKeyRadioButton = signingGroup.newButton(JavaFXLocalize.certificatesSignedByKeyRadio(), Boolean.FALSE);
+        signingGroup.setValue(myInitial.selfSigning());
+
+        TextBox aliasField = TextBox.create(myInitial.alias());
+        FileChooserTextBoxBuilder.Controller keystoreField = FileChooserTextBoxBuilder.create(myProject)
+            .dialogTitle(JavaFXLocalize.certificatesKeystoreChooseTitle())
+            .dialogDescription(JavaFXLocalize.certificatesKeystoreChooseDescription())
+            .fileChooserDescriptor(FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor())
+            .uiDisposable(uiDisposable)
+            .build();
+        keystoreField.setValue(myInitial.keystore(), false);
+        PasswordBox keypassField = PasswordBox.create(myInitial.keypass());
+        PasswordBox storepassField = PasswordBox.create(myInitial.storepass());
+
+        FormBuilder keysBuilder = FormBuilder.create();
+        keysBuilder.addLabeled(JavaFXLocalize.certificatesAliasLabel(), aliasField);
+        keysBuilder.addLabeled(JavaFXLocalize.certificatesKeystoreLabel(), keystoreField.getComponent());
+        keysBuilder.addLabeled(JavaFXLocalize.certificatesKeypassLabel(), keypassField);
+        keysBuilder.addLabeled(JavaFXLocalize.certificatesStorepassLabel(), storepassField);
+        Component keysPanel = keysBuilder.build();
+        keysPanel.setEnabledRecursive(!myInitial.selfSigning());
+
+        signingGroup.addValueListener(selfSigning -> keysPanel.setEnabledRecursive(!Boolean.TRUE.equals(selfSigning)));
+
+        mySigningGroup = signingGroup;
+        myAliasField = aliasField;
+        myKeystoreField = keystoreField;
+        myKeypassField = keypassField;
+        myStorepassField = storepassField;
+
+        VerticalLayout layout = VerticalLayout.create();
+        layout.add(selfSignedRadioButton);
+        layout.add(signedByKeyRadioButton);
+        layout.add(keysPanel);
+        return layout;
+    }
+
+    @Override
+    public DialogValue getOkValue() {
+        RadioGroup<Boolean> signingGroup = mySigningGroup;
+        TextBox aliasField = myAliasField;
+        FileChooserTextBoxBuilder.Controller keystoreField = myKeystoreField;
+        PasswordBox keypassField = myKeypassField;
+        PasswordBox storepassField = myStorepassField;
+        if (signingGroup == null || aliasField == null || keystoreField == null || keypassField == null || storepassField == null) {
+            return myInitial;
+        }
+
+        return new Result(
+            Boolean.TRUE.equals(signingGroup.getValue()),
+            StringUtil.notNullize(aliasField.getValue()),
+            StringUtil.notNullize(keystoreField.getValue()),
+            StringUtil.notNullize(keypassField.getValue()),
+            StringUtil.notNullize(storepassField.getValue())
+        );
+    }
+
+    @Override
+    @RequiredUIAccess
+    public boolean canHandle(AnAction action, @Nullable DialogValue value, Window window) {
+        if (value instanceof Result result && !result.selfSigning()) {
+            LocalizeValue error = validate(result);
+            if (error.isNotEmpty()) {
+                MessageBoxes.okError(error).showAsync(window);
+                return false;
+            }
+        }
+        return super.canHandle(action, value, window);
+    }
+
+    private static LocalizeValue validate(Result result) {
+        if (StringUtil.isEmptyOrSpaces(result.alias())) {
+            return JavaFXLocalize.certificatesAliasEmptyError();
+        }
+        if (StringUtil.isEmptyOrSpaces(result.keystore())) {
+            return JavaFXLocalize.certificatesKeystoreEmptyError();
+        }
+        if (!new File(result.keystore()).isFile()) {
+            return JavaFXLocalize.certificatesKeystoreMissingError();
+        }
+        if (StringUtil.isEmptyOrSpaces(result.keypass()) || StringUtil.isEmptyOrSpaces(result.storepass())) {
+            return JavaFXLocalize.certificatesPasswordsEmptyError();
+        }
+        return LocalizeValue.empty();
+    }
 }

@@ -20,15 +20,24 @@ import com.intellij.java.execution.impl.ui.ClassBrowser;
 import com.intellij.java.language.psi.PsiClass;
 import com.intellij.java.language.psi.util.InheritanceUtil;
 import com.intellij.java.language.util.ClassFilter;
-import consulo.application.ApplicationManager;
-import consulo.application.util.function.Computable;
+import consulo.application.ReadAction;
 import consulo.compiler.artifact.Artifact;
 import consulo.compiler.artifact.ArtifactUtil;
 import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.localize.LocalizeValue;
 import consulo.module.Module;
+import consulo.platform.base.icon.PlatformIconGroup;
 import consulo.project.Project;
+import consulo.ui.TextBox;
+import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.ex.action.ActionGroup;
+import consulo.ui.ex.action.ActionToolbar;
+import consulo.ui.ex.action.ActionToolbarFactory;
+import consulo.ui.ex.action.DumbAwareAction;
+import org.jetbrains.plugins.javaFX.localize.JavaFXLocalize;
+import org.jspecify.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,54 +45,66 @@ import java.util.Set;
  * Date: 3/19/13
  */
 public class JavaFxApplicationClassBrowser extends ClassBrowser {
+    private final Artifact myArtifact;
+    private final String myApplicationClass;
 
-  private final Artifact myArtifact;
-
-  public JavaFxApplicationClassBrowser(Project project, Artifact artifact) {
-    this(project, artifact, "Choose Application Class");
-  }
-
-  public JavaFxApplicationClassBrowser(final Project project,
-                                       final Artifact artifact,
-                                       final String title) {
-    super(project, title);
-    myArtifact = artifact;
-  }
-
-  @Override
-  protected ClassFilter.ClassFilterWithScope getFilter() throws NoFilterException {
-    return new ClassFilter.ClassFilterWithScope() {
-      @Override
-      public GlobalSearchScope getScope() {
-        return GlobalSearchScope.projectScope(getProject());
-      }
-
-      @Override
-      public boolean isAccepted(PsiClass aClass) {
-        return InheritanceUtil.isInheritor(aClass, getApplicationClass());
-      }
-    };
-  }
-
-  protected String getApplicationClass() {
-    return "javafx.application.Application";
-  }
-
-  @Override
-  protected PsiClass findClass(String className) {
-    final Set<Module> modules = ApplicationManager.getApplication().runReadAction(new Computable<Set<Module>>() {
-      @Override
-      public Set<Module> compute() {
-        return ArtifactUtil.getModulesIncludedInArtifacts(Collections.singletonList(
-          myArtifact), getProject());
-      }
-    });
-    for (Module module : modules) {
-      final PsiClass aClass = JavaExecutionUtil.findMainClass(getProject(), className, GlobalSearchScope.moduleScope(module));
-      if (aClass != null) {
-        return aClass;
-      }
+    public JavaFxApplicationClassBrowser(Project project, Artifact artifact) {
+        this(project, artifact, JavaFXLocalize.artifactChooseApplicationClassTitle(), "javafx.application.Application");
     }
-    return null;
-  }
+
+    public JavaFxApplicationClassBrowser(Project project, Artifact artifact, LocalizeValue title, String applicationClass) {
+        super(project, title.get());
+        myArtifact = artifact;
+        myApplicationClass = applicationClass;
+    }
+
+    @RequiredUIAccess
+    public static void installOn(TextBox field, Project project, Artifact artifact, LocalizeValue title, String applicationClass) {
+        if (project.getApplication().isUnifiedApplication()) {
+            return;
+        }
+
+        JavaFxApplicationClassBrowser browser = new JavaFxApplicationClassBrowser(project, artifact, title, applicationClass);
+        ActionGroup actions = ActionGroup.newImmutableBuilder()
+            .add(DumbAwareAction.create(title, LocalizeValue.empty(), PlatformIconGroup.nodesClass(), e -> {
+                String className = browser.chooseClass(field.getValue());
+                if (className != null) {
+                    field.setValue(className);
+                }
+            }))
+            .build();
+
+        ActionToolbar toolbar = ActionToolbarFactory.getInstance()
+            .createActionToolbar("JavaFxApplicationClass", actions, ActionToolbar.Style.INPLACE);
+        toolbar.setTargetUIComponent(field);
+        toolbar.updateActionsAsync();
+        field.setSuffixComponent(toolbar.getUIComponent());
+    }
+
+    @Override
+    protected ClassFilter.ClassFilterWithScope getFilter() throws NoFilterException {
+        return new ClassFilter.ClassFilterWithScope() {
+            @Override
+            public GlobalSearchScope getScope() {
+                return GlobalSearchScope.projectScope(getProject());
+            }
+
+            @Override
+            public boolean isAccepted(PsiClass aClass) {
+                return InheritanceUtil.isInheritor(aClass, myApplicationClass);
+            }
+        };
+    }
+
+    @Override
+    protected @Nullable PsiClass findClass(String className) {
+        Set<Module> modules = ReadAction.compute(() -> ArtifactUtil.getModulesIncludedInArtifacts(List.of(myArtifact), getProject()));
+        for (Module module : modules) {
+            PsiClass aClass = JavaExecutionUtil.findMainClass(getProject(), className, GlobalSearchScope.moduleScope(module));
+            if (aClass != null) {
+                return aClass;
+            }
+        }
+        return null;
+    }
 }

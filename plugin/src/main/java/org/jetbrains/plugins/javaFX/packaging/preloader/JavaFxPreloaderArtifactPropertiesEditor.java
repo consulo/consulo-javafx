@@ -17,68 +17,83 @@ package org.jetbrains.plugins.javaFX.packaging.preloader;
 
 import consulo.compiler.artifact.Artifact;
 import consulo.compiler.artifact.ui.ArtifactPropertiesEditor;
+import consulo.disposer.Disposable;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
-import consulo.ui.ex.awt.TextFieldWithBrowseButton;
-import consulo.util.lang.Comparing;
+import consulo.ui.Component;
+import consulo.ui.TextBox;
+import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.util.FormBuilder;
+import consulo.util.lang.StringUtil;
+import org.jetbrains.plugins.javaFX.localize.JavaFXLocalize;
 import org.jetbrains.plugins.javaFX.packaging.JavaFxApplicationClassBrowser;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nullable;
-import javax.swing.*;
+import java.util.Objects;
 
 /**
  * User: anna
  * Date: 3/19/13
  */
-public class JavaFxPreloaderArtifactPropertiesEditor extends ArtifactPropertiesEditor
-{
-  private final JavaFxPreloaderArtifactProperties myProperties;
-  private JPanel myPanel;
-  private TextFieldWithBrowseButton myPreloaderTf;
-  
-  public JavaFxPreloaderArtifactPropertiesEditor(JavaFxPreloaderArtifactProperties properties, Project project, Artifact artifact) {
-    super();
-    myProperties = properties;
-    new JavaFxApplicationClassBrowser(project, artifact, "Choose Preloader Class") {
-      @Override
-      protected String getApplicationClass() {
-        return "javafx.application.Preloader";
-      }
-    }.setField(myPreloaderTf);
-  }
+public class JavaFxPreloaderArtifactPropertiesEditor extends ArtifactPropertiesEditor {
+    private final JavaFxPreloaderArtifactProperties myProperties;
+    private final Project myProject;
+    private final Artifact myArtifact;
 
-  @Override
-  public String getTabName() {
-    return "JavaFX Preloader";
-  }
+    private @Nullable TextBox myPreloaderField;
 
-  @Nullable
-  @Override
-  public JComponent createComponent() {
-    return myPanel;
-  }
+    public JavaFxPreloaderArtifactPropertiesEditor(JavaFxPreloaderArtifactProperties properties, Project project, Artifact artifact) {
+        myProperties = properties;
+        myProject = project;
+        myArtifact = artifact;
+    }
 
-  @Override
-  public boolean isModified() {
-    return !Comparing.strEqual(myPreloaderTf.getText(), myProperties.getPreloaderClass());
-  }
+    @Override
+    public LocalizeValue getTabName() {
+        return JavaFXLocalize.artifactPreloaderTab();
+    }
 
-  @Override
-  public void apply() {
-    myProperties.setPreloaderClass(myPreloaderTf.getText());
-  }
+    @Override
+    @RequiredUIAccess
+    public Component createUIComponent(Disposable uiDisposable) {
+        TextBox preloaderField = TextBox.create();
+        JavaFxApplicationClassBrowser.installOn(
+            preloaderField,
+            myProject,
+            myArtifact,
+            JavaFXLocalize.artifactChoosePreloaderClassTitle(),
+            "javafx.application.Preloader"
+        );
+        myPreloaderField = preloaderField;
 
-  /*@Nullable
-  @Override
-  public String getHelpId() {
-    return "Project_Structure_Artifacts_Java_FX_tab";
-  }       */
+        FormBuilder formBuilder = FormBuilder.create();
+        formBuilder.addLabeled(JavaFXLocalize.artifactPreloaderClassLabel(), preloaderField);
+        return formBuilder.build();
+    }
 
-  @Override
-  public void reset() {
-    myPreloaderTf.setText(myProperties.getPreloaderClass());
-  }
+    @Override
+    @RequiredUIAccess
+    public boolean isModified() {
+        TextBox preloaderField = myPreloaderField;
+        return preloaderField != null
+            && !Objects.equals(StringUtil.notNullize(preloaderField.getValue()), StringUtil.notNullize(myProperties.getPreloaderClass()));
+    }
 
-  @Override
-  public void disposeUIResources() {
-  }
+    @Override
+    @RequiredUIAccess
+    public void apply() {
+        TextBox preloaderField = myPreloaderField;
+        if (preloaderField != null) {
+            myProperties.setPreloaderClass(StringUtil.notNullize(preloaderField.getValue()));
+        }
+    }
+
+    @Override
+    @RequiredUIAccess
+    public void reset() {
+        TextBox preloaderField = myPreloaderField;
+        if (preloaderField != null) {
+            preloaderField.setValue(StringUtil.notNullize(myProperties.getPreloaderClass()));
+        }
+    }
 }

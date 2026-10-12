@@ -20,21 +20,28 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.application.AllIcons;
 import consulo.compiler.artifact.ArtifactTemplate;
 import consulo.compiler.artifact.ArtifactType;
-import consulo.compiler.artifact.element.*;
+import consulo.compiler.artifact.element.CompositePackagingElement;
+import consulo.compiler.artifact.element.PackagingElement;
+import consulo.compiler.artifact.element.PackagingElementFactory;
+import consulo.compiler.artifact.element.PackagingElementOutputKind;
+import consulo.compiler.artifact.element.PackagingElementResolvingContext;
+import consulo.compiler.artifact.element.ProductionModuleOutputElementType;
 import consulo.java.language.module.extension.JavaModuleExtension;
 import consulo.language.util.ModuleUtilCore;
 import consulo.localize.LocalizeValue;
 import consulo.module.Module;
 import consulo.module.content.layer.ModulesProvider;
-import consulo.module.ui.awt.ChooseModulesDialog;
+import consulo.platform.base.icon.PlatformIconGroup;
+import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.ex.dialog.ChooseItemsDialogDescriptor;
 import consulo.ui.image.Image;
 import consulo.util.io.FileUtil;
+import org.jetbrains.plugins.javaFX.localize.JavaFXLocalize;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * User: anna
@@ -42,94 +49,90 @@ import java.util.List;
  */
 @ExtensionImpl
 public class JavaFxApplicationArtifactType extends ArtifactType {
-  public JavaFxApplicationArtifactType() {
-    super("javafx", LocalizeValue.localizeTODO("JavaFx Application"));
-  }
-
-  @Override
-  public boolean isAvailableForAdd(@Nonnull ModulesProvider modulesProvider) {
-    return ModuleUtilCore.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
-  }
-
-  @Nonnull
-  @Override
-  public Image getIcon() {
-    return AllIcons.Nodes.Artifact;
-  }
-
-  @Nullable
-  @Override
-  public String getDefaultPathFor(@Nonnull PackagingElementOutputKind kind) {
-    return "/";
-  }
-
-  @Nonnull
-  @Override
-  public CompositePackagingElement<?> createRootElement(@Nonnull PackagingElementFactory factory, @Nonnull String artifactName) {
-    return factory.createArtifactRootElement();
-  }
-
-  @Nonnull
-  @Override
-  public List<? extends ArtifactTemplate> getNewArtifactTemplates(@Nonnull PackagingElementResolvingContext context) {
-    final List<Module> modules = new ArrayList<>();
-    Collections.addAll(modules, context.getModulesProvider().getModules());
-    if (modules.isEmpty()) {
-      return Collections.emptyList();
-    }
-    return Collections.singletonList(new JavaFxArtifactTemplate(modules));
-  }
-
-  private class JavaFxArtifactTemplate extends ArtifactTemplate {
-    private final List<Module> myModules;
-
-    public JavaFxArtifactTemplate(List<Module> modules) {
-      myModules = modules;
+    public JavaFxApplicationArtifactType() {
+        super("javafx", JavaFXLocalize.artifactTypeApplication());
     }
 
     @Override
-    public LocalizeValue getPresentableName() {
-      if (myModules.size() == 1) {
-        return LocalizeValue.localizeTODO("From module '" + myModules.get(0).getName() + "'");
-      }
-      return LocalizeValue.localizeTODO("From module...");
+    public boolean isAvailableForAdd(ModulesProvider modulesProvider) {
+        return ModuleUtilCore.hasModuleExtension(modulesProvider, JavaModuleExtension.class);
     }
 
     @Override
-    public NewArtifactConfiguration createArtifact() {
-      Module module = null;
-      if (myModules.size() == 1) {
-        module = myModules.get(0);
-      }
-      else {
-        final ChooseModulesDialog dialog =
-          new ChooseModulesDialog(myModules.get(0).getProject(),
-                                  myModules,
-                                  "Select Module",
-                                  "Selected module output would to be included in the artifact");
-        dialog.setSingleSelectionMode();
-        dialog.show();
-        if (dialog.isOK()) {
-          final List<Module> elements = dialog.getChosenElements();
-          if (elements.isEmpty()) {
-            return null;
-          }
-          module = elements.get(0);
+    public Image getIcon() {
+        return AllIcons.Nodes.Artifact;
+    }
+
+    @Override
+    public @Nullable String getDefaultPathFor(PackagingElementOutputKind kind) {
+        return "/";
+    }
+
+    @Override
+    public CompositePackagingElement<?> createRootElement(PackagingElementFactory factory, String artifactName) {
+        return factory.createArtifactRootElement();
+    }
+
+    @Override
+    public List<? extends ArtifactTemplate> getNewArtifactTemplates(PackagingElementResolvingContext context) {
+        List<Module> modules = List.of(context.getModulesProvider().getModules());
+        if (modules.isEmpty()) {
+            return List.of();
         }
-      }
-      if (module == null) {
-        return null;
-      }
-      PackagingElementFactory factory = PackagingElementFactory.getInstance(module.getProject());
-      final CompositePackagingElement<?> rootElement = JavaFxApplicationArtifactType.this.createRootElement(factory, module.getName());
-      final CompositePackagingElement<?> subElement =
-        JarArtifactType.getInstance().createRootElement(factory, FileUtil.sanitizeFileName(module.getName()));
-      final PackagingElement<?> moduleOutputElement = ProductionModuleOutputElementType.getInstance()
-                                                                                       .createElement(module.getProject(),
-                                                                                                      ModuleUtilCore.createPointer(module));
-      subElement.addFirstChild(moduleOutputElement);
-      rootElement.addFirstChild(subElement);
-      return new NewArtifactConfiguration(rootElement, module.getName(), JavaFxApplicationArtifactType.this);
+        return List.of(new JavaFxArtifactTemplate(modules));
     }
-  }
+
+    private class JavaFxArtifactTemplate extends ArtifactTemplate {
+        private final List<Module> myModules;
+
+        public JavaFxArtifactTemplate(List<Module> modules) {
+            myModules = modules;
+        }
+
+        @Override
+        public LocalizeValue getPresentableName() {
+            if (myModules.size() == 1) {
+                return JavaFXLocalize.artifactTemplateFromModule(myModules.get(0).getName());
+            }
+            return JavaFXLocalize.artifactTemplateFromModules();
+        }
+
+        @Override
+        @RequiredUIAccess
+        public CompletableFuture<NewArtifactConfiguration> createArtifact() {
+            if (myModules.size() == 1) {
+                return CompletableFuture.completedFuture(createConfiguration(myModules.get(0)));
+            }
+
+            return ChooseItemsDialogDescriptor.showAsync(
+                null,
+                JavaFXLocalize.artifactChooseModuleTitle(),
+                JavaFXLocalize.artifactChooseModuleDescription(),
+                myModules,
+                (module, presentation) -> {
+                    presentation.withIcon(PlatformIconGroup.nodesModule());
+                    presentation.append(module.getName());
+                },
+                false,
+                List.of()
+            ).thenApply(modules -> {
+                if (modules.isEmpty()) {
+                    throw new CancellationException();
+                }
+                return createConfiguration(modules.get(0));
+            });
+        }
+
+        private NewArtifactConfiguration createConfiguration(Module module) {
+            PackagingElementFactory factory = PackagingElementFactory.getInstance(module.getProject());
+            CompositePackagingElement<?> rootElement = JavaFxApplicationArtifactType.this.createRootElement(factory, module.getName());
+            CompositePackagingElement<?> subElement =
+                JarArtifactType.getInstance().createRootElement(factory, FileUtil.sanitizeFileName(module.getName()));
+            PackagingElement<?> moduleOutputElement =
+                ProductionModuleOutputElementType.getInstance().createElement(module.getProject(), ModuleUtilCore.createPointer(module));
+            subElement.addFirstChild(moduleOutputElement);
+            rootElement.addFirstChild(subElement);
+            return new NewArtifactConfiguration(rootElement, module.getName(), JavaFxApplicationArtifactType.this);
+        }
+    }
 }
