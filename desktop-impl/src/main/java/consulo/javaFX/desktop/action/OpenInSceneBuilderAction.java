@@ -20,7 +20,7 @@ import consulo.annotation.component.ActionParentRef;
 import consulo.annotation.component.ActionRef;
 import consulo.application.CommonBundle;
 import consulo.application.util.SystemInfo;
-import consulo.fileChooser.IdeaFileChooser;
+import consulo.fileChooser.FileChooserFactory;
 import consulo.java.execution.configurations.OwnJavaParameters;
 import consulo.javaFX.desktop.JavaFxSettings;
 import consulo.javaFX.desktop.JavaFxSettingsConfigurable;
@@ -41,14 +41,16 @@ import consulo.ui.ex.awt.Messages;
 import consulo.util.collection.ArrayUtil;
 import consulo.util.io.FileUtil;
 import consulo.util.lang.StringUtil;
-import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.io.NioFiles;
+import consulo.ui.annotation.RequiredUIAccess;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Path;
 
 /**
  * User: anna
@@ -76,14 +78,27 @@ public class OpenInSceneBuilderAction extends AnAction implements AnActionWithSy
     final JavaFxSettings settings = JavaFxSettings.getInstance();
     String pathToSceneBuilder = settings.getPathToSceneBuilder();
     if (StringUtil.isEmptyOrSpaces(settings.getPathToSceneBuilder())) {
-      final VirtualFile sceneBuilderFile = IdeaFileChooser.chooseFile(JavaFxSettingsConfigurable.createSceneBuilderDescriptor(), project,
-                                                                      getPredefinedPath());
-      if (sceneBuilderFile == null) return;
-
-      pathToSceneBuilder = sceneBuilderFile.getPath();
-      settings.setPathToSceneBuilder(FileUtil.toSystemIndependentName(pathToSceneBuilder));
+      FileChooserFactory.getInstance()
+        .newBuilder(JavaFxSettingsConfigurable.createSceneBuilderDescriptor())
+        .project(project)
+        .toSelect(getPredefinedPath())
+        .showSingle()
+        .whenComplete((sceneBuilderFile, error) -> {
+          if (sceneBuilderFile == null) {
+            return;
+          }
+          String chosenPath = FileUtil.toSystemIndependentName(sceneBuilderFile.toString());
+          settings.setPathToSceneBuilder(chosenPath);
+          openInSceneBuilder(project, virtualFile, path, chosenPath);
+        });
+      return;
     }
 
+    openInSceneBuilder(project, virtualFile, path, pathToSceneBuilder);
+  }
+
+  @RequiredUIAccess
+  private static void openInSceneBuilder(@Nullable Project project, VirtualFile virtualFile, String path, String pathToSceneBuilder) {
     if (project != null) {
       final Module module = ModuleUtilCore.findModuleForFile(virtualFile, project);
       if (module != null) {
@@ -144,13 +159,11 @@ public class OpenInSceneBuilderAction extends AnAction implements AnActionWithSy
       }
     }
 
-    if (SystemInfo.isMac) {
-      pathToSceneBuilder += "/Contents/MacOS/scenebuilder-launcher.sh";
-    }
+    String exePath = SystemInfo.isMac ? pathToSceneBuilder + "/Contents/MacOS/scenebuilder-launcher.sh" : pathToSceneBuilder;
 
     final GeneralCommandLine commandLine = new GeneralCommandLine();
     try {
-      commandLine.setExePath(FileUtil.toSystemDependentName(pathToSceneBuilder));
+      commandLine.setExePath(FileUtil.toSystemDependentName(exePath));
       commandLine.addParameter(path);
       commandLine.createProcess();
     }
@@ -174,7 +187,7 @@ public class OpenInSceneBuilderAction extends AnAction implements AnActionWithSy
   }
 
   @Nullable
-  private static VirtualFile getPredefinedPath() {
+  private static Path getPredefinedPath() {
     String path = null;
     if (SystemInfo.isWindows) {
       final String sb11 = File.separator + "JavaFX Scene Builder 1.1" + File.separator + "JavaFX Scene Builder 1.1.exe";
@@ -198,7 +211,7 @@ public class OpenInSceneBuilderAction extends AnAction implements AnActionWithSy
       path = "/opt/JavaFXSceneBuilder1.1/JavaFXSceneBuilder1.1";
     }
 
-    return path != null ? LocalFileSystem.getInstance().findFileByPath(FileUtil.toSystemIndependentName(path)) : null;
+    return path != null ? NioFiles.toPath(path) : null;
   }
 
   private static void fillPaths(String programFilesPath, String sb11, String sb10, List<String> suspiciousPaths) {
